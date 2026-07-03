@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registration</title>
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f3f4f6;
+    }
+    .section-title {
+      font-weight: 600;
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+    .navbar-brand small {
+      display: block;
+      font-size: 0.65rem;
+      color: #666;
+      margin-top: -4px;
+    }
+    .search-box input {
+      border-top-left-radius: 50px;
+      border-bottom-left-radius: 50px;
+    }
+    .search-box button {
+      border-top-right-radius: 50px;
+      border-bottom-right-radius: 50px;
+    }
+    @media (max-width: 991px) {
+      .search-box {
+        flex-direction: column;
+        width: 100%;
+      }
+      .search-box input,
+      .search-box button {
+        width: 100% !important;
+        border-radius: 50px !important;
+        margin: 4px 0;
+      }
+      .top-links {
+        flex-direction: column;
+        align-items: flex-end;
+      }
+      /* Mobile-specific footer centering */
+      .footer-col {
+        text-align: center;
+      }
+      .footer-col .list-unstyled {
+        display: inline-block;
+        text-align: left;
+      }
+      .footer-col img {
+        margin: 0 auto;
+      }
+    }
+    .bottom-nav a {
+      text-decoration: none;
+      font-weight: 600;
+      color: #000;
+      padding: 0 12px;
+    }
+    .bottom-nav a:hover {
+      color: #3e9aca;
+    }
+    footer {
+      background: #000;
+      color: #fff;
+      padding: 40px 0;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header Top: Logo + Search + Login/Register -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom py-3">
+  <div class="container d-flex flex-wrap align-items-center justify-content-between">
+    <!-- Logo -->
+    <div class="d-flex flex-grow-1 justify-content-center d-lg-block">
+      <a class="navbar-brand fw-bold" href="/">
+        <img src="/images/bzpayroll-logo.jpg" alt="BZPayroll Logo" class="img-fluid" style="max-height: 50px;">
+      </a>
+    </div>
+
+    <!-- Search Bar (Desktop only) -->
+    <form class="d-none d-lg-flex search-box ms-auto me-3 flex-grow-1" role="search" style="max-width: 600px;">
+      <input class="form-control px-4" type="search" placeholder="Search..." aria-label="Search">
+      <button class="btn btn-primary px-4" type="submit">Go</button>
+    </form>
+
+    <!-- Hamburger -->
+    <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#topLinksMenu"
+            aria-controls="topLinksMenu" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Collapsible Links -->
+    <div class="collapse navbar-collapse" id="topLinksMenu">
+      <ul class="navbar-nav ms-auto top-links">
+        <li class="nav-item">
+          <a href="/contact" class="nav-link text-dark px-2">CONTACT US</a>
+        </li>
+        <li class="nav-item">
+          <a href="/register" class="nav-link text-dark px-2">REGISTER</a>
+        </li>
+        <li class="nav-item">
+          <a href="/login" class="nav-link text-dark px-2">LOGIN</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Bottom Nav -->
+<div class="bg-white border-bottom py-2">
+  <div class="container d-flex flex-wrap justify-content-center bottom-nav align-items-center gap-3">
+    <a href="/">Home</a>
+    <a href="/about">About Us</a>
+    <div class="dropdown">
+      <a class="dropdown-toggle" href="#" id="bzcomposerDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+        BzPayroll
+      </a>
+      <ul class="dropdown-menu" aria-labelledby="bzcomposerDropdown" style="min-width: 320px;">
+        <li><a class="dropdown-item" href="#">Full-featured Accounting System</a></li>
+        <li><a class="dropdown-item" href="#">Order Management System with POS support</a></li>
+        <li><a class="dropdown-item" href="#">Warehouse Integration System</a></li>
+        <li><a class="dropdown-item" href="#">Accounting System with full-featured account receivable and payable</a></li>
+        <li><a class="dropdown-item" href="#">Billing System with group billing and emails support</a></li>
+        <li><a class="dropdown-item" href="#">eCommerce System</a></li>
+      </ul>
+    </div>
+    <a href="/free-payroll">Free Payroll</a>
+    <a href="/services">Our Service</a>
+  </div>
+</div>
+
+<!-- Registration Form -->
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+
+      <!-- success message -->
+      <div th:if="${param.success}">
+        <div class="alert alert-info">You've successfully registered
+          to our awesome app!</div>
+      </div>
+
+      <h1 class="mb-4">Registration</h1>
+
+      <form th:action="@{/registration}" method="post" >
+        <div class="mb-3">
+          <label for="firstName" class="form-label">First Name</label>
+          <input id="firstName" class="form-control"  required autofocus>
+        </div>
+
+        <div class="mb-3">
+          <label for="lastName" class="form-label">Last Name</label>
+          <input id="lastName" class="form-control"  required>
+        </div>
+
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input id="email" type="email" class="form-control"  required>
+        </div>
+
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input id="password" type="password" class="form-control"  required>
+        </div>
+
+        <div class="d-flex align-items-center justify-content-between">
+          <button type="submit" class="btn btn-success">Register</button>
+          <span>Already registered? <a th:href="@{/login}">Login here</a></span>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="bg-dark text-white pt-5">
+  <div class="container">
+    <div class="row text-center text-md-start">
+      <!-- Company Logo & Description -->
+      <div class="col-md-3 mb-4">
+        <img src="/images/bzcweb.jpg" alt="BZPayroll Logo" style="max-width: 150px;" class="mb-2">
+        <p class="small">BZPayroll is your trusted employee & payroll service provider for all business types.</p>
+      </div>
+      <!-- About -->
+      <div class="col-md-2 mb-4 footer-col">
+        <h6 class="text-uppercase fw-bold mb-3">About Us</h6>
+        <ul class="list-unstyled">
+          <li><a href="#" class="text-white-50 text-decoration-none">About Nextbits</a></li>
+          <li><a href="#" class="text-white-50 text-decoration-none">Support</a></li>
+          <li><a href="/contact" class="text-white-50 text-decoration-none">Contact Us</a></li>
+          <li><a href="#" class="text-white-50 text-decoration-none">Site Map</a></li>
+        </ul>
+      </div>
+      <!-- Business -->
+      <div class="col-md-2 mb-4 footer-col">
+        <h6 class="fw-bold mb-3">Business Submission</h6>
+        <ul class="list-unstyled">
+          <li><a href="#" class="text-white-50 text-decoration-none">Membership</a></li>
+          <li><a href="#" class="text-white-50 text-decoration-none">Submit Your Business</a></li>
+          <li><a href="#" class="text-white-50 text-decoration-none">Claim Your Business</a></li>
+        </ul>
+      </div>
+      <!-- Selling -->
+      <div class="col-md-2 mb-4 footer-col">
+        <h6 class="fw-bold mb-3">Selling on Nextbits</h6>
+        <ul class="list-unstyled">
+          <li><a href="#" class="text-white-50 text-decoration-none">How To Sell</a></li>
+          <li><a href="#" class="text-white-50 text-decoration-none">Manage Products</a></li>
+        </ul>
+      </div>
+      <!-- Help -->
+      <div class="col-md-3 mb-4 footer-col">
+        <h6 class="fw-bold mb-3">Safety & Support</h6>
+        <ul class="list-unstyled">
+          <li><a href="#" class="text-white-50 text-decoration-none">Help Center</a></li>
+          <li><a href="#" class="text-white-50 text-decoration-none">Blog</a></li>
+          <li><a href="#" class="text-white-50 text-decoration-none">Privacy Policy</a></li>
+          <li><a href="#" class="text-white-50 text-decoration-none">Disclaimer</a></li>
+        </ul>
+      </div>
+    </div>
+    <!-- Footer Bottom -->
+    <div class="text-center border-top border-secondary pt-3 pb-2 mt-4">
+      <p class="mb-0 small text-white-50">&copy; 2025 BZPayroll. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

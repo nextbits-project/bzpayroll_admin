@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html class="no-js" lang="zxx" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>BZPayroll Admin Dashboard</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-style-mode" content="1">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/assets/images/favicon.png}">
+
+    <!-- CSS -->
+    <link rel="stylesheet" th:href="@{/assets/css/vendor/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/vendor/animate.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/apexcharts.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/jquery-jvectormap-2.0.5.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/swiper-bundle.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/vendor/magnific-popup.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/vendor/icomoon.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/vendor/fontawesome-pro.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/vendor/rating.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/vendor/dropzone.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/dropify.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/vendor/spacing.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/datatables.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/buttons.bootstrap5.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/jquery.dataTables.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/select2.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/jquery.timepicker.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/tagify.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/flatpickr.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/jquery-ui.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/fullcalendar.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/ion.rangeSlider.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/simplebar.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/waves.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/nano.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/main.css}">
+</head>
+<body class="body-area">
+<!-- Preloader -->
+<div class="preloader" id="preloader">
+    <div class="loading">
+        <span></span><span></span><span></span><span></span><span></span>
+    </div>
+</div>
+
+<!-- Dashboard area -->
+<div class="page__full-wrapper">
+    <div th:replace="fragments/common_fragments/sidebar :: sidebar"></div>
+
+    <div class="page__body-wrapper">
+        <div th:replace="fragments/common_fragments/header :: header"></div>
+
+        <!-- Header -->
+        <div class="body__overlay"></div>
+
+        <!-- Main content -->
+        <div class="app__slide-wrapper">
+            <div class="row g-20">
+                <div class="col-xxl-4 col-xl-6 col-lg-12">
+                    <div class="card-bg card-border mb-20">
+                        <div class="card__wrapper style_two">
+                            <div class="card__title-wrap d-flex flex-wrap gap-10 align-items-center justify-content-between mb-25">
+                                <h5 class="card__heading-title">Overview - No of Customers</h5>
+                                <div class="card__tab">
+                                    <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link" id="pills-year-tab" data-bs-toggle="pill"
+                                                    data-bs-target="#pills-year" type="button" role="tab"
+                                                    aria-controls="pills-year" aria-selected="true">1Y
+                                            </button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link" id="pills-month-tab" data-bs-toggle="pill"
+                                                    data-bs-target="#pills-month" type="button" role="tab"
+                                                    aria-controls="pills-month" aria-selected="false">1Q
+                                            </button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link" id="pills-week-tab" data-bs-toggle="pill"
+                                                    data-bs-target="#pills-week" type="button" role="tab"
+                                                    aria-controls="pills-week" aria-selected="false">1M
+                                            </button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link" id="pills-week-tab" data-bs-toggle="pill"
+                                                    data-bs-target="#pills-week" type="button" role="tab"
+                                                    aria-controls="pills-week" aria-selected="false">1W
+                                            </button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link active" id="pills-week-tab" data-bs-toggle="pill"
+                                                    data-bs-target="#pills-week" type="button" role="tab"
+                                                    aria-controls="pills-week" aria-selected="false">Today
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card__content">
+                                <div class="card__meta d-flex justify-content-between align-items-end flex-wrap">
+                                    <div class="card__link">
+                                        <a th:href="@{/download-report}"><i
+                                                class="fa-light fa-circle-arrow-down"></i><span>Download Report</span></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-content" id="pills-tabContent">
+                            <div class="tab-pane fade show active" id="pills-week" role="tabpanel"
+                                 aria-labelledby="pills-week-tab">
+                                <div class="card__line-chart">
+                                    <div id="lineChartWeek"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-5 col-xl-6 col-lg-12">
+                    <div class="card__box">
+                        <div class="card__wrapper">
+                            <div class="card__icon-box d-flex justify-content-between mb-10">
+                                <div class="card__icon"><span><i class="fa-light fa-database"></i></span></div>
+                                <div class="card__dropdown">
+                                    <div class="dropdown">
+                                        <button><i class="fa-regular fa-ellipsis-vertical"></i></button>
+                                        <div class="dropdown-list">
+                                            <a class="dropdown__item" href="javascript:void(0)">Action</a>
+                                            <a class="dropdown__item" href="javascript:void(0)">More Action</a>
+                                            <a class="dropdown__item" href="javascript:void(0)">Another Action</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <h6 class="card__sub-title mb-10">Total Order</h6>
+                            <h4 class="card__title mb-10">$84.00K</h4>
+                            <span class="card__desc style_two"><span class="price-increase"><i
+                                    class="fa-light fa-arrow-up"></i> +17.5%</span> Than Last Week</span>
+                        </div>
+                        <div class="card__wrapper">
+                            <div class="card__icon-box d-flex justify-content-between mb-10">
+                                <div class="card__icon"><span><i class="fa-light fa-box"></i></span></div>
+                                <div class="card__dropdown">
+                                    <div class="dropdown">
+                                        <button><i class="fa-regular fa-ellipsis-vertical"></i></button>
+                                        <div class="dropdown-list">
+                                            <a class="dropdown__item" href="javascript:void(0)">Action</a>
+                                            <a class="dropdown__item" href="javascript:void(0)">More Action</a>
+                                            <a class="dropdown__item" href="javascript:void(0)">Another Action</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <h6 class="card__sub-title mb-10">Product Views</h6>
+                            <h4 class="card__title mb-10">3.00M</h4>
+                            <span class="card__desc style_two"><span class="price-increase"><i
+                                    class="fa-light fa-arrow-up"></i> +17.5%</span> Than Last Week</span>
+                        </div>
+                        <div class="card__wrapper">
+                            <div class="card__icon-box d-flex justify-content-between mb-10">
+                                <div class="card__icon"><span><i class="fa-thin fa-mug-hot"></i></span></div>
+                                <div class="card__dropdown">
+                                    <div class="dropdown">
+                                        <button><i class="fa-regular fa-ellipsis-vertical"></i></button>
+                                        <div class="dropdown-list">
+                                            <a class="dropdown__item" href="javascript:void(0)">Action</a>
+                                            <a class="dropdown__item" href="javascript:void(0)">More Action</a>
+                                            <a class="dropdown__item" href="javascript:void(0)">Another Action</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <h6 class="card__sub-title mb-10">Total Customers</h6>
+                            <h4 class="card__title mb-10">12.00K</h4>
+                            <span class="card__desc style_two"><span class="price-decrease"><i
+                                    class="fa-light fa-arrow-down"></i> +17.5%</span> Than Last Week</span>
+                        </div>
+                        <div class="card__wrapper">
+                            <div class="card__icon-box d-flex justify-content-between mb-10">
+                                <div class="card__icon"><span><i class="fa-thin fa-face-smile"></i></span></div>
+                                <div class="card__dropdown">
+                                    <div class="dropdown">
+                                        <button><i class="fa-regular fa-ellipsis-vertical"></i></button>
+                                        <div class="dropdown-list">
+                                            <a class="dropdown__item" href="javascript:void(0)">Action</a>
+                                            <a class="dropdown__item" href="javascript:void(0)">More Action</a>
+                                            <a class="dropdown__item" href="javascript:void(0)">Another Action</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <h6 class="card__sub-title mb-10">Total Income</h6>
+                            <h4 class="card__title mb-10">$59.00K</h4>
+                            <span class="card__desc style_two"><span class="price-increase"><i
+                                    class="fa-light fa-arrow-up"></i> +17.5%</span> Than Last Week</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="card__footer d-flex justify-content-center">
+                        <p>Copyright © <span th:text="${#dates.format(#dates.createNow(), 'yyyy')}"></span> <span
+                                class="text-black">BZcomposer.</span> All rights reserved</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+</div>
+
+<!-- JS -->
+<script th:src="@{/assets/js/vendor/calendar-activision.js}"></script>
+<script th:src="@{/assets/js/vendor/jquery-3.7.0.js}"></script>
+<script th:src="@{/assets/js/vendor/isotope.pkgd.js}"></script>
+<script th:src="@{/assets/js/vendor/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/assets/js/vendor/magnific-popup.min.js}"></script>
+<script th:src="@{/assets/js/vendor/ajax-form.js}"></script>
+<script th:src="@{/assets/js/vendor/jquery.repeater.js}"></script>
+<script th:src="@{/assets/js/plugins/waypoints.min.js}"></script>
+<script th:src="@{/assets/js/plugins/dayjs.min.js}"></script>
+<script th:src="@{/assets/js/plugins/loader.js}"></script>
+<script th:src="@{/assets/js/plugins/jsvectormap.min.js}"></script>
+<script th:src="@{/assets/js/plugins/world-merc.js}"></script>
+<script th:src="@{/assets/js/plugins/swiper-bundle.min.js}"></script>
+<script th:src="@{/assets/js/plugins/popper.min.js}"></script>
+<script th:src="@{/assets/js/plugins/simplebar.min.js}"></script>
+<script th:src="@{/assets/js/plugins/simplebar-active.js}"></script>
+<script th:src="@{/assets/js/plugins/backtotop.js}"></script>
+<script th:src="@{/assets/js/plugins/smooth-scrollbar.js}"></script>
+<script th:src="@{/assets/js/plugins/cleave.min.js}"></script>
+<script th:src="@{/assets/js/plugins/datatables.min.js}"></script>
+<script th:src="@{/assets/js/plugins/jquery.dataTables.min.js}"></script>
+<script th:src="@{/assets/js/plugins/dataTables.bootstrap5.min.js}"></script>
+<script th:src="@{/assets/js/plugins/dataTables.buttons.min.js}"></script>
+<script th:src="@{/assets/js/plugins/jszip.min.js}"></script>
+<script th:src="@{/assets/js/plugins/pdfmake.min.js}"></script>
+<script th:src="@{/assets/js/plugins/vfs_fonts.js}"></script>
+<script th:src="@{/assets/js/plugins/buttons.html5.min.js}"></script>
+<script th:src="@{/assets/js/plugins/buttons.print.min.js}"></script>
+<script th:src="@{/assets/js/plugins/buttons.colVis.min.js}"></script>
+<script th:src="@{/assets/js/plugins/steps-form.js}"></script>
+<script th:src="@{/assets/js/plugins/dropify.min.js}"></script>
+<script th:src="@{/assets/js/plugins/dropzone.js}"></script>
+<script th:src="@{/assets/js/plugins/tinymce.min.js}"></script>
+<script th:src="@{/assets/js/plugins/custom.js}"></script>
+<script th:src="@{/assets/js/plugins/typeahead.bundle.min.js}"></script>
+<script th:src="@{/assets/js/plugins/bloodhound.js}"></script>
+<script th:src="@{/assets/js/plugins/select2.full.min.js}"></script>
+<script th:src="@{/assets/js/plugins/jquery.timepicker.min.js}"></script>
+<script th:src="@{/assets/js/plugins/flatpickr.js}"></script>
+<script th:src="@{/assets/js/plugins/tagify.js}"></script>
+<script th:src="@{/assets/js/plugins/jquery-ui.min.js}"></script>
+<script th:src="@{/assets/js/plugins/sweetalert2.all.min.js}"></script>
+<script th:src="@{/assets/js/plugins/apexcharts.min.js}"></script>
+<script th:src="@{/assets/js/plugins/fullcalendar.min.js}"></script>
+<script th:src="@{/assets/js/plugins/ion.rangeSlider.min.js}"></script>
+<script th:src="@{/assets/js/vendor/custom-tagify.js}"></script>
+<script th:src="@{/assets/js/vendor/height-equal.js}"></script>
+<script th:src="@{/assets/js/vendor/custom-chart.js}"></script>
+<script th:src="@{/assets/js/vendor/rangeslider-script.js}"></script>
+<script th:src="@{/assets/js/vendor/jquery.barrating.js}"></script>
+<script th:src="@{/assets/js/vendor/rating-script.js}"></script>
+<script th:src="@{/assets/js/main.js}"></script>
+<script th:src="@{/assets/js/vendor/sidebar.js}"></script>
+</body>
+</html>

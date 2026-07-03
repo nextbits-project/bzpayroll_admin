@@ -1,0 +1,77 @@
+INSERT INTO bca_membership_plans
+(
+    planname,
+    plancode,
+    stripeproductid,
+    stripepriceid,
+    amount,
+    currency,
+    billinginterval,
+    employeelimit,
+    imagelimit,
+    description,
+    active,
+    createdat,
+    updatedat
+)
+VALUES
+    (
+        'Free Trial',
+        'FREE_TRIAL',
+        NULL,
+        NULL,
+        0.00,
+        'USD',
+        'MONTHLY',
+        5,
+        5,
+        'For 5 listing, Allow up to 5 listings, Allow 5 images per listing',
+        TRUE,
+        NOW(),
+        NOW()
+    ),
+    (
+        'Standard',
+        'STANDARD',
+        'prod_UhfYjpsAFN8GiW',
+        'price_1TiGD0EGrKbIdKYVaGOgWceX',
+        19.99,
+        'USD',
+        'MONTHLY',
+        10,
+        10,
+        'For 10 listing, Allow up to 10 listings, Allow 10 images per listing',
+        TRUE,
+        NOW(),
+        NOW()
+    ),
+    (
+        'Silver',
+        'SILVER',
+        'prod_UhfYI8Sm64Ld2Y',
+        'price_1TiGDMEGrKbIdKYVIEDzYlkf',
+        39.99,
+        'USD',
+        'MONTHLY',
+        100,
+        100,
+        'For 100 listing, Allow up to 100 listings, Allow 100 images per listing',
+        TRUE,
+        NOW(),
+        NOW()
+    ),
+    (
+        'Gold',
+        'GOLD',
+        'prod_UhfYjpsAFN8GiW',
+        'price_1TiGD0EGrKbIdKYVaGOgWceX',
+        59.99,
+        'USD',
+        'MONTHLY',
+        999999,
+        999999,
+        'For unlimited listing, Allow up to unlimited listings, Allow unlimited images per listing',
+        TRUE,
+        NOW(),
+        NOW()
+    );

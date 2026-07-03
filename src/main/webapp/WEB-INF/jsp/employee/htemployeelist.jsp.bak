@@ -1,0 +1,733 @@
+
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ page import="java.util.*, java.io.*"%>
+<%@ page isELIgnored="false"%>
+<%--<%@ page errorPage="/WEB-INF/jsp/include/sessionExpired.jsp"%>--%>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<%@include file="/WEB-INF/jsp/include/headlogo.jsp"%>
+	<%@include file="/WEB-INF/jsp/include/header.jsp"%>
+	<%@include file="/WEB-INF/jsp/include/menu.jsp"%>
+	<title><spring:message code="BzComposer.hiredemployeelisttitle"/>
+	</title>
+	<link href="${pageContext.request.contextPath}/tableStyle/tab/jquery-ui-tab.css" rel="stylesheet" media="screen" />
+ 	<script src="${pageContext.request.contextPath}/tableStyle/tab/jquery-ui.js"></script>
+	<!-- Custom styling to match customer list design -->
+	<style>
+		/* Customer list table styling */
+		.tabla-listados {
+			border-collapse: collapse !important;
+			width: 100% !important;
+			margin-top: 10px !important;
+		}
+		.tabla-listados th {
+			background-color: #f2f2f2 !important;
+			padding: 8px !important;
+			text-align: left !important;
+			border-bottom: 1px solid #ddd !important;
+			font-weight: normal !important;
+		}
+		.tabla-listados td {
+			padding: 8px !important;
+			text-align: left !important;
+			border-bottom: 1px solid #ddd !important;
+		}
+		.tabla-listados tr:hover {
+			background-color: #f5f5f5 !important;
+		}
+		.draft, .row-employee.draft {
+			background-color: #f0f0f0 !important;
+		}
+		/* Button styling to match image */
+		.formButton {
+			background-color: #1E90FF !important;
+			color: white !important;
+			border: none !important;
+			padding: 5px 15px !important;
+			margin-right: 5px !important;
+			cursor: pointer !important;
+			border-radius: 3px !important;
+		}
+		/* Search box styling */
+		#myInput {
+			padding: 5px !important;
+			border: 1px solid #ccc !important;
+			border-radius: 3px !important;
+			width: 200px !important;
+		}
+		/* Styling to match customer list in image */
+		table.customer-table {
+			border-collapse: collapse !important;
+			width: 100% !important;
+		}
+		.customer-table th {
+			background-color: #f2f2f2 !important;
+			padding: 8px !important;
+			text-align: left !important;
+			border-bottom: 1px solid #ddd !important;
+			font-weight: normal !important;
+		}
+		.customer-table td {
+			padding: 8px !important;
+			text-align: left !important;
+			border-bottom: 1px solid #ddd !important;
+		}
+		.customer-table tr:hover {
+			background-color: #f5f5f5 !important;
+		}
+		/* Action buttons styling like in image */
+		.action-button {
+			background-color: #1E90FF !important;
+			color: white !important;
+			border: none !important;
+			padding: 5px 15px !important;
+			margin-right: 5px !important;
+			cursor: pointer !important;
+		}
+		.action-button.delete {
+			background-color: #DC3545 !important;
+		}
+		/* Additional styling to match image */
+		.row-employee {
+			cursor: pointer !important;
+		}
+		.row-employee:nth-child(even) {
+			background-color: #f9f9f9 !important;
+		}
+	</style>
+    <script>
+		$(document).ready(function(){
+			// Hide employee details section on page load
+			$("#employee-details").hide();
+			
+			$("#myInput").on("keyup", function() {
+				var value = $(this).val().toLowerCase();
+				$("#custTableBody tr").filter(function() {
+					$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+				});
+			});
+			
+			// Select all checkboxes
+			$("#selectAll").click(function() {
+				$('input[name="employeeSelect"]').prop('checked', this.checked);
+			});
+			
+			// When checkbox is clicked, don't trigger the row click event
+			$('input[name="employeeSelect"]').click(function(e) {
+				e.stopPropagation();
+			});
+		});
+	</script>
+	
+	<style>
+		.customer-table {
+			width: 100%;
+			border-collapse: collapse;
+			margin-top: 10px;
+		}
+		.customer-table th {
+			padding: 8px;
+			text-align: left;
+			border-bottom: 1px solid #ddd;
+			background-color: #f2f2f2;
+			position: sticky;
+			top: 0;
+			z-index: 10;
+		}
+		.customer-table td {
+			padding: 8px;
+			text-align: left;
+			border-bottom: 1px solid #ddd;
+		}
+		.customer-table tr:hover {
+			background-color: #f5f5f5;
+		}
+		.selected-row {
+			background-color: #f0f0f0 !important;
+		}
+		.search-box {
+			padding: 5px;
+			border: 1px solid #ccc;
+			border-radius: 3px;
+			margin-bottom: 10px;
+			width: 200px;
+		}
+		.action-buttons {
+			margin-bottom: 15px;
+		}
+		.action-buttons button {
+			margin-right: 10px;
+			padding: 5px 15px;
+			border: none;
+			cursor: pointer;
+		}
+		.btn-primary {
+			background-color: #1E90FF;
+			color: white;
+		}
+		.btn-danger {
+			background-color: #DC3545;
+			color: white;
+		}
+	</style>
+	<script>
+		$(function() {
+			$('#sortBy').change(function(){
+			    loadEmployeeList();
+
+			});
+		});
+	</script>
+
+	<script>
+
+	 $(document).ready(function() {
+	    $('#chkHired').change(function() {
+            loadEmployeeList();
+        });
+        $('#chkTerminated').change(function() {
+            loadEmployeeList();
+         });
+
+
+       });
+
+
+       function loadEmployeeList(){
+            var sortBy = $('#sortBy').val();
+            var hired = $('#chkHired').is(":checked");
+            var terminated = $('#chkTerminated').is(":checked");
+            var tabId = '';
+            if(hired && terminated){
+                tabId = 'loadAll';
+            }else if(terminated){
+                tabId = 'loadTerminated';
+            }else if(hired){
+                tabId = 'loadHired';
+            }
+
+
+
+            $.ajax({  type: "POST",
+            					url:"EmployeeAjax?tabid="+tabId+"&sortBy="+sortBy,
+            					data:{sortBy:sortBy},
+            				}).done(function(data){
+            					$('#custTableBody').html('');
+            					var custDetails = "";
+            					for(var i=0; i<data.length; i++){
+             						var objList = data[i];
+            						var td = "";
+
+            						custDetails = custDetails +"<input type='hidden' name='listSize' id='lSize' value='"+data.length+"'>" +
+            								"<tr id='"+i+"$$' class='row-employee' onmouseover='setRowId(this,"+objList.employeeID+","+i+")'>" +
+            								"<td colspan='2' style='font-size: 14px; width: 300px;'>"+
+            								objList.fname+" "+objList.lname+
+            								"</td>"+
+            								"</tr>";
+            					}
+            					$('#custTableBody').html(custDetails);
+            				});
+        }
+
+	</script>
+</head>
+<body onload="initialize();">
+<!-- begin shared/header -->
+<div id="ddcolortabsline">&nbsp;</div>
+<div id="cos">
+	<div class="statusquo ok">
+		<div id="hoja">
+			<div id="blanquito">
+				<div id="padding">
+					<div>
+						<div style="float: left;">
+                        <span style="font-size: 1.6em; font-weight: normal; color: #838383; margin: 30px 0px 15px 0px; border-bottom: 1px dotted #333; padding: 0 0 .3em 0;">
+                            <spring:message code="BzComposer.Employee.EmployeeList"/>
+                        </span>
+                    </div>
+							<table>
+								<tr>
+									<td colspan="2">
+										<input type="checkbox" id="chkHired" name="hired" checked>
+                                     	 <spring:message code="BzComposer.searchemployee.hiredemployee" />
+									</td>
+									<td colspan="2">
+									    &nbsp;
+									    <input type="checkbox" id="chkTerminated" name="terminated" value="Bike">
+                                     	<spring:message code="BzComposer.searchemployee.terminatedemployee" />
+                                    </td>
+									<td colspan="2">&nbsp;</td>
+								</tr>
+							</table>
+							<table>
+								<tr>
+									<td>
+										<spring:message code="BzComposer.customer.sortby" />
+									</td>
+									<td>
+										<select id="sortBy">
+											<option value="1"><spring:message code="BzComposer.global.firstname"/></option>
+											<option value="2"><spring:message code="BzComposer.global.lastname"/></option>
+										</select>
+									</td>
+									<td colspan="4">&nbsp;</td>
+								</tr>
+							</table>
+							<table>
+								<tr>
+									<td>
+										<spring:message code="BzComposer.searchbuttontext" />
+									</td>
+									<td>
+										<input type="text" id="myInput" class="search-box">
+									</td>
+									<td colspan="4">&nbsp;</td>
+								</tr>
+							</table>
+							<br>
+						</div>
+						<div style="float: right;">
+							<table>
+								<tr align="right">
+									<td colspan="6" style="font-size: 14px;">
+										<input type="button" name="editAction" value='<spring:message code="BzComposer.global.add" />'
+											   title='<spring:message code="BzComposer.vendorlist.edittooltip" />' class="formButton" onclick="showAddEmployee();">
+										<input type="button" name="editAction" value='<spring:message code="BzComposer.global.edit" />'
+											   title='<spring:message code="BzComposer.vendorlist.edittooltip" />' class="formButton" onclick="showEditEmployee();">
+										<input type="button" name="deleteAction" value='<spring:message code="BzComposer.global.delete" />'
+											   title='<spring:message code="BzComposer.vendorlist.deletetooltip" />' class="formButton" onclick="DeleteEmployee();">
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+					<!-- dialog space -->
+					<!-- Dialog used in vendor list page -->
+					<div id="showSelectVendorDialog" style="display:none;">
+						<p><spring:message code="BzComposer.vendorlist.selectvendordialog"/></p>
+					</div>
+					<div id="emptyemployeeidDialog" style="display:none;">
+						<p><spring:message code="BzComposer.Employee.emptyEmployeeDialog"/></p>
+					</div>
+
+					<div id="deleteVendorDialog" style="display:none;">
+						<p><spring:message code="BzComposer.vendorlist.selectvendortodelete"/></p>
+					</div>
+					<div id="deleteRowDialog" style="display:none;">
+						<p><spring:message code="BzComposer.employee.deleteselectedemployee"/></p>
+					</div>
+					<div>
+						<hidden path="clientVendorID" Id="clientVendorID" />
+						<hidden path="selectedRowID" />
+						<input type="hidden" id="employeeId" value="" />
+						<input type="hidden" name="venrId" id="venrId" value="" />
+						<input type="hidden" name="cvId" id="cvId" value=""/>
+						<input type="hidden" name="tabid" id="tabid" value="" />
+						<input type="hidden" name="SelectedRID" id="setRID" value="">
+						<input type="hidden" name="bst" id="bsst" value="0" />
+						<hidden path="state" value="0" />
+						<hidden path="bsstate" value="0" />
+						<hidden path="shstate" value="0" />
+					</div>
+					<!-- end Contents -->
+					<input type="hidden" name="actionValidate" value="vendor.jsp">
+					<div style="margin-top: 10px; margin-bottom: 10px;">
+						<span style="font-size: 14px;">
+							<spring:message code="BzComposer.global.search"/>
+						</span>
+						<input type="text" id="myInput" class="search-box" style="width: 200px; margin-left: 5px;" />
+					</div>
+					<div class="action-buttons">
+						<button type="button" class="btn-primary" onclick="showAddEmployee()"><spring:message code="BzComposer.global.add" /></button>
+						<button type="button" class="btn-primary" onclick="showEditEmployee()"><spring:message code="BzComposer.global.edit" /></button>
+						<button type="button" class="btn-danger" onclick="DeleteEmployee()"><spring:message code="BzComposer.global.delete" /></button>
+					</div>
+
+					<table style="width: 100%;" class="customer-table">
+						<tr>
+							<td style="font-size: 14px;">
+								<table style="width: 100%;">
+									<tr>
+										<td style="padding: 0; margin: 0; vertical-align:top">
+											<table class="tabla-listados customer-table" cellspacing="0" style="border: 0;padding: 0; margin: 0;">
+												<thead>
+												<tr>
+													<th style="font-size: 14px;">
+														<spring:message code="BzComposer.Employee.ID"/>
+													</th>
+													<th style="font-size: 14px;">
+														<spring:message code="BzComposer.Employee.Name"/>
+													</th>
+													<th style="font-size: 14px;">
+														<spring:message code="BzComposer.Employee.Type"/>
+													</th>
+													<th style="font-size: 14px;">
+														<spring:message code="BzComposer.Employee.JobTitle"/>
+													</th>
+													<th style="font-size: 14px;">
+														<spring:message code="BzComposer.Employee.DOA"/>
+													</th>
+													<th style="font-size: 14px;">
+														<spring:message code="BzComposer.Employee.Terminated"/>
+													</th>
+												</tr>
+												</thead>
+												<tbody id="custTableBody">
+							<c:if test="${not empty empList1}">
+													<c:forEach var="employee" items="${empList1}" varStatus="status">
+														<tr id="${employee.employeeID}$$" class="row-employee"
+															onclick="setRowId(this,'${employee.employeeID}','${employee.employeeID}')">
+															<td style="font-size: 14px;">${employee.employeeID}</td>
+															<td style="font-size: 14px;">${employee.fname} ${employee.lname}</td>
+															<td style="font-size: 14px;">${employee.emptype}</td>
+															<td style="font-size: 14px;">${employee.jtitle}</td>
+															<td style="font-size: 14px;">${employee.doa}</td>
+															<td style="font-size: 14px;">${employee.terminated}</td>
+														</tr>
+													</c:forEach>
+												</c:if>
+												</tbody>
+											</table>
+										</td>
+
+					<td style="font-size:14px; margin: 0; padding: 0;vertical-align: 0;">
+										<c:if test="${not empty empList1}"></c:if>
+										<div id="table-negotiations" >
+												<table cellspacing="0" class="tabla-listados" style="margin-top: 0; margin-left: 20px;">
+													<thead>
+													<tr>
+														<th colspan="10" style="font-size: 14px;">
+															<spring:message code="BzComposer.Employee.GeneralInformation"/>
+														</th>
+													</tr>
+													</thead>
+													<tbody>
+													<tr>
+                                                        <td style="font-size:14px;">
+															<spring:message code="BzComposer.Employee.Title" />:
+														</td>
+														<td style="font-size:14px;">
+															<select id="employeeTitle" disabled="true" style="width:125px;">
+																<c:forEach items="${titleList}" var="obj">
+																	<option value="${obj.value}">${obj.label}</option>
+																</c:forEach>
+															</select>
+														</td>
+														<td style="font-size:14px;">
+															<spring:message code="BzComposer.Employee.FirstName" />
+															<!-- <span class="inputHighlighted">*</span> --> :
+														</td>
+														<td id="employeeFName" style="font-size:14px;">
+ 														</td>
+														<td style="font-size:14px;">
+															<spring:message code="BzComposer.Employee.MiddleName" />
+															<!-- <span class="inputHighlighted">*</span> --> :
+														</td>
+														<td id="employeeMName" style="font-size:14px;">
+ 														</td>
+														<td colspan="4">&nbsp;</td>
+													</tr>
+
+													<tr>
+                                                        <td style="font-size:14px;">
+															<spring:message code="BzComposer.Employee.LastName" />
+															<!-- <span class="inputHighlighted">*</span> --> :
+														</td>
+														<td id="employeeLName" style="font-size:14px;">
+ 														</td>
+                                                        <td  style="font-size:14px;">
+															<spring:message code="BzComposer.Employee.SSN" />
+														</td>
+														<td id="employeeSSN" style="font-size:14px;">
+															${empList1[0].ssn}
+ 														</td>
+                                                        <td style="font-size:14px;">
+															<spring:message code="BzComposer.Employee.DOB" />:
+														</td>
+														<td id="employeeDOB" style="font-size:14px;">
+  														</td>
+  														<td colspan="4">&nbsp;</td>
+													</tr>
+
+													<tr>
+                                                        <td   style="font-size:1em;">
+                                                            <spring:message code="BzComposer.newemployee.jobtitle" />
+                                                        </td>
+													    <td>
+                                                            <select id="employeeJobTitle" style="font-size:1em;" disabled>
+                                                                <option value=""><spring:message code="BzComposer.ComboBox.Select" /></option>
+                                                                <c:forEach items="${jtitleList}" var="obj">
+                                                                    <option value="${obj.value}">${obj.label}</option>
+                                                                </c:forEach>
+                                                            </select>
+													    </td>
+													    <td colspan="8">&nbsp;</td>
+
+													</tr>
+
+													<tr>
+                                                        <td style="font-size:14px;">
+															<spring:message code="BzComposer.Employee.Address1" />
+															<span class="inputHighlighted">*</span>
+														</td>
+														<td colspan="5" id="employeeAddress1" style="font-size:14px;">
+															<%-- <text style="width:100%;" path="address1" name="vendorDetails1" readonly="true" /> --%>
+															${empList1[0].address1}
+
+														</td>
+
+														<td colspan="4">&nbsp;</td>
+													</tr>
+													<tr>
+                                                        <td style="font-size:14px;">
+															<spring:message code="BzComposer.Employee.Address2" />
+															<span class="inputHighlighted">:</span>
+														</td>
+														<td colspan="5" id="employeeAddress2" style="font-size:14px;">
+															<%-- <text style="width:100%;" path="address2" name="vendorDetails1" readonly="true" /> --%>
+															${empList1[0].address2}
+ 														</td>
+
+														<td colspan="4">&nbsp;</td>
+													</tr>
+
+													<tr>
+                                                        <td style="font-size:14px;">
+															<spring:message code="BzComposer.Employee.Zip" />
+															<!-- <span class="inputHighlighted">*</span> --> :
+														</td>
+														<td id="employeeZip" style="font-size:14px;">
+															${empList1[0].zip}
+ 														</td>
+                                                        <td  style="font-size:14px;">
+															<spring:message code="BzComposer.Employee.City" />
+ 														</td>
+														<td id="employeeCity" style="width:10%;font-size:14px;">
+															${empList1[0].city}
+ 														</td>
+                                                        <td id="t_state" style="font-size:14px;">
+															<spring:message code="BzComposer.Employee.State" />
+														</td>
+														<td id="t_statedata" style="font-size:14px;"></td>
+                                                        <td style="font-size:14px;">
+															<spring:message code="BzComposer.Employee.Province" />
+														</td>
+														<td id="employeeProvince" style="width: 10%;font-size:14px;">
+															${vendorDetails1.province}
+ 														</td>
+														<td colspan="2">&nbsp;</td>
+													</tr>
+                                                	<tr>
+														<td id="t_country" style="font-size:14px;">
+															<spring:message code="BzComposer.Employee.Country" />
+														</td>
+														<td style="font-size:14px;">
+															<select id="employeeCountry" disabled="true">
+																<option value="0">
+																	<spring:message code="BzComposer.ComboBox.Select" />
+																</option>
+																<c:forEach items="${cList}" var="obj">
+																	<option value="${obj.value}">${obj.label}</option>
+																</c:forEach>
+															</select>
+														</td>
+                                                        <td style="font-size:14px;">
+															<spring:message code="BzComposer.Employee.Phone" />
+														</td>
+														<td id="employeePhone" style="width: 10%;font-size:14px;">
+  														</td>
+                                                        <td colspan="2" style="font-size:14px;">
+															<input type="checkbox" name="sameAsMobileNumber" disabled="disabled"/>
+                                                            <spring:message code="BzComposer.global.sameasmobileno"/>
+                                                        </td>
+														 <td style="font-size:14px;">
+															<spring:message code="BzComposer.Employee.Mobile" />
+														</td>
+														<td id="employeeMobile" style="width: 10%;font-size:14px;">
+  														</td>
+														<td colspan="1">&nbsp;</td>
+													</tr>
+													<script>
+														<c:if test="${not empty state_gen}">
+														var contry=document.VendorForm.country.value;
+														refreshItemsNow33(contry,'${state_gen}');
+														</c:if>
+													</script>
+													 <tr>
+
+														<td style="font-size:14px;">
+															<spring:message code="BzComposer.Employee.Email" />
+														</td>
+														<td id="employeeEmail" style="font-size:14px;">
+															${empList1[0].email}
+ 														</td>
+														<td style="font-size:14px;">
+															<spring:message code="BzComposer.Employee.EmpType" />
+														</td>
+														<td style="font-size:14px;">
+															<select id="employeeType" disabled="true">
+																<option value="0">
+																	<spring:message code="BzComposer.ComboBox.Select" />
+																</option>
+																<c:forEach items="${emptypeList}" var="obj">
+																	<option value="${obj.value}">${obj.label}</option>
+																</c:forEach>
+															</select>
+														</td>
+														<td colspan="6">&nbsp;</td>
+{{ ... }}
+													<tr>
+                                                        <td style="font-size:14px;">
+															<spring:message code="BzComposer.Employee.DOA" />:
+														</td>
+														<td id="employeeDOA" style="font-size:14px;">
+  														</td>
+  														<td style="font-size:14px;">
+															<spring:message code="BzComposer.Employee.Terminated" />
+
+															<%-- <bean:message key="BzComposer.vendorlist.isalsoclient" /> --%>
+														</td>
+                                                        <td  style="font-size: 14px;">
+															<input id="ckhEmployeeTerminated" type="checkbox" disabled="disabled">
+
+ 														</td>
+														<td style="font-size:14px;">
+															<spring:message code="BzComposer.Employee.TerminatedDate" />
+														</td>
+														<td id="employeeTerminated" style="font-size: 14px;">
+															${empList1[0].terminated}
+ 														</td>
+														<td colspan="4">&nbsp;</td>
+													</tr>
+													<tr>
+                                                        <td style="font-size:14px;">
+															<spring:message code="BzComposer.Employee.Memo" />:
+														</td>
+														<td  colspan="5" id="employeeMemo" style="font-size:14px;">
+  														</td>
+                                                        <td colspan="4">&nbsp;</td>
+													</tr>
+													</tbody>
+												</table>
+												<table cellspacing="0" class="tabla-listados" style="margin-top: 0; margin-left: 20px;">
+													<thead>
+													<tr>
+														<th colspan="10" style="font-size: 14px;">
+															<spring:message code="BzComposer.editemployee.payrollinfo"/>
+														</th>
+													</tr>
+													</thead>
+													<tbody>
+													<tr>
+														<td id="t_filing" style="font-size:1em;">
+															<spring:message code="BzComposer.editemployee.filingstatus" />
+															<span class="inputHighlighted"><spring:message code="BzComposer.CompulsoryField.Validation" /></span>
+														</td>
+														<td id="t_filling">
+															<select id="employeeFilingStatus" name="filingStatus"  style="font-size:1em;" disabled="disabled">
+																<option value=""><spring:message code="BzComposer.ComboBox.Select" /></option>
+																<c:forEach items="${filingList}" var="obj">
+																	<option value="${obj.value}">${obj.label}</option>
+																</c:forEach>
+															</select>
+														</td>
+														<td   style="font-size:1em;">
+															<spring:message code="BzComposer.editemployee.allowance" />
+															<span class="inputHighlighted"><spring:message code="BzComposer.CompulsoryField.Validation" /></span>
+														</td>
+														<td id="employeeAllowance" style="font-size:1em;">
+															${empList1[0].allowance}
+
+														</td>
+														<td id="t_stateworked" align="right" style="font-size:1em;">
+															<spring:message code="BzComposer.editemployee.stateworked" />
+															<span class="inputHighlighted"><spring:message code="BzComposer.CompulsoryField.Validation" /></span>
+														</td>
+														<td id="t_stateworked" style="font-size:1em;">
+															<select id="employeeStateWorked" style="font-size:1em;" disabled="disabled">
+																<option value=""><spring:message code="BzComposer.ComboBox.Select" /></option>
+																<c:forEach items="${statewList}" var="obj">
+																	<option value="${obj.value}">${obj.label}</option>
+																</c:forEach>
+															</select>
+														</td>
+														<td colspan="2">&nbsp;</td>
+													</tr>
+													<tr>
+														<td id="t_payrollmethod" style="font-size:1.4em;" colspan="8">
+															<b><spring:message code="BzComposer.editemployee.payrollmethod" /></b>
+															<span class="inputHighlighted"></span>
+														</td>
+													</tr>
+													<tr>
+														<td id="t_period" style="font-size:1em;">
+														</td>
+														<td id="t_period" style="font-size:1em;">
+															<input type="radio" name="payMethod" path="payMethod" value="2"/>
+															&nbsp;<spring:message code="BzComposer.editemployee.hourly" />
+															&nbsp;&nbsp;&nbsp;&nbsp;
+															<input type="radio" name="payMethod" path="payMethod" value="3" />
+															&nbsp;<spring:message code="BzComposer.editemployee.daily" />
+															&nbsp;&nbsp;&nbsp;&nbsp;
+															<input type="radio" name="payMethod" path="payMethod" value="1" />
+															&nbsp;<spring:message code="BzComposer.editemployee.salary" />
+															&nbsp;&nbsp;&nbsp;&nbsp;
+														</td>
+														<td id="t_period" style="font-size:1em;"></td>
+														<td colspan="5">&nbsp;</td>
+													</tr>
+													<tr>
+														<td id="t_amount" style="font-size:1em;">
+															<spring:message code="BzComposer.editemployee.amount" />
+															<span class="inputHighlighted"><spring:message code="BzComposer.CompulsoryField.Validation" /></span>
+														</td>
+														<td id="employeeAmount">
+															${empList1[0].amount}
+ 														</td>
+														<td id="t_payperiod" style="font-size:1em;">
+															<!-- <spring:message code="BzComposer.editemployee.payperiod" />
+															<span class="inputHighlighted"><spring:message code="BzComposer.CompulsoryField.Validation" /></span>
+														    -->
+														</td>
+														<td id="t_lname" width="16%">
+															<!-- <select   id="employeePayPeriod" Class="ctrl" style="font-size:1em;" disabled="disabled">
+																<option value=""><spring:message code="BzComposer.ComboBox.Select" /></option>
+																<c:forEach items="${periodList}" var="obj">
+																	<option value="${obj.value}">${obj.label}</option>
+																</c:forEach>
+															</select> -->
+														</td>
+														<td width="20%" id="t_lname" align="right">
+															&nbsp;<span class="inputHighlighted"></span>
+														</td>
+														<td width="20%" id="t_lname" align="right">
+															&nbsp;<span class="inputHighlighted"></span>
+														</td>
+														<td colspan="2">&nbsp;</td>
+													</tr>
+
+													</tbody>
+												</table>
+											</div>
+											<%-- </logic:present> --%>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<%@ include file="/WEB-INF/jsp/include/footer.jsp"%>
+</body>
+</html>
+<!-- dialog box that used in this page -->

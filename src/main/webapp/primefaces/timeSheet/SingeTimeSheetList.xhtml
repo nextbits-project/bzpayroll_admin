@@ -1,0 +1,312 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui" xmlns:jsp="http://java.sun.com/JSP/Page"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+    <h:outputStylesheet>
+        /* Custom CSS to control the height and overflow of the dialog */
+        .ui-dialog-content {
+            max-height: 90em; /* Adjust the height as needed */
+            overflow-y: auto; /* Adds vertical scrollbar when content exceeds height */
+        }
+
+        .ui-panelgrid.showcase-text-align-center .ui-grid-responsive .ui-panelgrid-cell {
+            text-align: center;
+        }
+
+        .customPanelGrid .ui-panelgrid-content {
+            align-items: center;
+        }
+
+        .ui-filter-column .ui-column-customfilter .custom-filter {
+            width: 100%;
+            box-sizing: border-box;
+        }
+    </h:outputStylesheet>
+</h:head>
+<h:body>
+    <!--        <f:event type="preRenderView" listener="#{timeSheetCrudView.init()}"/>-->
+    <div class="card crud-demo">
+        <h:form id="form">
+            <p:growl id="messages" showDetail="true"/>
+            <p:toolbar>
+                <p:toolbarGroup>
+                    <p:commandButton value="New" icon="pi pi-plus" actionListener="#{timeSheetCrudView.openNew}"
+                                     update=":dialogs:manage-timesheet-content"
+                                     oncomplete="PF('manageTimeSheetDialog').show()"
+                                     styleClass="ui-button-success" style="margin-right: .5rem">
+                        <p:resetInput target=":dialogs:manage-timesheet-content"/>
+                    </p:commandButton>
+                    <p:commandButton id="delete-timesheets-button" value="#{timeSheetCrudView.deleteButtonMessage}"
+                                     icon="pi pi-trash" actionListener="#{timeSheetCrudView.deleteSelectedTimeSheets}"
+                                     styleClass="ui-button-danger"
+                                     disabled="#{!timeSheetCrudView.hasSelectedTimeSheets()}"
+                                     update="@this">
+                        <p:confirm header="Confirmation" message="Delete the selected timesheets?"
+                                   icon="pi pi-exclamation-triangle"/>
+                    </p:commandButton>
+                </p:toolbarGroup>
+                <p:toolbarGroup align="right">
+                    <p:commandButton style="margin-right: .5rem;" value="Export Page" icon="pi pi-upload"
+                                     styleClass="ui-button-info" ajax="false">
+                        <p:dataExporter type="csv" target="dt-timesheets" fileName="Single TimeSheets" pageOnly="true"/>
+                    </p:commandButton>
+                    <p:commandButton value="Export All" icon="pi pi-upload" styleClass="ui-button-help" ajax="false">
+                        <p:dataExporter type="csv" target="dt-timesheets" fileName="Single TimeSheets"/>
+                    </p:commandButton>
+                </p:toolbarGroup>
+            </p:toolbar>
+
+            <p:dataTable id="dt-timesheets" widgetVar="dtTimesheets" var="myTimesheet"
+                         value="#{timeSheetCrudView.singleTimeSheetList}"
+                         filteredValue="#{timeSheetCrudView.filteredTimeSheet}"
+                         globalFilterFunction="#{timeSheetCrudView.globalFilterTimeSheet}"
+                         reflow="true" styleClass="timesheets-table" selection="#{timeSheetCrudView.selectedTimeSheets}"
+                         rowKey="#{myTimesheet.id}" paginator="true" rows="10" selectionRowMode="add"
+                         paginatorPosition="bottom">
+
+                <f:facet name="header">
+                    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                        <!-- Bold text on the left -->
+                        <span style="font-weight: bold">Single TimeSheets</span>
+                        <!-- Search input on the right -->
+                        <div class="ui-inputgroup">
+                            <p:commandButton icon="pi pi-search" styleClass="ui-button-warning"/>
+                            <p:inputText id="globalFilter" onkeyup="PF('dtTimesheets').filter()" style="width:300px"
+                                         placeholder="Search..."/>
+                        </div>
+                    </div>
+                </f:facet>
+
+
+                <p:ajax event="rowSelect" update=":form:delete-timesheets-button"/>
+                <p:ajax event="rowUnselect" update=":form:delete-timesheets-button"/>
+                <p:ajax event="rowSelectCheckbox" update=":form:delete-timesheets-button"/>
+                <p:ajax event="rowUnselectCheckbox" update=":form:delete-timesheets-button"/>
+                <p:ajax event="toggleSelect" update=":form:delete-timesheets-button"/>
+
+                <p:column selectionMode="multiple" exportable="false"></p:column>
+
+                <p:column headerText="Id" sortBy="#{myTimesheet.id}">
+                    <h:outputText value="#{myTimesheet.id}"/>
+                </p:column>
+                <p:column headerText="Description" sortBy="#{myTimesheet.description}">
+                    <h:outputText value="#{myTimesheet.description}"/>
+                </p:column>
+
+                <p:column headerText="Employee"
+                          sortBy="#{myTimesheet.employee.firstName} #{myTimesheet.employee.lastName}">
+                    <h:outputText value="#{timeSheetCrudView.getEmployeeValue(myTimesheet)}"/>
+                </p:column>
+                <p:column headerText="Vendor"
+                          sortBy="#{myTimesheet.vendor.firstName} #{myTimesheet.vendor.lastName}">
+                    <h:outputText
+                            value="#{timeSheetCrudView.getVendorValue(myTimesheet)}"/>
+                </p:column>
+
+                <p:column field="weekEndDate" headerText="Week End Time" filterable="false"/>
+                <p:column field="weekStartDate" headerText="Week Start Time" filterable="false"/>
+
+                <p:column headerText="Billable" sortBy="#{myTimesheet.billable}">
+                    <h:panelGroup>
+                        <!-- Checkmark icon for taxable -->
+                        <h:panelGroup rendered="#{myTimesheet.billable}">
+                            <i class="pi pi-check" style="font-size: 2rem; color: green"></i>
+                        </h:panelGroup>
+                        <!-- Times icon for non-taxable -->
+                        <h:panelGroup rendered="#{!myTimesheet.billable}">
+                            <i class="pi pi-times" style="font-size: 2rem; color: red"></i>
+                        </h:panelGroup>
+                    </h:panelGroup>
+                </p:column>
+
+                <p:column headerText="Taxable" sortBy="#{myTimesheet.taxable}">
+                    <h:panelGroup>
+                        <!-- Checkmark icon for taxable -->
+                        <h:panelGroup rendered="#{myTimesheet.taxable}">
+                            <i class="pi pi-check" style="font-size: 2rem; color: green"></i>
+                        </h:panelGroup>
+                        <!-- Times icon for non-taxable -->
+                        <h:panelGroup rendered="#{!myTimesheet.taxable}">
+                            <i class="pi pi-times" style="font-size: 2rem; color: red"></i>
+                        </h:panelGroup>
+                    </h:panelGroup>
+                </p:column>
+                <p:column headerText="Customer" sortBy="#{myTimesheet.customer.name}">
+                    <h:outputText value="#{timeSheetCrudView.getCustomerValue(myTimesheet)}"/>
+                </p:column>
+                <p:column headerText="Rate" sortBy="#{myTimesheet.rate}">
+                    <h:outputText value="#{timeSheetCrudView.getRateValue(myTimesheet)}"/>
+                </p:column>
+                <p:column headerText="Time" sortBy="#{myTimesheet.time}">
+                    <h:outputText value="#{myTimesheet.time}"/>
+                </p:column>
+                <p:column exportable="false" ariaHeaderText="Actions">
+                    <p:commandButton style="margin-right: .1rem" icon="pi pi-pencil"
+                                     update=":dialogs:manage-timesheet-content"
+                                     actionListener="#{timeSheetCrudView.openEditDialog(myTimesheet)}"
+                                     oncomplete="PF('manageTimeSheetDialog').show()"
+                                     styleClass="edit-button rounded-button ui-button-success" process="@this">
+                        <f:setPropertyActionListener value="#{myTimesheet}"
+                                                     target="#{timeSheetCrudView.selectedTimeSheet}"/>
+                        <p:resetInput target=":dialogs:manage-timesheet-content"/>
+                    </p:commandButton>
+                    <p:commandButton class="ui-button-danger rounded-button" icon="pi pi-trash"
+                                     process="@this"
+                                     oncomplete="PF('deleteTimeSheetDialog').show()">
+                        <f:setPropertyActionListener value="#{myTimesheet}"
+                                                     target="#{timeSheetCrudView.selectedTimeSheet}"/>
+                    </p:commandButton>
+                </p:column>
+
+            </p:dataTable>
+        </h:form>
+
+        <h:form id="dialogs">
+            <p:growl id="growl" showDetail="true"/>
+            <p:dialog header="Add New Single Timesheet" showEffect="fade" modal="true" widgetVar="manageTimeSheetDialog"
+                      responsive="true" width="70rem" height="25rem">
+                <p:outputPanel id="manage-timesheet-content" class="ui-fluid">
+                    <p:outputPanel id="selectedTimeSheet" rendered="#{not empty timeSheetCrudView.selectedTimeSheet}">
+                        <p:panelGrid columns="4" layout="grid" styleClass="showcase-text-align-center">
+                            <p:outputLabel for="billable" value="Billable"/>
+                            <p:toggleSwitch id="billable" onIcon="pi pi-check" offIcon="pi pi-times"
+                                            value="#{timeSheetCrudView.selectedTimeSheet.billable}">
+                                <p:ajax listener="#{timeSheetCrudView.getChangeBillable(timeSheetCrudView.selectedTimeSheet)}"
+                                        update="manage-timesheet-content" process="@all"/>
+                            </p:toggleSwitch>
+                            <p:outputLabel id="taxableLabel" for="taxable" value="Taxable"
+                                           rendered="#{timeSheetCrudView.selectedTimeSheet.billable}"/>
+                            <p:toggleSwitch id="taxable" onIcon="pi pi-check" offIcon="pi pi-times"
+                                            rendered="#{timeSheetCrudView.selectedTimeSheet.billable}"
+                                            value="#{timeSheetCrudView.selectedTimeSheet.taxable}">
+                            </p:toggleSwitch>
+                        </p:panelGrid>
+
+                        <div class="field spaced" style="margin-bottom: 1rem">
+                            <p:inputTextarea placeholder="Description" id="description"
+                                             value="#{timeSheetCrudView.selectedTimeSheet.description}"
+                                             required="false"/>
+                        </div>
+
+                        <p:panelGrid columns="2" id="gridEmployeeVendorCheckBox" layout="grid"
+                                     styleClass="showcase-text-align-center">
+
+                            <p:selectBooleanCheckbox value="#{timeSheetCrudView.isEmployee}" itemLabel="Employee">
+                                <p:ajax update="selectEmployee selectVendor gridEmployeeVendorCheckBox formEmployeeVendor"
+                                        listener="#{timeSheetCrudView.getEmployeeDropdown()}"/>
+                            </p:selectBooleanCheckbox>
+
+                            <p:selectBooleanCheckbox value="#{timeSheetCrudView.isVendor}" itemLabel="Vendor">
+                                <p:ajax update="selectEmployee selectVendor gridEmployeeVendorCheckBox formEmployeeVendor"
+                                        listener="#{timeSheetCrudView.getVendorDropdown()}"/>
+                            </p:selectBooleanCheckbox>
+
+                        </p:panelGrid>
+
+                        <p:panelGrid id="formEmployeeVendor" columns="1" layout="grid"
+                                     styleClass="showcase-text-align-center">
+                            <p:outputPanel id="selectEmployee" rendered="#{timeSheetCrudView.isEmployee}">
+                                <p:selectOneMenu id="employee" required="false" requiredMessage="false"
+                                                 value="#{timeSheetCrudView.selectedTimeSheet.employee.employeeIndexId}"
+                                                 filter="true" filterMatchMode="startsWith"
+                                                 filterNormalize="true"
+                                >
+                                    <f:selectItems value="#{timeSheetCrudView.employees}" var="employee"
+                                                   itemLabel="#{employee.firstName} #{employee.lastName}"
+                                                   itemValue="#{employee.employeeIndexId}"/>
+
+                                    <f:selectItem itemLabel="Select Employee" itemValue="#{null}"
+                                                  noSelectionOption="true"/>
+                                </p:selectOneMenu>
+                            </p:outputPanel>
+
+                            <p:outputPanel id="selectVendor" rendered="#{timeSheetCrudView.isVendor}">
+                                <p:selectOneMenu id="vendor"
+                                                 value="#{timeSheetCrudView.selectedTimeSheet.vendor.clientVendorId}"
+                                                 filter="true" filterMatchMode="startsWith"
+                                                 filterNormalize="true"
+                                >
+                                    <f:selectItem itemLabel="Select Vendor" itemValue="#{null}"
+                                                  noSelectionOption="true"/>
+                                    <f:selectItems value="#{timeSheetCrudView.vendors}" var="vendor"
+                                                   itemLabel="#{vendor.firstName} #{vendor.lastName}"
+                                                   itemValue="#{vendor.clientVendorId}"/>
+                                </p:selectOneMenu>
+                            </p:outputPanel>
+
+                        </p:panelGrid>
+
+                        <p:panelGrid columns="2" layout="grid" styleClass="showcase-text-align-center">
+                            <p:datePicker placeholder="Select a date" id="weekStartDate"
+                                          value="#{timeSheetCrudView.selectedTimeSheet.weekStartDate}"
+                                          monthNavigator="true" yearNavigator="true" showWeek="true"
+                                          showButtonBar="true"/>
+                            <p:datePicker id="timeonly" value="#{timeSheetCrudView.selectedTimeSheet.time}"
+                                          placeholder="Time" timeOnly="true" pattern="HH:mm"/>
+                        </p:panelGrid>
+
+
+                        <p:panelGrid id="gridCustomerRate"
+                                     rendered="#{timeSheetCrudView.selectedTimeSheet.billable}"
+                                     columns="2" layout="grid" styleClass="showcase-text-align-center">
+
+                            <p:outputPanel id="rate" rendered="#{timeSheetCrudView.selectedTimeSheet.billable}">
+                                <p:inputNumber value="#{timeSheetCrudView.selectedTimeSheet.rate}"
+                                               symbol=" USD" placeholder="Rate" mode="currency"
+                                               symbolPosition="s" decimalSeparator="," thousandSeparator="."/>
+                                <p:outputLabel for="rate" styleClass="text-sm-start text-danger" value="per hour"/>
+                            </p:outputPanel>
+
+                            <p:selectOneMenu id="customer"
+                                             value="#{timeSheetCrudView.selectedTimeSheet.customer.clientVendorId}"
+                                             filter="true" filterMatchMode="startsWith"
+                                             filterNormalize="true"
+                            >
+                                <f:selectItem itemLabel="Select Customer" itemValue="#{null}"
+                                              noSelectionOption="true"/>
+                                <f:selectItems value="#{timeSheetCrudView.customers}" var="customer"
+                                               itemLabel="#{customer.firstName} #{customer.lastName}"
+                                               itemValue="#{customer.clientVendorId}"/>
+                            </p:selectOneMenu>
+
+                        </p:panelGrid>
+
+
+                    </p:outputPanel>
+
+                </p:outputPanel>
+
+                <f:facet name="footer">
+                    <p:commandButton value="Save" icon="pi pi-check" actionListener="#{timeSheetCrudView.saveTimeSheet}"
+                                     update="growl"
+                                     process="manage-timesheet-content growl @this"/>
+                    <p:commandButton value="Cancel" icon="pi pi-times" onclick="PF('manageTimeSheetDialog').hide()"
+                                     class="ui-button-secondary" type="button"/>
+                </f:facet>
+            </p:dialog>
+
+            <p:confirmDialog widgetVar="deleteTimeSheetDialog" showEffect="fade" width="300"
+                             message="Delete the timesheet?" header="Confirm" severity="warn">
+                <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{timeSheetCrudView.deleteTimeSheet}"
+                                 process="@this" update=":form:delete-timesheets-button"
+                                 oncomplete="PF('deleteTimeSheetDialog').hide()"/>
+                <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                                 onclick="PF('deleteTimeSheetDialog').hide()"/>
+            </p:confirmDialog>
+
+            <p:confirmDialog global="true" showEffect="fade" width="300">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
+                                 icon="pi pi-times"/>
+            </p:confirmDialog>
+
+        </h:form>
+    </div>
+
+</h:body>
+</html>

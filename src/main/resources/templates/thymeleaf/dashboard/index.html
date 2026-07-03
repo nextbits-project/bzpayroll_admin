@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BZPayroll</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .section-title {
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .partners img,
+        .products img {
+            max-height: 60px;
+            margin: 0 15px;
+        }
+
+        footer {
+            background: #000;
+            color: #fff;
+            padding: 40px 0;
+        }
+
+        .testimonial-box {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .card-title {
+            font-weight: bold;
+        }
+
+        .navbar-brand small {
+            display: block;
+            font-size: 0.65rem;
+            color: #666;
+            margin-top: -4px;
+        }
+
+        .search-box input {
+            border-top-left-radius: 50px;
+            border-bottom-left-radius: 50px;
+        }
+
+        .search-box button {
+            border-top-right-radius: 50px;
+            border-bottom-right-radius: 50px;
+        }
+
+        .top-nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .top-nav-menu a {
+            text-decoration: none;
+            font-weight: 600;
+            color: #000;
+            padding: 0 8px;
+        }
+
+        .top-nav-menu a:hover {
+            color: #3e9aca;
+        }
+
+        .free-trial-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            border: none;
+        }
+
+        .free-trial-btn:hover {
+            background-color: #218838;
+            color: white;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .contact-info a {
+            color: #000;
+            text-decoration: none;
+        }
+
+        .contact-info a:hover {
+            color: #3e9aca;
+        }
+
+        @media (max-width: 991px) {
+            .search-box {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .search-box input,
+            .search-box button {
+                width: 100% !important;
+                border-radius: 50px !important;
+                margin: 4px 0;
+            }
+
+            .top-links {
+                flex-direction: column;
+                align-items: flex-end;
+            }
+
+            .top-nav-menu {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            /* Mobile-specific footer centering */
+            .footer-col {
+                text-align: center;
+            }
+
+            .footer-col .list-unstyled {
+                display: inline-block;
+                text-align: left;
+            }
+
+            .footer-col img {
+                margin: 0 auto;
+            }
+        }
+
+        .bottom-nav a {
+            text-decoration: none;
+            font-weight: 600;
+            color: #000;
+            padding: 0 12px;
+        }
+
+        .bottom-nav a:hover {
+            color: #3e9aca;
+        }
+
+        .dropdown-menu {
+            font-size: 1rem;
+            line-height: 1.4;
+            padding: 0.5rem 1rem;
+            border-radius: 0;
+        }
+
+        .dropdown-item {
+            white-space: normal;
+            padding: 0.5rem 1rem;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .icon {
+            width: 60px;
+            height: 60px;
+            background-color: #005bbb;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: auto;
+        }
+
+        .icon i {
+            color: white;
+            font-size: 24px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header Top: Logo + Top Menu + Search + Contact/Login/Free Trial -->
+    <header>
+        <!-- Top Row: Logo, Search, Free Trial -->
+        <div class="container py-3 d-flex align-items-center justify-content-between border-bottom">
+            <!-- Logo -->
+            <a class="navbar-brand me-0" href="/">
+                <img src="/images/bzpayroll-logo.jpg" alt="BZPayroll Logo" class="img-fluid" style="max-height: 50px;">
+            </a>
+
+            <!-- Search Bar (Desktop) -->
+            <form class="d-none d-lg-flex search-box flex-grow-1 mx-4" role="search" style="max-width: 500px;">
+                <input class="form-control px-3" type="search" placeholder="Search for keyword or items"
+                    aria-label="Search" style="font-size: 0.9rem;">
+                <button class="btn btn-primary px-3" type="submit" style="font-size: 0.9rem;">Search</button>
+            </form>
+
+            <!-- Free Trial (Desktop) -->
+            <div class="d-none d-lg-block">
+                <a href="/register" class="free-trial-btn">Start 30 Days Free Trial</a>
+            </div>
+
+            <!-- Hamburger Button (Mobile) -->
+            <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+
+        <!-- Bottom Row: Navigation Menu & Login -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light py-2">
+            <div class="container">
+                <div class="collapse navbar-collapse" id="navbarContent">
+                    <!-- Menu Items -->
+                    <div class="navbar-nav w-100 justify-content-center align-items-lg-center gap-4">
+                        <a href="/about" class="nav-link text-dark fw-bold">About Us</a>
+                        <a href="/services" class="nav-link text-dark fw-bold">Our Services</a>
+                        <a href="/what-is-bzpayroll" class="nav-link text-dark fw-bold">What is BzPayroll?</a>
+                        <a href="/free_payroll_tax_calculator" class="nav-link text-dark fw-bold">Free Payroll
+                            Calculation</a>
+                        <a href="#contactModal" class="nav-link text-dark fw-bold" data-bs-toggle="modal">Contact Us</a>
+
+                        <!-- Login Logic -->
+                        <span th:if="${session.user == null}">
+                            <a href="/login" class="btn btn-primary btn-sm px-4">Login</a>
+                        </span>
+                        <span th:if="${session.user != null}" class="d-flex align-items-center gap-2">
+                            <span class="nav-link text-dark fw-bold" th:text="${session.user.username}">Username</span>
+                            <a href="/logout" class="nav-link text-danger fw-bold">Logout</a>
+                        </span>
+                    </div>
+
+                    <!-- Mobile Specific: Search & Trial -->
+                    <div class="d-lg-none w-100 mt-3 border-top pt-3">
+                        <form class="search-box w-100 mb-3" role="search">
+                            <input class="form-control px-3" type="search" placeholder="Search..." aria-label="Search">
+                            <button class="btn btn-primary px-3 w-100 mt-2" type="submit">Search</button>
+                        </form>
+                        <a href="/register" class="free-trial-btn d-block text-center w-100">Start 30 Days Free
+                            Trial</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Contact Us Modal -->
+    <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="contactModalLabel">Contact Us</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="contact-info">
+                        <div>
+                            <strong>Phone:</strong><br>
+                            <a href="tel:+12137329638">1(213)-732-9638</a>
+                        </div>
+                        <div>
+                            <strong>Email:</strong><br>
+                            <a href="mailto:nextbits.jason@gmail.com">nextbits.jason@gmail.com</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <div class="container py-5 text-center">
+        <img src="/images/ji3.jpeg" alt="Payroll Image" class="img-fluid rounded" style="max-height: 400px;">
+    </div>
+
+    <!-- Business Types -->
+    <div class="container mb-4">
+        <div class="row text-center">
+            <div class="col-md-3 mb-3">
+                <div class="border p-3">
+                    <div class="icon">
+                        <i class="fa fa-line-chart"></i>
+                    </div>
+                    <div style="padding:10px;" class="section-title">Retailers & Wholesalers</div>
+                    <p>Regular staff management and POS integrated payroll tools.</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="border p-3">
+                    <div class="icon">
+                        <i class="fa fa-rocket"></i>
+                    </div>
+                    <div style="padding:10px;" class="section-title">Corporation</div>
+                    <p>Fully compliant and auditable solutions for corporate environments.</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="border p-3">
+                    <div class="icon">
+                        <i class="fa fa-black-tie"></i>
+                    </div>
+                    <div style="padding:10px;" class="section-title">Service Company</div>
+                    <p>Easy billing and shift-based payroll logic support.</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="border p-3">
+                    <div class="icon">
+                        <i class="fa fa-money"></i>
+                    </div>
+                    <div style="padding:10px;" class="section-title">eCommerce Company</div>
+                    <p>Staff logistics and remote payments simplified with automation.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Partners -->
+    <div class="bg-primary text-white text-center py-5">
+        <div class="container">
+            <h5 class="mb-4">Partners</h5>
+            <div class="row justify-content-center align-items-center g-4">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                    <div class="p-2">
+                        <img src="/images/services-01.jpg" alt="Reseller" class="img-fluid rounded shadow-sm mb-2"
+                            style="max-height: 180px;">
+                        <div class="fw-semibold">Value-Added Resellers</div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                    <div class="p-2">
+                        <img src="/images/services-02.jpg" alt="Solutions" class="img-fluid rounded shadow-sm mb-2"
+                            style="max-height: 180px;">
+                        <div class="fw-semibold">Solution Providers</div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                    <div class="p-2">
+                        <img src="/images/services-03.jpg" alt="Custom" class="img-fluid rounded shadow-sm mb-2"
+                            style="max-height: 180px;">
+                        <div class="fw-semibold">Customization</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Testimonials -->
+    <div class="container py-5">
+        <h4 class="text-center mb-4">Testimonials</h4>
+        <div class="row text-center">
+            <div class="col-md-4">
+                <div class="testimonial-box">
+                    <h6 class="card-title">Ann Gilbert</h6>
+                    <p>"Easy to use and manage. Highly recommended for mid-sized teams."</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="testimonial-box">
+                    <h6 class="card-title">Kevin Cater</h6>
+                    <p>"Streamlined our HR processes. Super reliable and well-supported."</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="testimonial-box">
+                    <h6 class="card-title">Jacob Graham</h6>
+                    <p>"Helped automate most of our payroll tasks. Saves us hours weekly!"</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Products -->
+    <div class="bg-light py-5 text-center">
+        <div class="container">
+            <h5 class="mb-4">Nuestros productos</h5>
+            <div class="row justify-content-center g-4">
+                <div class="col-6 col-sm-4 col-md-3">
+                    <div class="p-2">
+                        <img src="/images/projects-01.jpg" alt="Freeware" class="img-fluid rounded shadow-sm mb-2"
+                            style="max-height: 180px;">
+                        <div class="fw-semibold">BCA Freeware</div>
+                    </div>
+                </div>
+                <div class="col-6 col-sm-4 col-md-3">
+                    <div class="p-2">
+                        <img src="/images/projects-02.jpg" alt="Standard" class="img-fluid rounded shadow-sm mb-2"
+                            style="max-height: 180px;">
+                        <div class="fw-semibold">BCA Standard</div>
+                    </div>
+                </div>
+                <div class="col-6 col-sm-4 col-md-3">
+                    <div class="p-2">
+                        <img src="/images/projects-03.jpg" alt="Professional" class="img-fluid rounded shadow-sm mb-2"
+                            style="max-height: 180px;">
+                        <div class="fw-semibold">BzComposer Professional</div>
+                    </div>
+                </div>
+                <div class="col-6 col-sm-4 col-md-3">
+                    <div class="p-2">
+                        <img src="/images/projects-04.jpg" alt="CRM" class="img-fluid rounded shadow-sm mb-2"
+                            style="max-height: 180px;">
+                        <div class="fw-semibold">BCA CRM</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Partner -->
+    <div class="bg-light py-5 text-center">
+        <div class="container">
+            <h5 class="mb-4">Our Partner</h5>
+            <div class="row justify-content-center g-4">
+                <div class="col-6 col-sm-4 col-md-3">
+                    <div class="bg-white rounded shadow-sm p-3 d-flex align-items-center justify-content-center"
+                        style="height: 130px;">
+                        <img src="/images/JobberStreeet.png" alt="JobberStreet" class="img-fluid"
+                            style="max-height: 100%;">
+                    </div>
+                </div>
+                <div class="col-6 col-sm-4 col-md-3">
+                    <div class="bg-white rounded shadow-sm p-3 d-flex align-items-center justify-content-center"
+                        style="height: 130px;">
+                        <img src="/images/TheSmartster.png" alt="TheSmartster" class="img-fluid"
+                            style="max-height: 100%;">
+                    </div>
+                </div>
+                <div class="col-6 col-sm-4 col-md-3">
+                    <div class="bg-white rounded shadow-sm p-3 d-flex align-items-center justify-content-center"
+                        style="height: 130px;">
+                        <img src="/images/Nextbits.png" alt="Nextbits" class="img-fluid" style="max-height: 100%;">
+                    </div>
+                </div>
+                <div class="col-6 col-sm-4 col-md-3">
+                    <div class="bg-white rounded shadow-sm p-3 d-flex align-items-center justify-content-center"
+                        style="height: 130px;">
+                        <img src="/images/nextbizz.png" alt="Nextbizz" class="img-fluid" style="max-height: 100%;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div th:insert="fragments/footer :: site-footer"></div>
+
+</body>
+
+</html>

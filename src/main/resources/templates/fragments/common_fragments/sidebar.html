@@ -1,0 +1,56 @@
+<!-- fragments/sidebar.html -->
+<div th:fragment="sidebar">
+    <div class="app-sidebar" id="sidebar">
+        <div class="main-sidebar-header">
+            <a th:href="@{/admin_dashboard}" class="header-logo">
+                <img
+                        class="main-logo"
+                        th:src="@{/assets/images/logo/bzcpayrolladmin.png}"
+                        alt="logo"
+                />
+                <img
+                        class="dark-logo"
+                        th:src="@{/assets/images/logo/bzcpayrolladmin.png}"
+                        alt="logo"
+                />
+            </a>
+        </div>
+        <div class="main-sidebar" id="sidebar-scroll">
+            <nav class="main-menu-container nav nav-pills flex-column sub-open">
+                <div class="sidebar-left" id="sidebar-left"></div>
+                <ul class="main-menu">
+                    <li class="sidebar__menu-category">
+                        <span class="category-name">Main</span>
+                    </li>
+                    <li class="slide">
+                        <a th:href="@{/admin_dashboard}" class="sidebar__menu-item">
+                            <div class="side-menu__icon"><i class="icon-house"></i></div>
+                            <span class="sidebar__menu-label">Dashboards</span>
+                        </a>
+                    </li>
+                    <li class="slide">
+                        <a th:href="@{/federal_tax}" class="sidebar__menu-item">
+                            <div class="side-menu__icon"><i class="icon-office"></i></div>
+                            <span class="sidebar__menu-label">Federal Tax</span>
+                        </a>
+                    </li>
+                    <li class="slide">
+                        <a th:href="@{/state_tax}" class="sidebar__menu-item">
+                            <div class="side-menu__icon"><i class="icon-office"></i></div>
+                            <span class="sidebar__menu-label">State Tax</span>
+                        </a>
+                    </li>
+                    <li class="slide">
+                        <a th:href="@{/admin_dashboard}" class="sidebar__menu-item">
+                            <div class="side-menu__icon"><i class="icon-pencil"></i></div>
+                            <span class="sidebar__menu-label">Blogs</span>
+                        </a>
+                    </li>
+
+                </ul>
+                <div class="sidebar-right" id="sidebar-right"></div>
+            </nav>
+        </div>
+    </div>
+    <div class="app__offcanvas-overlay"></div>
+</div>

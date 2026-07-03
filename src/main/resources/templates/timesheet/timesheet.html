@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+                    <head>
+
+                        <meta charset="UTF-8">
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                                <%@include file="../include/headlogo.jsp" %>
+                                    <%@include file="../include/header.jsp" %>
+                                        <%@include file="../include/menu.jsp" %>
+                                            <title>BzPayroll - Timesheet</title>
+
+                                            <%--    Timepicker Script--%>
+                                                <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.css'>
+                                                    <link rel='stylesheet' href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css'>
+                                                        <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.js'></script>
+                                                        <script src="${pageContext.request.contextPath}/scripts/timepiker.js" type="text/javascript"></script>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+/>
+                                                        <style>
+                                                            body {
+                                                            background-color: #f8f9fa;
+                                                            font-family: Arial, sans-serif;
+                                                            }
+                                                            .main-container {
+                                                            padding: 20px;
+                                                            max-width: 1400px;
+                                                            margin: 0 auto;
+                                                            }
+                                                            .panel {
+                                                            background-color: white;
+                                                            border-radius: 8px;
+                                                            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+                                                            margin-bottom: 20px;
+                                                            border: 1px solid #ddd;
+                                                            }
+                                                            .panel-header {
+                                                            padding: 15px 20px;
+                                                            border-bottom: 1px solid #eee;
+                                                            font-size: 18px;
+                                                            font-weight: 500;
+                                                            color: #333;
+                                                            }
+                                                            .panel-body {
+                                                            padding: 20px;
+                                                            }
+                                                            .form-section {
+                                                            margin-bottom: 30px;
+                                                            }
+                                                            .section-title {
+                                                            font-size: 18px;
+                                                            font-weight: 500;
+                                                            margin-bottom: 15px;
+                                                            color: #333;
+                                                            border-bottom: 1px solid #eee;
+                                                            padding-bottom: 10px;
+                                                            }
+                                                            .form-control, .custom-select {
+                                                            border: 1px solid #ced4da;
+                                                            border-radius: 4px;
+                                                            height: calc(2.25rem + 2px);
+                                                            padding: .375rem .75rem;
+                                                            font-size: 14px;
+                                                            }
+                                                            .form-control:focus, .custom-select:focus {
+                                                            border-color: #80bdff;
+                                                            box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+                                                            }
+                                                            label {
+                                                            font-size: 14px;
+                                                            font-weight: 500;
+                                                            color: #444;
+                                                            margin-bottom: 5px;
+                                                            }
+                                                            .btn-info {
+                                                            background-color: #17a2b8;
+                                                            border-color: #17a2b8;
+                                                            }
+                                                            .btn-info:hover {
+                                                            background-color: #138496;
+                                                            border-color: #117a8b;
+                                                            }
+                                                            .salary-section {
+                                                            background-color: #f8f9fa;
+                                                            border-radius: 4px;
+                                                            padding: 15px;
+                                                            margin-bottom: 15px;
+                                                            }
+                                                            .input-group-text {
+                                                            font-size: 14px;
+                                                            background-color: #f8f9fa;
+                                                            border: 1px solid #ced4da;
+                                                            }
+                                                            .employee-list-container {
+                                                            border: 1px solid #ddd;
+                                                            border-radius: 4px;
+                                                            height: 300px;
+                                                            overflow-y: auto;
+                                                            }
+                                                            #employeeTable {
+                                                            width: 100%;
+                                                            }
+                                                            #employeeTable th {
+                                                            background-color: #f8f9fa;
+                                                            padding: 10px;
+                                                            font-size: 14px;
+                                                            font-weight: 500;
+                                                            border-bottom: 1px solid #ddd;
+                                                            }
+                                                            #employeeTable td {
+                                                            padding: 10px;
+                                                            font-size: 14px;
+                                                            border-bottom: 1px solid #eee;
+                                                            }
+                                                            #employeeTable tr:hover {
+                                                            background-color: #f1f1f1;
+                                                            cursor: pointer;
+                                                            }
+                                                            .alert {
+                                                            margin-bottom: 20px;
+                                                            }
+                                                            .form-layout {
+                                                            display: flex;
+                                                            flex-wrap: wrap;
+                                                            }
+                                                            .form-group {
+                                                            margin-bottom: 1rem;
+                                                            }
+                                                            .form-column {
+                                                            flex: 1;
+                                                            min-width: 250px;
+                                                            padding: 0 10px;
+                                                            }
+                                                            .action-buttons {
+                                                            text-align: right;
+                                                            padding: 15px;
+                                                            border-top: 1px solid #eee;
+                                                            }
+                                                            #css1{
+                                                            background-color:#C3C5C7 ;               }
+                                                        </style>
+                                                        <style>
+                                                            .form-layout {
+                                                            width: 100%;
+                                                            margin: 20px auto;
+                                                            font-family: Arial, sans-serif;
+                                                            }
+
+                                                            .form-layout table {
+                                                            width: 100%;
+                                                            border-collapse: collapse;
+                                                            background-color: #f9f9f9;
+                                                            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                                                            border-radius: 8px;
+                                                            overflow: hidden;
+                                                            }
+
+                                                            .form-layout td {
+                                                            padding: 12px 15px;
+                                                            border: 1px solid #ddd;
+                                                            vertical-align: middle;
+                                                            }
+
+                                                            .form-layout input[type="time"],
+                                                            .form-layout input[type="number"],
+                                                            .form-layout input[type="date"],
+                                                            .form-layout select {
+                                                            width: 100%;
+                                                            padding: 6px 10px;
+                                                            border: 1px solid #ccc;
+                                                            border-radius: 4px;
+                                                            font-size: 14px;
+                                                            }
+
+                                                            .form-layout tr:nth-child(even) {
+                                                            background-color: #f0f0f0;
+                                                            }
+
+                                                            .form-layout strong {
+                                                            display: block;
+                                                            font-size: 16px;
+                                                            background-color: #e0e0e0;
+                                                            padding: 8px 12px;
+                                                            border-left: 5px solid #00ACC1;
+                                                            }
+
+                                                            .text-right {
+                                                            text-align: right;
+                                                            padding: 15px;
+                                                            }
+
+                                                            .btn-success {
+                                                            background-color: #4CAF50;
+                                                            color: white;
+                                                            padding: 10px 16px;
+                                                            border: none;
+                                                            border-radius: 4px;
+                                                            font-size: 14px;
+                                                            cursor: pointer;
+                                                            }
+
+                                                            .btn-success:hover {
+                                                            background-color: #45a049;
+                                                            }
+                                                            .panel-header {
+                                                            background: linear-gradient(135deg, #00ACC1, #00ACC1);
+                                                            padding: 16px 24px;
+                                                            border-radius: 8px;
+                                                            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                                                            color: #ffffff;
+                                                            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                                                            font-size: 1.25rem;
+                                                            font-weight: bold;
+                                                            display: flex;
+                                                            align-items: center;
+                                                            justify-content: center;
+                                                            }
+
+                                                            table.tabla-editables tbody tr:hover td {
+                                                            background: #C3C5C7;
+                                                            color: black;
+                                                            }
+                                                        </style>
+                                                        <script>
+                                                            var funsequence = 0;
+                                                            var _1 = navigator.userAgent.toLowerCase();
+                                                            var ___ = (_1.indexOf("msie") != -1);
+                                                            var ___5 = (_1.indexOf("msie 5") != -1);
+                                                            var _io = (_1.indexOf("opera") != -1);
+                                                            var _im = (_1.indexOf("mac") != -1);
+                                                            var ____gi = (_1.indexOf("gecko") != -1);
+                                                            var i____s = (_1.indexOf("safari") != -1);
+                                                            var o = null;
+
+                                                            var r = null;
+                                                            var flag1 = false;
+                                                            var flag2 = false;
+
+                                                            function c(r) {
+
+                                                            if (___) {
+                                                            var t = (___5) ? "Microsoft.XMLHTTP" : "Msxml2.XMLHTTP";
+                                                            try {
+                                                            o = new ActiveXObject(t);
+                                                            o.onreadystatechange = r;
+                                                            } catch (ex) {
+                                                            alert("You need to enable active scripting and activeX ts.." + ex);
+                                                            }
+                                                            } else {
+                                                            o = new XMLHttpRequest();
+                                                            o.onload = r;
+                                                            o.onerror = r;
+                                                            }
+                                                            }
+                                                        </script>
+                                                        <style>
+                                                            body {
+                                                            /* 	background: #f1f1f1; */
+                                                            margin: 0px;
+                                                            padding: 0px;
+                                                            font-family: "Philosopher", "Bitstream Vera Sans", "Lucida Grande", "Trebuchet MS",Arial, Helvetica, sans-serif !important;
+                                                            }
+                                                            .matchprent{
+                                                            width: 100%;
+                                                            height: 100%;
+                                                            }
+                                                        </style>
+<style>
+  /* Tabs container */
+  #formCustomization {
+    margin: 10px 0;
+  }
+
+  /* Tab list */
+  .tab-list {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-bottom: 1px solid #ccc;
+  }
+
+  .tab-item {
+    flex: 1;
+    text-align: center;
+    padding: 10px 0;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-bottom: none;
+    background: #f7f7f7;
+    border-radius: 8px 8px 0 0;
+    font-weight: normal;
+  }
+
+  .active-tab {
+    background: #fff;
+  }
+
+  /* Tab content */
+  .tab-pane {
+    display: none;
+  }
+
+  .active-content {
+    display: block;
+  }
+
+  /* Employee table */
+  .employee-list-container {
+    border: 1px solid #ccc;
+    border-radius: 0 8px 8px 8px;
+    background: #fff;
+    height: 500px;
+    overflow-y: auto;
+    margin-top: -1px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  td {
+    padding: 10px;
+    font-size: 13px;
+    border-bottom: 1px solid #ddd;
+  }
+
+  tr:hover {
+    background-color: #f0f0f0;
+  }
+</style>
+
+                                                        <script>
+                                                          function setActiveTab(tabElement, tabId) {
+                                                            document.querySelectorAll('.tab-item').forEach(tab => tab.classList.remove('active-tab'));
+                                                            document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active-content'));
+                                                            tabElement.classList.add('active-tab');
+                                                            document.getElementById(tabId).classList.add('active-content');
+                                                          }
+                                                        </script>
+                                                        <script>
+                                                            $(document).ready(function () {
+                                                            $('#custTableBody').on('click', 'td', function () {
+                                                            // Remove selection from all other td cells
+                                                            $('#custTableBody td').removeClass('selected-cell');
+
+                                                            // Add class to clicked cell only
+                                                            $(this).addClass('selected-cell');
+                                                            });
+                                                            });
+                                                        </script>
+
+                                                    </head>
+                                                    <style>
+                                                    .selected-cell {
+                                                        background-color: #7b8081 !important;
+                                                        color: white !important;
+                                                    }
+                                                    </style>
+                                                    <body>
+                                                        <!-- begin shared/header -->
+                                                        <div id="ddcolortabsline">&nbsp;</div>
+                                                        <div id="cos">
+
+                                                            <span style="color: #05A9C5 !important;font-size: 1.6rem;">
+                                                               Employee Timesheet
+                                                                    <c:if
+                                                                    test="${not empty message}">
+                                                                    <br /> ${message}
+                                                                </c:if>
+                                                            </span>
+                                                            <br><br>
+                                                        <!-- Payroll Period Section -->
+
+                                                            <div class="row">
+                                                                <div class="col-sm-3">
+                                                                    <%--<div class="panel">--%>
+                                                                        <div >
+                                                                            <div class="form-layout">
+                                                                                       <table>
+                                                                                           <tr>
+                                                                                               <td colspan="4">Payroll Period:</td>
+                                                                                               </tr>
+                                                                                               <tr>
+                                                                                               <td>From</td>
+                                                                                               <td><input type="date" id="fromDate" name="from" style="width: 50px;"/></td>
+                                                                                              <td>To</td>
+                                                                                              <td><input type="date" name="to" style="width: 50px;"/></td>
+                                                                                              </tr>
+                                                                                           </tr>
+                                                                                           </table>
+                                                                                           </div>
+                                                                                            <script>
+                                                                                               const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+                                                                                               // Get Sunday of the selected date's week
+                                                                                               function getSunday(date) {
+                                                                                                 const d = new Date(date);
+                                                                                                 const day = d.getDay();
+                                                                                                 const diff = d.getDate() - day; // go back to Sunday
+                                                                                                 return new Date(d.setDate(diff));
+                                                                                               }
+
+                                                                                               // Update table for the week starting from Sunday
+                                                                                               function updateTable(selectedDate) {
+                                                                                                 const sunday = getSunday(selectedDate);
+
+                                                                                                 for (let i = 0; i < 7; i++) {
+                                                                                                   const newDate = new Date(sunday);
+                                                                                                   newDate.setDate(sunday.getDate() + i);
+
+                                                                                                   const dayName = weekDays[newDate.getDay()];
+                                                                                                   const dateFormatted = newDate.toISOString().split("T")[0]; // yyyy-mm-dd
+                                                                                                   if (i === 0 || i === 6) {
+                                                                                                     $(".date" + (i + 1)).text(dateFormatted);
+                                                                                                   }
+                                                                                                   $("#day" + (i + 1)).text(dayName);
+                                                                                                   $("#date" + (i + 1)).text(dateFormatted);
+                                                                                                 }
+                                                                                               }
+
+                                                                                               // ✅ When user selects a date manually
+                                                                                               $("#fromDate").on("change", function () {
+                                                                                                 const val = $(this).val();
+                                                                                                 if (val) {
+                                                                                                   updateTable(new Date(val));
+                                                                                                 }
+                                                                                               });
+
+                                                                                               // ✅ Inline calendar with jQuery UI
+                                                                                               $("#inlineCalendar").datepicker({
+                                                                                                 showOtherMonths: true,
+                                                                                                 selectOtherMonths: true,
+                                                                                                 dateFormat: "yy-mm-dd",
+                                                                                                 firstDay: 0, // Week starts Sunday
+                                                                                                 onSelect: function (dateText) {
+                                                                                                   const selectedDate = $(this).datepicker("getDate");
+                                                                                                   $("#fromDate").val(dateText);
+                                                                                                   updateTable(selectedDate);
+                                                                                                 }
+                                                                                               });
+                                                                                             </script>
+                                                                        </div>
+
+                                                                    <div id="formCustomization">
+                                                                      <div id="tabs">
+                                                                        <ul class="tab-list">
+                                                                          <li class="tab-item active-tab" onclick="setActiveTab(this, 'active')">Active</li>
+                                                                          <li class="tab-item" onclick="setActiveTab(this, 'inactive')">Inactive</li>
+                                                                        </ul>
+                                                                      </div>
+
+                                                                      <!-- Active Employees -->
+                                                                      <div class="tab-pane active-content" id="active">
+                                                                        <div class="employee-list-container">
+                                                                          <table id="employeeTable">
+                                                                            <tbody id="custTableBody">
+                                                                              <c:forEach var="emp" items="${empList}">
+                                                                                <tr class="employee-row" data-id="${emp.id}">
+                                                                                 <td class="employee-col" style="padding: 10px; font-size: 13px;">
+                                                                                Name: ${empty emp.firstName ? '' : emp.firstName}
+                                                                                ${empty emp.lastName ? '' : emp.lastName}, M.I:
+                                                                                ${empty emp.mi ? '' : emp.mi}, SSN:
+                                                                                ${empty emp.ssn ? '' : emp.ssn}, Pay Period:
+                                                                                ${empty emp.payPeriod ? '' : emp.payPeriod}, Pay Date:
+                                                                                ${"02-11-2025"}
+                                                                                </td>
+                                                                                </tr>
+                                                                              </c:forEach>
+                                                                            </tbody>
+                                                                          </table>
+                                                                        </div>
+                                                                      </div>
+
+                                                                      <!-- Inactive Employees (Static Data) -->
+                                                                      <div class="tab-pane" id="inactive">
+                                                                        <div class="employee-list-container">
+                                                                          <table>
+                                                                            <tbody id="custTableBody2">
+                                                                            <c:forEach var="employeeInfo"
+                                                                                items="${employeeInfoDTOList}">
+                                                                                <tr class="employee-row"
+                                                                                    data-id="${employeeInfo.id}"
+                                                                                    style="border-bottom: 1px solid #ccc; cursor: pointer;">
+                                                                                   <td style="padding: 10px; font-size: 13px;" class="employee-col-${employeeInfo.id}">
+                                                                                    Name: ${empty employeeInfo.firstName ? '' : employeeInfo.firstName}
+                                                                                       ${empty employeeInfo.lastName ? '' : employeeInfo.lastName}, M.I:
+                                                                                       ${empty employeeInfo.mi ? '' : employeeInfo.mi}, SSN:
+                                                                                       ${empty employeeInfo.ssn ? '' : employeeInfo.ssn}, Pay Period:
+                                                                                       ${empty employeeInfo.payPeriod ? '' : employeeInfo.payPeriod}, Pay Date:
+                                                                                       ${"02-11-2025"}</td>
+                                                                                    </td>
+                                                                                    </tr>
+                                                                            </c:forEach>
+                                                                        </tbody>
+                                                                          </table>
+                                                                        </div>
+                                                                      </div>
+                                                                    </div>
+
+                                                                        <%--</div>--%>
+
+                                                                                <input type="hidden" id="employeeid" />
+
+                                                                                        <div style="align-item:center;" id="inlineCalendar"></div>
+
+                                                                                </div>
+
+                                                                                <div class="col-sm-9">
+                                                                                    <div  style="border: 1px solid #dee2e6;" >
+                                                                                        <div id="css1" style="text-align:center;">
+                                                                                            <h4 style="font-size: 16px; padding-left: 10px;"><span class="date1"></span> to <span class="date7"></span> Employee Timesheet </h4>
+                                                                                        </div>
+                                                                                        <form action="/save-timesheet" method="post" name="timesheet">
+                                                                                            <div class="table-responsive">
+                                                                                                <table width="100%" class="tabla-editables">
+                                                                                                    <thead>
+                                                                                                        <tr>
+                                                                                                            <th> <spring:message code="BzComposer.timesheet.weekday"/></th>
+                                                                                                            <th><spring:message code="BzComposer.timesheet.date"/></th>
+                                                                                                            <th>Start Work 1</th>
+                                                                                                            <th>End Work 1</th>
+                                                                                                            <th>Start Work 2</th>
+                                                                                                            <th>End Work 2</th>
+                                                                                                            <th>Start Work 3</th>
+                                                                                                            <th>End Work 3</th>
+                                                                                                            <th>Start Work 4</th>
+                                                                                                              <th>End Work 4</th>
+                                                                                                              <th>Start Work 5</th>
+                                                                                                               <th>End Work 5</th>
+                                                                                                               <th>Start Work 6</th>
+                                                                                                                 <th>End Work 6</th>
+                                                                                                                 <th>Start Work 7</th>
+                                                                                                                <th>End Work 7</th>
+                                                                                                                <th>Start Work 8</th>
+                                                                                                                  <th>End Work 8</th>
+                                                                                                            <th>Break</th>
+                                                                                                            <th>Total Hours</th>
+
+                                                                                                        </tr>
+                                                                                                    </thead>
+                                                                                                    <tbody >
+                                                                                                        <tr id="row1">
+                                                                                                            <input name="employeeId" type="hidden" />
+                                                                                                            <td class="day" id="day1"></td>
+                                                                                                            <input name="d1ay" type="hidden" id="hiddenDay1" />
+                                                                                                            <td class="date date1"></td>
+                                                                                                            <input name="w1orkDate" id="hiddenDate1" type="hidden" />
+
+                                                                                                            <td><input type="time" id="s1"/></td>
+                                                                                                                   <td><input type="time" id="e1"/></td>
+
+                                                                                                                   <td><input type="time" id="s2"/></td>
+                                                                                                                   <td><input type="time" id="e2"/></td>
+
+                                                                                                                   <td><input type="time" id="s3"/></td>
+                                                                                                                   <td><input type="time" id="e3"/></td>
+
+                                                                                                                   <td><input type="time" id="s4"/></td>
+                                                                                                                   <td><input type="time" id="e4"/></td>
+
+                                                                                                                   <td><input type="time" id="s5"/></td>
+                                                                                                                   <td><input type="time" id="e5"/></td>
+
+                                                                                                                   <td><input type="time" id="s6"/></td>
+                                                                                                                   <td><input type="time" id="e6"/></td>
+
+                                                                                                                   <td><input type="time" id="s7"/></td>
+                                                                                                                   <td><input type="time" id="e7"/></td>
+
+                                                                                                                   <td><input type="time" id="s8"/></td>
+                                                                                                                   <td><input type="time" id="e8"/></td>
+
+                                                                                                                   <td><input type="text" id="break1" readonly style="width:70px"/></td>
+                                                                                                                   <td id="totalHoursCell1">0.00</td>
+                                                                                                        </tr>
+
+                                                                                                               <tr id="row2">
+                                                                                                                 <input name="employeeId" type="hidden" />
+
+                                                                                                                 <td class="day" id="day2">Mon</td>
+                                                                                                                 <input name="d2ay" type="hidden" id="hiddenDay2" value="Mon" />
+
+                                                                                                                 <td class="date" id="date2"></td>
+                                                                                                                 <input name="w2orkDate" id="hiddenDate2" type="hidden" />
+
+                                                                                                                 <td><input type="time" id="s1_2" oninput="calculateRowHours(2)"/></td>
+                                                                                                                         <td><input type="time" id="e1_2" oninput="calculateRowHours(2)"/></td>
+
+                                                                                                                         <td><input type="time" id="s2_2" oninput="calculateRowHours(2)"/></td>
+                                                                                                                         <td><input type="time" id="e2_2" oninput="calculateRowHours(2)"/></td>
+
+                                                                                                                         <td><input type="time" id="s3_2" oninput="calculateRowHours(2)"/></td>
+                                                                                                                         <td><input type="time" id="e3_2" oninput="calculateRowHours(2)"/></td>
+
+                                                                                                                         <td><input type="time" id="s4_2" oninput="calculateRowHours(2)"/></td>
+                                                                                                                         <td><input type="time" id="e4_2" oninput="calculateRowHours(2)"/></td>
+
+                                                                                                                         <td><input type="time" id="s5_2" oninput="calculateRowHours(2)"/></td>
+                                                                                                                         <td><input type="time" id="e5_2" oninput="calculateRowHours(2)"/></td>
+
+                                                                                                                         <td><input type="time" id="s6_2" oninput="calculateRowHours(2)"/></td>
+                                                                                                                         <td><input type="time" id="e6_2" oninput="calculateRowHours(2)"/></td>
+
+                                                                                                                         <td><input type="time" id="s7_2" oninput="calculateRowHours(2)"/></td>
+                                                                                                                         <td><input type="time" id="e7_2" oninput="calculateRowHours(2)"/></td>
+
+                                                                                                                         <td><input type="time" id="s8_2" oninput="calculateRowHours(2)"/></td>
+                                                                                                                         <td><input type="time" id="e8_2" oninput="calculateRowHours(2)"/></td>
+
+                                                                                                                         <td><input type="text" id="break2" readonly style="width:70px"/></td>
+                                                                                                                         <td id="totalHoursCell2">0.00</td>
+                                                                                                               </tr>
+
+
+                                                                                                                      <tr id="row3">
+                                                                                                                        <input name="employeeId" type="hidden" />
+
+                                                                                                                        <td class="day" id="day3">Tue</td>
+                                                                                                                        <input name="d3ay" type="hidden" id="hiddenDay3" value="Tue" />
+
+                                                                                                                        <td class="date" id="date3"></td>
+                                                                                                                        <input name="w3orkDate" id="hiddenDate3" type="hidden" />
+
+                                                                                                                        <td><input type="time" id="s1_3" oninput="calculateRowHours(3)"/></td>
+                                                                                                                                <td><input type="time" id="e1_3" oninput="calculateRowHours(3)"/></td>
+
+                                                                                                                                <td><input type="time" id="s2_3" oninput="calculateRowHours(3)"/></td>
+                                                                                                                                <td><input type="time" id="e2_3" oninput="calculateRowHours(3)"/></td>
+
+                                                                                                                                <td><input type="time" id="s3_3" oninput="calculateRowHours(3)"/></td>
+                                                                                                                                <td><input type="time" id="e3_3" oninput="calculateRowHours(3)"/></td>
+
+                                                                                                                                <td><input type="time" id="s4_3" oninput="calculateRowHours(3)"/></td>
+                                                                                                                                <td><input type="time" id="e4_3" oninput="calculateRowHours(3)"/></td>
+
+                                                                                                                                <td><input type="time" id="s5_3" oninput="calculateRowHours(3)"/></td>
+                                                                                                                                <td><input type="time" id="e5_3" oninput="calculateRowHours(3)"/></td>
+
+                                                                                                                                <td><input type="time" id="s6_3" oninput="calculateRowHours(3)"/></td>
+                                                                                                                                <td><input type="time" id="e6_3" oninput="calculateRowHours(3)"/></td>
+
+                                                                                                                                <td><input type="time" id="s7_3" oninput="calculateRowHours(3)"/></td>
+                                                                                                                                <td><input type="time" id="e7_3" oninput="calculateRowHours(3)"/></td>
+
+                                                                                                                                <td><input type="time" id="s8_3" oninput="calculateRowHours(3)"/></td>
+                                                                                                                                <td><input type="time" id="e8_3" oninput="calculateRowHours(3)"/></td>
+
+                                                                                                                                <td><input type="text" id="break3" readonly style="width:70px"/></td>
+                                                                                                                                <td id="totalHoursCell3">0.00</td>
+                                                                                                                      </tr>
+
+
+                                                                                                                              <tr>
+                                                                                                                                <td class="day">Wed</td>
+                                                                                                                                <input name="d4ay" type="hidden" id="hiddenDay4" value="Wed" />
+
+                                                                                                                                <td class="date" id="date4"></td>
+                                                                                                                                <input name="w4orkDate" type="hidden" id="hiddenDate4" />
+
+                                                                                                                                <td><input type="time" id="s1_4" oninput="calculateRowHours(4)"/></td>
+                                                                                                                                        <td><input type="time" id="e1_4" oninput="calculateRowHours(4)"/></td>
+
+                                                                                                                                        <td><input type="time" id="s2_4" oninput="calculateRowHours(4)"/></td>
+                                                                                                                                        <td><input type="time" id="e2_4" oninput="calculateRowHours(4)"/></td>
+
+                                                                                                                                        <td><input type="time" id="s3_4" oninput="calculateRowHours(4)"/></td>
+                                                                                                                                        <td><input type="time" id="e3_4" oninput="calculateRowHours(4)"/></td>
+
+                                                                                                                                        <td><input type="time" id="s4_4" oninput="calculateRowHours(4)"/></td>
+                                                                                                                                        <td><input type="time" id="e4_4" oninput="calculateRowHours(4)"/></td>
+
+                                                                                                                                        <td><input type="time" id="s5_4" oninput="calculateRowHours(4)"/></td>
+                                                                                                                                        <td><input type="time" id="e5_4" oninput="calculateRowHours(4)"/></td>
+
+                                                                                                                                        <td><input type="time" id="s6_4" oninput="calculateRowHours(4)"/></td>
+                                                                                                                                        <td><input type="time" id="e6_4" oninput="calculateRowHours(4)"/></td>
+
+                                                                                                                                        <td><input type="time" id="s7_4" oninput="calculateRowHours(4)"/></td>
+                                                                                                                                        <td><input type="time" id="e7_4" oninput="calculateRowHours(4)"/></td>
+
+                                                                                                                                        <td><input type="time" id="s8_4" oninput="calculateRowHours(4)"/></td>
+                                                                                                                                        <td><input type="time" id="e8_4" oninput="calculateRowHours(4)"/></td>
+
+                                                                                                                                        <td><input type="text" id="break4" readonly style="width:70px"/></td>
+                                                                                                                                        <td id="totalHoursCell4">0.00</td>
+                                                                                                                              </tr>
+
+
+
+                                                                                                                                            <tr>
+                                                                                                                                              <td class="day">Thu</td>
+                                                                                                                                              <input name="d5ay" type="hidden" id="hiddenDay5" value="Thu" />
+
+                                                                                                                                              <td class="date" id="date5"></td>
+                                                                                                                                              <input name="w5orkDate" type="hidden" id="hiddenDate5" />
+
+                                                                                                                                              <td><input type="time" id="s1_5" oninput="calculateRowHours(5)"/></td>
+                                                                                                                                                     <td><input type="time" id="e1_5" oninput="calculateRowHours(5)"/></td>
+
+                                                                                                                                                     <td><input type="time" id="s2_5" oninput="calculateRowHours(5)"/></td>
+                                                                                                                                                     <td><input type="time" id="e2_5" oninput="calculateRowHours(5)"/></td>
+
+                                                                                                                                                     <td><input type="time" id="s3_5" oninput="calculateRowHours(5)"/></td>
+                                                                                                                                                     <td><input type="time" id="e3_5" oninput="calculateRowHours(5)"/></td>
+
+                                                                                                                                                     <td><input type="time" id="s4_5" oninput="calculateRowHours(5)"/></td>
+                                                                                                                                                     <td><input type="time" id="e4_5" oninput="calculateRowHours(5)"/></td>
+
+                                                                                                                                                     <td><input type="time" id="s5_5" oninput="calculateRowHours(5)"/></td>
+                                                                                                                                                     <td><input type="time" id="e5_5" oninput="calculateRowHours(5)"/></td>
+
+                                                                                                                                                     <td><input type="time" id="s6_5" oninput="calculateRowHours(5)"/></td>
+                                                                                                                                                     <td><input type="time" id="e6_5" oninput="calculateRowHours(5)"/></td>
+
+                                                                                                                                                     <td><input type="time" id="s7_5" oninput="calculateRowHours(5)"/></td>
+                                                                                                                                                     <td><input type="time" id="e7_5" oninput="calculateRowHours(5)"/></td>
+
+                                                                                                                                                     <td><input type="time" id="s8_5" oninput="calculateRowHours(5)"/></td>
+                                                                                                                                                     <td><input type="time" id="e8_5" oninput="calculateRowHours(5)"/></td>
+
+                                                                                                                                                     <td><input type="text" id="break5" readonly style="width:70px"/></td>
+                                                                                                                                                     <td id="totalHoursCell5">0.00</td>
+                                                                                                                                            </tr>
+
+
+                                                                                                                                                    <tr>
+                                                                                                                                                      <td class="day" id="day6">Fri</td>
+                                                                                                                                                      <input name="d6ay" type="hidden" id="hiddenDay6" value="Fri" />
+
+                                                                                                                                                      <td class="date" id="date6"></td>
+                                                                                                                                                      <input name="w6orkDate" type="hidden" id="hiddenDate6" />
+
+                                                                                                                                                      <td><input type="time" id="s1_6" oninput="calculateRowHours(6)"/></td>
+                                                                                                                                                              <td><input type="time" id="e1_6" oninput="calculateRowHours(6)"/></td>
+
+                                                                                                                                                              <td><input type="time" id="s2_6" oninput="calculateRowHours(6)"/></td>
+                                                                                                                                                              <td><input type="time" id="e2_6" oninput="calculateRowHours(6)"/></td>
+
+                                                                                                                                                              <td><input type="time" id="s3_6" oninput="calculateRowHours(6)"/></td>
+                                                                                                                                                              <td><input type="time" id="e3_6" oninput="calculateRowHours(6)"/></td>
+
+                                                                                                                                                              <td><input type="time" id="s4_6" oninput="calculateRowHours(6)"/></td>
+                                                                                                                                                              <td><input type="time" id="e4_6" oninput="calculateRowHours(6)"/></td>
+
+                                                                                                                                                              <td><input type="time" id="s5_6" oninput="calculateRowHours(6)"/></td>
+                                                                                                                                                              <td><input type="time" id="e5_6" oninput="calculateRowHours(6)"/></td>
+
+                                                                                                                                                              <td><input type="time" id="s6_6" oninput="calculateRowHours(6)"/></td>
+                                                                                                                                                              <td><input type="time" id="e6_6" oninput="calculateRowHours(6)"/></td>
+
+                                                                                                                                                              <td><input type="time" id="s7_6" oninput="calculateRowHours(6)"/></td>
+                                                                                                                                                              <td><input type="time" id="e7_6" oninput="calculateRowHours(6)"/></td>
+
+                                                                                                                                                              <td><input type="time" id="s8_6" oninput="calculateRowHours(6)"/></td>
+                                                                                                                                                              <td><input type="time" id="e8_6" oninput="calculateRowHours(6)"/></td>
+
+                                                                                                                                                              <td><input type="text" id="break6" readonly style="width:70px"/></td>
+                                                                                                                                                              <td id="totalHoursCell6">0.00</td>
+                                                                                                                                                    </tr>
+
+                                                                                                                                                           <tr>
+                                                                                                                                                             <td class="day">Sat</td>
+                                                                                                                                                             <input name="d7ay" type="hidden" value="Sat" />
+                                                                                                                                                             <td class="date date7"></td>
+                                                                                                                                                             <input name="w7orkDate" type="hidden" />
+
+                                                                                                                                                             <td><input type="time" id="s1_7" oninput="calculateRowHours(7)"/></td>
+                                                                                                                                                                     <td><input type="time" id="e1_7" oninput="calculateRowHours(7)"/></td>
+
+                                                                                                                                                                     <td><input type="time" id="s2_7" oninput="calculateRowHours(7)"/></td>
+                                                                                                                                                                     <td><input type="time" id="e2_7" oninput="calculateRowHours(7)"/></td>
+
+                                                                                                                                                                     <td><input type="time" id="s3_7" oninput="calculateRowHours(7)"/></td>
+                                                                                                                                                                     <td><input type="time" id="e3_7" oninput="calculateRowHours(7)"/></td>
+
+                                                                                                                                                                     <td><input type="time" id="s4_7" oninput="calculateRowHours(7)"/></td>
+                                                                                                                                                                     <td><input type="time" id="e4_7" oninput="calculateRowHours(7)"/></td>
+
+                                                                                                                                                                     <td><input type="time" id="s5_7" oninput="calculateRowHours(7)"/></td>
+                                                                                                                                                                     <td><input type="time" id="e5_7" oninput="calculateRowHours(7)"/></td>
+
+                                                                                                                                                                     <td><input type="time" id="s6_7" oninput="calculateRowHours(7)"/></td>
+                                                                                                                                                                     <td><input type="time" id="e6_7" oninput="calculateRowHours(7)"/></td>
+
+                                                                                                                                                                     <td><input type="time" id="s7_7" oninput="calculateRowHours(7)"/></td>
+                                                                                                                                                                     <td><input type="time" id="e7_7" oninput="calculateRowHours(7)"/></td>
+
+                                                                                                                                                                     <td><input type="time" id="s8_7" oninput="calculateRowHours(7)"/></td>
+                                                                                                                                                                     <td><input type="time" id="e8_7" oninput="calculateRowHours(7)"/></td>
+
+                                                                                                                                                                     <td><input type="text" id="break7" readonly style="width:70px"/></td>
+                                                                                                                                                                     <td id="totalHoursCell7">0.00</td>
+                                                                                                                                                           </tr>
+
+
+                                                                                                                                                                </tbody>
+                                                                                                                                                            </table>
+                                                                                                                                                        </div>
+                                                                                                                                                        <div id="tsheet">
+                                                                                                                                                            <input type="hidden" name="tsdata" id="tsdata" value="">
+                                                                                                                                                            </div>
+                                                                                                                                                            <input type="hidden" name="empid" id="empid" value=""/>
+                                                                                                                                                                <input type="hidden" name="weeksdays" id="weekdays" value="">
+                                                                                                                                                                </div>
+                                                                                                                                                                <table class="table table-bordered">
+                                                                                                                                                                    <tbody>
+                                                                                                                                                                        <tr>
+                                                                                                                                                                            <td colspan="2">
+                                                                                                                                                                                <b><spring:message code="BzComposer.timesheet.weeklytotal"/></b>
+                                                                                                                                                                            </td>
+                                                                                                                                                                        </tr>
+                                                                                                                                                                        <tr>
+                                                                                                                                                                            <td style="width: 150px">
+                                                                                                                                                                                <spring:message code="BzComposer.timesheet.totalhours"/>:
+                                                                                                                                                                                <%--<br>
+                                                                                                                                                                                    <spring:message code="BzComposer.timesheet.regularhours"/>:
+                                                                                                                                                                                    <br>
+                                                                                                                                                                                        <spring:message code="BzComposer.timesheet.overtimehours"/>:--%>
+                                                                                                                                                                                    </td>
+                                                                                                                                                                                    <%--<td >
+                                                                                                                                                                                        <b><span id="totalHours" >0.00</span></b>--%>
+                                                                                                                                                                                        <td class="total-hours-cell" id="totalHoursggg"> <span>
+                                                                                                                                                                                        <button onclick="sumTotalHours()"  title="Show Total Hours" style="border: none; background: transparent; cursor: pointer;">
+                                                                                                                                                                                          <i class="fas fa-eye" style="color: black;"></i>
+                                                                                                                                                                                        </button>
+                                                                                                                                                                                      </span></td>
+
+                                                                                                                                                                                        <%--<br>
+                                                                                                                                                                                            <b> 0.0</b>
+                                                                                                                                                                                            <br>
+                                                                                                                                                                                                <b> 0.0</b>
+                                                                                                                                                                                            </td>--%>
+                                                                                                                                                                                        </tr>
+                                                                                                                                                                                        <td colspan="2" align="center" style="font-size:1em;">
+                                                                                                                                                                                            <input type="button" value="<spring:message code='BzComposer.timesheet.cleardata'/>" class="formbutton">
+                                                                                                                                                                                            <input type="submit" class="formbutton"
+                                                                                                                                                                                            onclick="return manageCustomer('SAVE', event);"
+                                                                                                                                                                                            style="padding: 7px 15px;"
+                                                                                                                                                                                            value="Submit" />
+                                                                                                                                                                                            <input type="button" value="<spring:message code='BzComposer.timesheet.printtimesheet'/>" class="formbutton">
+                                                                                                                                                                                        </td>
+                                                                                                                                                                                    </tbody>
+                                                                                                                                                                                </table>
+                                                                                                                                                                            </div>
+                                                                                                                                                                            <form>
+                                                                                                                                                                            </div>
+
+                                                                                                                                                                        </div>
+
+
+
+
+
+                                                                                                                                                                        <%@ include file="/WEB-INF/jsp/include/footer.jsp" %>
+                                                                                                                                                                            <div id="timessheetTimeError" style="display:none;font-size:12px;">
+                                                                                                                                                                                <p>Time</p>
+                                                                                                                                                                            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                                                                                                                             <script>
+                                                                                                                                                                             $(document).ready(function () {
+                                                                                                                                                                                 const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+                                                                                                                                                                                 // Find Sunday for selected date
+                                                                                                                                                                                 function getSunday(d) {
+                                                                                                                                                                                     d = new Date(d);
+                                                                                                                                                                                     const day = d.getDay();
+                                                                                                                                                                                     const diff = d.getDate() - day;
+                                                                                                                                                                                     return new Date(d.setDate(diff));
+                                                                                                                                                                                 }
+
+                                                                                                                                                                                 // Update table when date selected (static fields for 7 days)
+                                                                                                                                                                                 function updateTable(selectedDate) {
+                                                                                                                                                                                     const sunday = getSunday(selectedDate);
+
+                                                                                                                                                                                     let updates = [
+                                                                                                                                                                                         { dayId: "#day1", hiddenDayId: "#hiddenDay1", dateId: ".date1", hiddenDateId: "#hiddenDate1" },
+                                                                                                                                                                                         { dayId: "#day2", hiddenDayId: "#hiddenDay2", dateId: "#date2", hiddenDateId: "#hiddenDate2" },
+                                                                                                                                                                                         { dayId: "#day3", hiddenDayId: "#hiddenDay3", dateId: "#date3", hiddenDateId: "#hiddenDate3" },
+                                                                                                                                                                                         { dayId: "#day4", hiddenDayId: "#hiddenDay4", dateId: "#date4", hiddenDateId: "#hiddenDate4" },
+                                                                                                                                                                                         { dayId: "#day5", hiddenDayId: "#hiddenDay5", dateId: "#date5", hiddenDateId: "#hiddenDate5" },
+                                                                                                                                                                                         { dayId: "#day6", hiddenDayId: "#hiddenDay6", dateId: "#date6", hiddenDateId: "#hiddenDate6" },
+                                                                                                                                                                                         { dayId: "#day7", hiddenDayId: "#hiddenDay7", dateId: ".date7", hiddenDateId: "#hiddenDate7" }
+
+                                                                                                                                                                                     ];
+
+                                                                                                                                                                                     updates.forEach((item, index) => {
+                                                                                                                                                                                         const newDate = new Date(sunday);
+                                                                                                                                                                                         newDate.setDate(sunday.getDate() + index);
+
+                                                                                                                                                                                         const dayName = weekDays[newDate.getDay()];
+                                                                                                                                                                                         const dateFormatted = newDate.getFullYear() + "-" +
+                                                                                                                                                                                             String(newDate.getMonth() + 1).padStart(2, "0") + "-" +
+                                                                                                                                                                                             String(newDate.getDate()).padStart(2, "0");
+
+                                                                                                                                                                                         $(item.dayId).text(dayName);
+                                                                                                                                                                                         $(item.hiddenDayId).val(dayName);
+                                                                                                                                                                                         $(item.dateId).text(dateFormatted);
+                                                                                                                                                                                         $(item.hiddenDateId).val(dateFormatted);
+
+
+                                                                                                                                                                                     });
+                                                                                                                                                                                 }
+
+                                                                                                                                                                                 // Inline calendar
+                                                                                                                                                                                 $("#inlineCalendar").datepicker({
+                                                                                                                                                                                     showOtherMonths: true,
+                                                                                                                                                                                     selectOtherMonths: true,
+                                                                                                                                                                                     dateFormat: "yy-mm-dd",
+                                                                                                                                                                                     firstDay: 0, // Week starts Sunday
+                                                                                                                                                                                     onSelect: function () {
+                                                                                                                                                                                         const selectedDate = $(this).datepicker("getDate");
+                                                                                                                                                                                         updateTable(selectedDate);
+                                                                                                                                                                                     }
+                                                                                                                                                                                 });
+
+                                                                                                                                                                                 // Initialize table with this week
+                                                                                                                                                                                 const today = new Date();
+                                                                                                                                                                                 $("#inlineCalendar").datepicker("setDate", today);
+                                                                                                                                                                                 updateTable(today);
+                                                                                                                                                                             });
+                                                                                                                                                                             </script>
+
+                                                                                                                                                                           <script>
+                                                                                                                                                                           function calculateRowHours(rowIndex, overtimeLimit = null) {
+                                                                                                                                                                               // Build input ids like s1_2, e1_2 for row 2, etc.
+                                                                                                                                                                               const suffix = rowIndex === 1 ? "" : "_" + rowIndex;
+
+                                                                                                                                                                               let starts = [];
+                                                                                                                                                                               let ends = [];
+
+                                                                                                                                                                               // Collect all 8 possible shifts
+                                                                                                                                                                               for (let i = 1; i <= 8; i++) {
+                                                                                                                                                                                   const startInput = document.getElementById(`s${i}${suffix}`);
+                                                                                                                                                                                   const endInput   = document.getElementById(`e${i}${suffix}`);
+
+                                                                                                                                                                                   if (!startInput || !endInput) continue;
+
+                                                                                                                                                                                   const sVal = startInput.value;
+                                                                                                                                                                                   const eVal = endInput.value;
+
+                                                                                                                                                                                   if (sVal && eVal) {
+                                                                                                                                                                                       starts.push(sVal);
+                                                                                                                                                                                       ends.push(eVal);
+                                                                                                                                                                                   }
+                                                                                                                                                                               }
+
+                                                                                                                                                                               // If no valid shifts entered
+                                                                                                                                                                               if (starts.length === 0 || ends.length === 0) {
+                                                                                                                                                                                   document.getElementById(`totalHoursCell${rowIndex}`).innerText = "0.00";
+                                                                                                                                                                                   return;
+                                                                                                                                                                               }
+
+                                                                                                                                                                               // Convert HH:MM → minutes
+                                                                                                                                                                               const toMinutes = time => {
+                                                                                                                                                                                   const [h, m] = time.split(":").map(Number);
+                                                                                                                                                                                   return h * 60 + m;
+                                                                                                                                                                               };
+
+                                                                                                                                                                               // Build M = differences in hours
+                                                                                                                                                                               let M = [];
+                                                                                                                                                                               for (let i = 0; i < starts.length; i++) {
+                                                                                                                                                                                   const diff = (toMinutes(ends[i]) - toMinutes(starts[i])) / 60;
+                                                                                                                                                                                   if (diff > 0) M.push(diff);
+                                                                                                                                                                               }
+
+                                                                                                                                                                               // Total working hours T
+                                                                                                                                                                               let T = M.reduce((a, b) => a + b, 0);
+
+                                                                                                                                                                               // Office hours O (all shifts in a row)
+                                                                                                                                                                               const O = (toMinutes(ends[ends.length - 1]) - toMinutes(starts[0])) / 60;
+
+                                                                                                                                                                               // Break = O - T
+                                                                                                                                                                               let B = O - T;
+                                                                                                                                                                               if (B < 0) B = 0;
+
+                                                                                                                                                                               // Overtime (optional)
+                                                                                                                                                                               let OV = 0;
+                                                                                                                                                                               if (overtimeLimit !== null && T > overtimeLimit) {
+                                                                                                                                                                                   OV = T - overtimeLimit;
+                                                                                                                                                                               }
+
+                                                                                                                                                                               // Update total hours cell
+                                                                                                                                                                               const cell = document.getElementById(`totalHoursCell${rowIndex}`);
+                                                                                                                                                                               if (cell) cell.innerText = T.toFixed(2);
+
+                                                                                                                                                                               // Update break box
+                                                                                                                                                                               const breakBox = document.getElementById(`break${rowIndex}`);
+                                                                                                                                                                               if (breakBox) {
+                                                                                                                                                                                   const breakMin = Math.round(B * 60);
+                                                                                                                                                                                   breakBox.value =
+                                                                                                                                                                                       String(Math.floor(breakMin / 60)).padStart(2, "0") +
+                                                                                                                                                                                       ":" +
+                                                                                                                                                                                       String(breakMin % 60).padStart(2, "0");
+                                                                                                                                                                               }
+
+                                                                                                                                                                               return { totalHours: T, officeHours: O, breakHours: B, overtime: OV };
+                                                                                                                                                                           }
+
+                                                                                                                                                                           </script>
+                                                                                                                                                                           <script>
+                                                                                                                                                                           function calculateRowHours(rowIndex) {
+
+                                                                                                                                                                               const suffix = rowIndex === 1 ? "" : "_" + rowIndex;
+
+                                                                                                                                                                               let starts = [];
+                                                                                                                                                                               let ends = [];
+
+                                                                                                                                                                               // Collect 8 shifts
+                                                                                                                                                                               for (let i = 1; i <= 8; i++) {
+                                                                                                                                                                                   const s = document.getElementById(`s${i}${suffix}`);
+                                                                                                                                                                                   const e = document.getElementById(`e${i}${suffix}`);
+
+                                                                                                                                                                                   if (!s || !e) continue;
+
+                                                                                                                                                                                   if (s.value && e.value) {
+                                                                                                                                                                                       starts.push(s.value);
+                                                                                                                                                                                       ends.push(e.value);
+                                                                                                                                                                                   }
+                                                                                                                                                                               }
+
+                                                                                                                                                                               if (starts.length === 0 || ends.length === 0) {
+                                                                                                                                                                                   document.getElementById(`totalHoursCell${rowIndex}`).innerText = "0.00";
+                                                                                                                                                                                   document.getElementById(`break${rowIndex}`).value = "00:00";
+                                                                                                                                                                                   return;
+                                                                                                                                                                               }
+
+                                                                                                                                                                               // HH:MM → minutes
+                                                                                                                                                                               const toMin = t => {
+                                                                                                                                                                                   const [h, m] = t.split(":").map(Number);
+                                                                                                                                                                                   return h * 60 + m;
+                                                                                                                                                                               };
+
+                                                                                                                                                                               // Working hours sum (T)
+                                                                                                                                                                               let T = 0;
+                                                                                                                                                                               for (let i = 0; i < starts.length; i++) {
+                                                                                                                                                                                   const diff = (toMin(ends[i]) - toMin(starts[i])) / 60;
+                                                                                                                                                                                   if (diff > 0) T += diff;
+                                                                                                                                                                               }
+
+                                                                                                                                                                               // Office hours (O)
+                                                                                                                                                                               const O = (toMin(ends[ends.length - 1]) - toMin(starts[0])) / 60;
+
+                                                                                                                                                                               // Break = O - T
+                                                                                                                                                                               let B = O - T;
+                                                                                                                                                                               if (B < 0) B = 0;
+
+                                                                                                                                                                               // Update total hours
+                                                                                                                                                                               document.getElementById(`totalHoursCell${rowIndex}`).innerText = T.toFixed(2);
+
+                                                                                                                                                                               // Convert break hours → HH:MM
+                                                                                                                                                                               const breakMin = Math.round(B * 60);
+                                                                                                                                                                               const hh = String(Math.floor(breakMin / 60)).padStart(2, "0");
+                                                                                                                                                                               const mm = String(breakMin % 60).padStart(2, "0");
+                                                                                                                                                                               document.getElementById(`break${rowIndex}`).value = `${hh}:${mm}`;
+                                                                                                                                                                           }
+                                                                                                                                                                           </script>
+
+                                                                                                                                                                        </body>
+
+                                                                                                                                                                    </html>

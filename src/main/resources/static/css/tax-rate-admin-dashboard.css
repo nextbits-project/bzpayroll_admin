@@ -1,0 +1,72 @@
+.sidebar {
+    width: 200px;
+    background-color: #343a40;
+    color: white;
+    position: fixed;
+    height:100%;
+    padding: 5px;
+    overflow-y: auto;
+}
+.sidebar-header {
+    text-align: center;
+}
+
+.nav-link {
+    color: white;
+    padding: 5px;
+}
+
+.nav-link:hover {
+    background-color: #495057;
+}
+
+.main-content {
+    margin-left: 180px;
+    margin-top: 0px;
+    padding: 20px;
+    padding-top: 2px;
+    width: 100%;
+}
+
+.filters {
+   
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.table {
+    width: 100%;
+}
+
+.table {
+    margin-bottom: 5px;
+    padding: 0;
+}
+.state-select.active {
+    background-color: #495057; 
+    font-weight: bold;
+    color: #ffffff;
+}
+.btn-primary {
+    background-color: #227fdc;
+    border-color: #227fdc;
+}
+.modal-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.modal-footer {
+    background-color: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+}
+
+.federal-tax.active {
+    background-color: #495057;
+    font-weight: bold;
+    color: #ffffff;
+}
+.btn-primary {
+    background-color: #227fdc;
+    border-color: #227fdc;
+}

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - BZPayroll</title>
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <style>
+    body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            color: #333;
+        }
+        .top-nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+    }
+        .top-nav-menu a {
+            text-decoration: none;
+      font-weight: 600;
+            color: #000;
+            padding: 0 8px;
+    }
+        .top-nav-menu a:hover {
+            color: #3e9aca;
+    }
+        .top-nav-menu a.active {
+            color: #005bbb;
+            border-bottom: 2px solid #005bbb;
+    }
+    .search-box input {
+      border-top-left-radius: 50px;
+      border-bottom-left-radius: 50px;
+    }
+    .search-box button {
+      border-top-right-radius: 50px;
+      border-bottom-right-radius: 50px;
+    }
+        .free-trial-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            border: none;
+        }
+        .free-trial-btn:hover {
+            background-color: #218838;
+            color: white;
+        }
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .contact-info a {
+            color: #000;
+            text-decoration: none;
+        }
+        .contact-info a:hover {
+            color: #3e9aca;
+        }
+        .content-section {
+            background: #fff;
+            padding: 60px 0;
+        }
+        .content-section h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #005bbb;
+            margin-bottom: 30px;
+        }
+        .content-section h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #333;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+        .content-section p {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+        .highlight-box {
+            background: #f8f9fa;
+            border-left: 4px solid #005bbb;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 5px;
+        }
+        .highlight-box p {
+            margin-bottom: 0;
+            font-size: 1.05rem;
+        }
+    @media (max-width: 991px) {
+      .search-box {
+        flex-direction: column;
+        width: 100%;
+      }
+      .search-box input,
+      .search-box button {
+        width: 100% !important;
+        border-radius: 50px !important;
+        margin: 4px 0;
+      }
+            .top-nav-menu {
+        flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+    }
+            .content-section h1 {
+                font-size: 2rem;
+    }
+            .content-section h2 {
+                font-size: 1.5rem;
+    }
+            .content-section p {
+                font-size: 1rem;
+            }
+        }
+  </style>
+</head>
+<body>
+
+<!-- Header Top: Logo + Top Menu + Search + Contact/Login/Free Trial -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom py-3">
+    <div class="container">
+        <!-- Logo -->
+        <a class="navbar-brand fw-bold me-4" href="/">
+            <img src="/images/bzpayroll-logo.jpg" alt="BZPayroll Logo" class="img-fluid" style="max-height: 50px;">
+          </a>
+
+        <!-- Hamburger Button (Mobile) -->
+        <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+                aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Collapsible Content -->
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <!-- Top Navigation Menu - Left Aligned -->
+            <div class="top-nav-menu me-auto mb-2 mb-lg-0">
+                <a href="/about" class="active">About Us</a>
+                <a href="/services">Our Services</a>
+                <a href="/what-is-bzpayroll">What is BzPayroll?</a>
+            </div>
+
+            <!-- Right Side: Search + Contact/Login/Free Trial -->
+            <div class="d-flex flex-column flex-lg-row align-items-start align-items-lg-center gap-2 gap-lg-3">
+                <!-- Search Bar (Visible on desktop only) -->
+                <form class="d-none d-lg-flex search-box mb-0" role="search" style="max-width: 300px;">
+                    <input class="form-control px-3" type="search" placeholder="Search..." aria-label="Search" style="font-size: 0.9rem;">
+                    <button class="btn btn-primary px-3" type="submit" style="font-size: 0.9rem;">Go</button>
+                </form>
+
+                <!-- Contact Us, Login, Free Trial -->
+                <div class="d-flex flex-column flex-lg-row align-items-start align-items-lg-center gap-2">
+                    <a href="#contactModal" class="nav-link text-dark px-2" data-bs-toggle="modal" style="font-weight: 600;">CONTACT US</a>
+                    <!-- Thymeleaf Condition for LOGIN or USERNAME/LOGOUT -->
+                    <span th:if="${session.user == null}">
+                        <a href="/login" class="nav-link text-dark px-2" style="font-weight: 600;">LOGIN</a>
+                    </span>
+                    <span th:if="${session.user != null}" class="d-flex align-items-center gap-2">
+                        <span class="nav-link text-dark px-2" th:text="${session.user.username}" style="font-weight: 600;">Username</span>
+                        <a href="/logout" class="nav-link text-danger px-2" style="font-weight: 600;">LOGOUT</a>
+                    </span>
+                    <a href="/register" class="free-trial-btn">30 Days Free Trial</a>
+                </div>
+
+                <!-- Search Bar (Mobile) -->
+                <form class="d-lg-none search-box w-100" role="search">
+                    <input class="form-control px-3" type="search" placeholder="Search..." aria-label="Search">
+                    <button class="btn btn-primary px-3 w-100 mt-2" type="submit">Go</button>
+                </form>
+            </div>
+        </div>
+      </div>
+</nav>
+
+<!-- Contact Us Modal -->
+<div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="contactModalLabel">Contact Us</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="contact-info">
+                    <div>
+                        <strong>Phone:</strong><br>
+                        <a href="tel:+12137329638">1(213)-732-9638</a>
+          </div>
+                    <div>
+                        <strong>Email:</strong><br>
+                        <a href="mailto:nextbits.jason@gmail.com">nextbits.jason@gmail.com</a>
+            </div>
+          </div>
+            </div>
+          </div>
+            </div>
+          </div>
+
+<!-- Main Content -->
+<div class="content-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <h1>About Us</h1>
+                
+                <p>BzPayroll was created to solve one of the most demanding responsibilities in any organization: payroll. Paying employees accurately, on time, and in compliance with regulations is not optional—it is mission-critical. Yet for many businesses, payroll remains one of the most complex and stressful operational tasks. BzPayroll exists to remove that burden.</p>
+                
+                <p>As a dedicated payroll platform within the BzComposer ecosystem, BzPayroll focuses entirely on one mission: making payroll simple, accurate, and dependable for businesses of every size. From startups hiring their first employee to established companies managing multi-state workforces, BzPayroll is designed to scale with confidence.</p>
+                
+                <div class="highlight-box">
+                    <p><strong>Our team understands that payroll is not just about issuing checks.</strong> It involves tax calculations, reporting, compliance, employee records, benefits, and ever-changing government regulations. Errors can lead to penalties, employee dissatisfaction, and lost trust. That's why BzPayroll is built with precision, automation, and compliance at its core.</p>
+              </div>
+                
+                <p>We work closely with business owners, HR managers, and accountants to ensure our system reflects real-world payroll challenges. Every feature is designed to reduce manual effort, prevent mistakes, and provide transparency. Automation handles calculations and filings, while built-in controls ensure accuracy and audit readiness.</p>
+                
+                <p>BzPayroll is more than software—it is a safeguard for your business operations. By separating payroll into its own specialized platform, we give it the attention and reliability it deserves. Whether you manage a small team or a growing workforce, BzPayroll empowers you to run payroll with confidence, clarity, and peace of mind.</p>
+            </div>
+          </div>
+        </div>
+</div>
+
+<!-- Footer -->
+<div th:insert="fragments/footer :: site-footer"></div>
+
+</body>
+</html>
