@@ -1,0 +1,62 @@
+<div th:fragment="viewModal" class="modal fade" id="viewCustomer" tabindex="-1" aria-labelledby="viewCustomerLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewCustomerLabel">Customer Details</h5>
+                <button type="button" class="bd-btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="fa-solid fa-xmark-large"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="col-xl-12">
+                    <div class="card__wrapper position-sticky">
+                        <div class="company__wrapper">
+                            <div class="company__info">
+                                <div class="company__name mb-30">
+                                    <h3 class="company__title" th:text="${customer.firstName + ' ' + customer.lastName}">
+                                        John Doe</h3>
+                                </div>
+                                <div class="company__info-list style-two">
+                                    <ul>
+                                        <li><span style="width:200px;">First Name:</span>
+                                            <span th:text="${customer.firstName}">John</span>
+                                        </li>
+                                        <li><span style="width:200px;">Last Name:</span>
+                                            <span th:text="${customer.lastName}">Doe</span>
+                                        </li>
+                                        <li><span style="width:200px;">Email:</span>
+                                            <a th:href="'mailto:' + ${customer.email}" th:text="${customer.email}">
+                                                [email protected]
+                                            </a>
+                                        </li>
+                                        <li><span style="width:200px;">Phone:</span>
+                                            <span th:text="${customer.phone}">1234567890</span>
+                                        </li>
+                                        <li><span style="width:200px;">Address:</span>
+                                            <span th:text="${customer.address}">123 Main St</span>
+                                        </li>
+                                        <li><span style="width:200px;">Membership:</span>
+                                            <span th:text="${customer.membership}">STANDARD</span>
+                                        </li>
+                                        <li><span style="width:200px;">Business Type:</span>
+                                            <span th:text="${customer.businessType}">RETAIL</span>
+                                        </li>
+                                        <li><span style="width:200px;">Status:</span>
+                                            <span th:text="${customer.active} ? 'Active' : 'Inactive'">Active</span>
+                                        </li>
+                                        <li><span style="width:200px;">Created At:</span>
+                                            <span th:text="${customer.createdAt != null} ? ${customer.createdAt.format(dateFormatter)} : 'N/A'">2023-01-01</span>
+                                        </li>
+                                        <li><span style="width:200px;">Updated At:</span>
+                                            <span th:text="${customer.updatedAt != null} ? ${customer.updatedAt.format(dateFormatter)} : 'N/A'">2023-01-01</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

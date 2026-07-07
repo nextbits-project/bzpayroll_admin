@@ -1,0 +1,431 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Email Templates</title>
+    <!-- Bootstrap 5 -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="shortcut icon"
+      type="image/x-icon"
+      href="assets/images/favicon.png"
+    />
+
+    <!-- CSS here -->
+    <link rel="stylesheet" href="assets/css/vendor/bootstrap.min.css" />
+    <link rel="stylesheet" href="assets/css/vendor/animate.css" />
+    <link rel="stylesheet" href="assets/css/plugins/apexcharts.css" />
+    <link
+      rel="stylesheet"
+      href="assets/css/plugins/jquery-jvectormap-2.0.5.css"
+    />
+    <link rel="stylesheet" href="assets/css/plugins/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="assets/css/vendor/magnific-popup.css" />
+    <link rel="stylesheet" href="assets/css/vendor/icomoon.css" />
+    <link rel="stylesheet" href="assets/css/vendor/fontawesome-pro.css" />
+    <link rel="stylesheet" href="assets/css/vendor/rating.css" />
+    <link rel="stylesheet" href="assets/css/vendor/dropzone.css" />
+    <link rel="stylesheet" href="assets/css/plugins/dropify.min.css" />
+    <link rel="stylesheet" href="assets/css/vendor/spacing.css" />
+    <link rel="stylesheet" href="assets/css/plugins/datatables.min.css" />
+    <link rel="stylesheet" href="assets/css/plugins/buttons.bootstrap5.css" />
+    <link
+      rel="stylesheet"
+      href="assets/css/plugins/jquery.dataTables.min.css"
+    />
+    <link rel="stylesheet" href="assets/css/plugins/select2.min.css" />
+    <link rel="stylesheet" href="assets/css/plugins/jquery.timepicker.css" />
+    <link rel="stylesheet" href="assets/css/plugins/tagify.css" />
+    <link rel="stylesheet" href="assets/css/plugins/flatpickr.min.css" />
+    <link rel="stylesheet" href="assets/css/plugins/jquery-ui.css" />
+    <link rel="stylesheet" href="assets/css/plugins/fullcalendar.min.css" />
+    <link rel="stylesheet" href="assets/css/plugins/ion.rangeSlider.min.css" />
+    <link rel="stylesheet" href="assets/css/plugins/simplebar.css" />
+    <link rel="stylesheet" href="assets/css/plugins/waves.min.css" />
+    <link rel="stylesheet" href="assets/css/plugins/nano.min.css" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+
+    <style>
+      #categoryPane {
+        min-width: 250px;
+        max-width: 350px;
+        resize: horizontal;
+        overflow: auto;
+      }
+      #templatePreview {
+        padding: 20px;
+        overflow-y: auto;
+      }
+      .template-item {
+        background-color: #f8f9fa; /* light grey for inactive */
+      }
+
+      .template-item.active {
+        background-color: #ffff !important;
+        color: #000 !important;
+      }
+    </style>
+  </head>
+  <body class="">
+   <!-- Preloader start -->
+<div class="preloader" id="preloader">
+  <div class="loading">
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<!-- Preloader end -->
+
+<div class="page__full-wrapper">
+  <div th:replace="fragments/common_fragments/sidebar :: sidebar"></div>
+  <div th:replace="fragments/common_fragments/header :: header"></div>
+
+  <div
+    class="page__body-wrapper"
+    style="
+      position: absolute;
+      inset-inline-end: 0;
+      width: calc(100% - 260px);
+      transition: all 0.5s ease;
+      top: 71px;
+      padding: 0;
+    "
+  >
+    <div class="container-fluid h-100">
+      <div class="row h-100">
+        <div class="container-fluid p-3">
+          <div class="row">
+            <!-- ========== LEFT SIDE (Tabs + Sidebar) ========== -->
+
+            <div class="col-13">
+              <!-- Tabs -->
+              <ul class="nav nav-tabs mb-3 bg-light">
+                <li class="nav-item" th:each="category, iter : ${categories}">
+                  <a
+                    class="nav-link"
+                    th:classappend="${iter.index == 0} ? 'active'"
+                    th:href="'#tab-' + ${category.code}"
+                    th:data-code="${category.code}"
+                    data-bs-toggle="tab"
+                    th:text="${category.name}"
+                    onclick="onCategoryClick(this)"
+                  ></a>
+                </li>
+              </ul>
+              <!-- Tab Content with template lists -->
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-3" style="max-height: 70vh; overflow-y: auto;">
+              <div
+                id="templateSidebar"
+                class="list-group"
+                style="width: 280px;"
+              >
+                <!-- Template items will be injected here dynamically -->
+              </div>
+            </div>
+
+            <!-- Content Area -->
+            <div class="col-9" style="max-height: 80vh; overflow-y: auto;">
+              <div class="card h-100">
+                <div class="card-header">Mail Template Information</div>
+                <div class="card-body">
+                  <div class="mb-3">
+                    <label class="form-label">Send to </label>
+                    <input
+                      type="email"
+                      class="form-control"
+                      id="recipientName"
+                      placeholder="[Reciepent Email]"
+                    />
+                    <div class="mb-3" id="placeholdersContainer">
+                      <!-- Dynamic inputs for placeholders will be injected here -->
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Subject</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="templateSubject"
+                      placeholder="Subject"
+                    />
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Content</label>
+                    <div
+                      id="templateBody"
+                      class="border p-2"
+                      contenteditable="true"
+                      style="
+                        min-height: 200px;
+                        white-space: pre-wrap;
+                        background: #fff;
+                        padding: 10px;
+                        border: 1px solid #ddd;
+                        border-radius: 5px;
+                        overflow-y: auto;
+                        max-height: 40vh;
+                      "
+                    ></div>
+                  </div>
+
+                  <div class="d-flex gap-2 justify-content-end">
+                    <button class="btn btn-primary" id="btnNew">New</button>
+                    <button class="btn btn-primary" id="btnSave">Save</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- /Content Area -->
+          </div>
+        </div>
+        <!-- /container-fluid p-3 -->
+      </div>
+      <!-- /row h-100 -->
+    </div>
+    <!-- /container-fluid h-100 -->
+  </div>
+  <!-- /page__body-wrapper -->
+</div>
+<!-- /page__full-wrapper -->
+
+    <!-- Bootstrap + JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- JS here -->
+    <script th:src="@{/assets/js/vendor/calendar-activision.js}"></script>
+    <script th:src="@{/assets/js/vendor/jquery-3.7.0.js}"></script>
+    <script th:src="@{/assets/js/vendor/isotope.pkgd.js}"></script>
+    <script th:src="@{/assets/js/vendor/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/assets/js/vendor/magnific-popup.min.js}"></script>
+    <script th:src="@{/assets/js/vendor/ajax-form.js}"></script>
+    <script th:src="@{/assets/js/vendor/jquery.repeater.js}"></script>
+    <script th:src="@{/assets/js/plugins/waypoints.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/dayjs.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/loader.js}"></script>
+    <script th:src="@{/assets/js/plugins/jsvectormap.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/world-merc.js}"></script>
+    <script th:src="@{/assets/js/plugins/swiper-bundle.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/popper.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/simplebar.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/simplebar-active.js}"></script>
+    <script th:src="@{/assets/js/plugins/backtotop.js}"></script>
+    <script th:src="@{/assets/js/plugins/smooth-scrollbar.js}"></script>
+    <script th:src="@{/assets/js/plugins/cleave.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/datatables.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/jquery.dataTables.min.js}"></script>
+    <script
+      th:src="@{/assets/js/plugins/dataTables.bootstrap5.min.js}"
+    ></script>
+    <script th:src="@{/assets/js/plugins/dataTables.buttons.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/jszip.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/pdfmake.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/vfs_fonts.js}"></script>
+    <script th:src="@{/assets/js/plugins/buttons.html5.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/buttons.print.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/buttons.colVis.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/steps-form.js}"></script>
+    <script th:src="@{/assets/js/plugins/dropify.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/dropzone.js}"></script>
+    <script th:src="@{/assets/js/plugins/tinymce.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/custom.js}"></script>
+    <script th:src="@{/assets/js/plugins/typeahead.bundle.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/bloodhound.js}"></script>
+    <script th:src="@{/assets/js/plugins/select2.full.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/jquery.timepicker.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/flatpickr.js}"></script>
+    <script th:src="@{/assets/js/plugins/tagify.js}"></script>
+    <script th:src="@{/assets/js/plugins/jquery-ui.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/sweetalert2.all.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/apexcharts.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/fullcalendar.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/ion.rangeSlider.min.js}"></script>
+    <script th:src="@{/assets/js/vendor/custom-tagify.js}"></script>
+    <script th:src="@{/assets/js/vendor/height-equal.js}"></script>
+    <script th:src="@{/assets/js/vendor/custom-chart.js}"></script>
+    <script th:src="@{/assets/js/vendor/rangeslider-script.js}"></script>
+    <script th:src="@{/assets/js/vendor/jquery.barrating.js}"></script>
+    <script th:src="@{/assets/js/vendor/rating-script.js}"></script>
+    <script th:src="@{/assets/js/main.js}"></script>
+    <script th:src="@{/assets/js/vendor/sidebar.js}"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll(".list-group").forEach((listGroup) => {
+          listGroup.addEventListener("click", async (ev) => {
+            const a = ev.target.closest(".template-item");
+            if (!a || !listGroup.contains(a)) return;
+            ev.preventDefault();
+
+            // Highlight selected
+            listGroup
+              .querySelectorAll(".template-item")
+              .forEach((el) => el.classList.remove("active"));
+            a.classList.add("active");
+          });
+        });
+
+    const firstCategory = document.querySelector(".nav-item .nav-link");
+    if (firstCategory) {
+        firstCategory.classList.add("active"); // UI highlight
+        onCategoryClick(firstCategory);        // ✅ triggers fetch + first template select
+    }
+
+      });
+    </script>
+    <script th:inline="javascript">
+      /**
+       * Fetch templates for a category and populate the sidebar
+       */
+/*<![CDATA[*/
+function onCategoryClick(element) {
+    const categoryCode = element.dataset.code;
+    console.log("Clicked category code:", categoryCode);
+
+    fetch(`/email-templates/category/${categoryCode}/templates`)
+        .then(res => res.json())
+        .then(data => {
+            populateSidebar(data);
+            selectFirstTemplate(data);  // ✅ auto-select first template
+        })
+        .catch(err => console.error("Fetch error:", err));
+}
+
+      /**
+       * Populate the sidebar with template titles
+       */
+      
+
+function populateSidebar(templates) {
+    const sidebar = document.getElementById("templateSidebar");
+    sidebar.innerHTML = ""; // Clear previous
+
+    templates.forEach((template, index) => {
+        const a = document.createElement("a");
+        a.href = "#";
+        a.className = "list-group-item list-group-item-action template-item bg-light";
+        a.textContent = template.title;
+
+        a.dataset.subject = template.subject;
+        a.dataset.body = template.body;
+
+        // Highlight first one by default
+        if (index === 0) {
+            a.classList.add("active");
+        }
+
+        a.addEventListener("click", (e) => {
+            e.preventDefault();
+
+            // Remove active from all
+            sidebar.querySelectorAll("a").forEach(link => link.classList.remove("active"));
+            a.classList.add("active");
+
+            populateTemplatePanel(template);
+        });
+
+        sidebar.appendChild(a);
+    });
+}
+
+
+
+      /**
+ * Auto-select the first template
+ */
+function selectFirstTemplate(templates) {
+    if (templates && templates.length > 0) {
+        populateTemplatePanel(templates[0]);
+    }
+}
+      /**
+
+       * Optional: New, Save, Delete buttons
+       */
+      document.getElementById("btnNew").addEventListener("click", () => {
+        document.getElementById("recipientName").value = "";
+        document.getElementById("templateSubject").value = "";
+        document.getElementById("templateBody").innerHTML = "";
+      });
+
+      document.getElementById("btnSave").addEventListener("click", () => {
+        const name = document.getElementById("recipientName").value;
+        const subject = document.getElementById("templateSubject").value;
+        const body = document.getElementById("templateBody").innerHTML;
+
+        console.log("Saving template:", { name, subject, body });
+        // Make AJAX POST/PUT to save template here
+      });
+
+      document.getElementById("btnDelete").addEventListener("click", () => {
+        console.log("Delete clicked");
+        // Make AJAX DELETE request here
+      });
+    </script>
+
+    <script th:inline="javascript">
+      /*<![CDATA[*/
+      function populateTemplatePanel(template) {
+        const nameInput = document.getElementById("recipientName");
+        const subjectInput = document.getElementById("templateSubject");
+        const bodyDiv = document.getElementById("templateBody");
+        const placeholdersContainer = document.getElementById(
+          "placeholdersContainer",
+        );
+        
+        console.log("[DEBUG] templates :: " , template );
+
+        // Reset
+        nameInput.value = "";
+        nameInput.placeholder = "Enter Reciepient Mail";
+        subjectInput.value = template.subject;
+        bodyDiv.innerHTML = template.body;
+        placeholdersContainer.innerHTML = "";
+
+        // Use a string for regex to avoid Thymeleaf parsing issues
+        const regex = new RegExp("\\[([^\\]]+)\\]", "g"); // double backslash!
+
+        // Use Array.from instead of spread to avoid issues
+        const matches = Array.from(template.body.matchAll(regex));
+
+        matches.forEach((match) => {
+          const placeholder = match[1];
+
+          const wrapper = document.createElement("div");
+          wrapper.className = "mb-2";
+
+          const label = document.createElement("label");
+          label.className = "form-label";
+          label.textContent = placeholder;
+
+          const input = document.createElement("input");
+          input.type = "text";
+          input.className = "form-control";
+          input.placeholder = placeholder;
+
+          input.addEventListener("input", () => {
+            bodyDiv.innerHTML = template.body.replace(
+              new RegExp(`\\[${placeholder}\\]`, "g"),
+              input.value || `[${placeholder}]`,
+            );
+          });
+
+          wrapper.appendChild(label);
+          wrapper.appendChild(input);
+          placeholdersContainer.appendChild(wrapper);
+        });
+      }
+      /*]]>*/
+    </script>
+  </body>
+</html>

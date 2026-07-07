@@ -29,6 +29,34 @@
                         </a>
                     </li>
                     <li class="slide">
+                        <a th:href="@{/admin_products}" class="sidebar__menu-item">
+                        <div class="side-menu__icon"><i class="icon-hrm"></i></div>
+                        <span class="sidebar__menu-label">Products</span>
+                        </a>
+                    </li>
+                    <li class="slide">
+                        <a th:href="@{/users}" class="sidebar__menu-item">
+                        <div class="side-menu__icon">
+                            <i class="icon-circle-user"></i>
+                        </div>
+                        <span class="sidebar__menu-label">Users</span>
+                        </a>
+                    </li>
+                    <li class="slide">
+                        <a th:href="@{/customers}" class="sidebar__menu-item">
+                        <div class="side-menu__icon">
+                            <i class="icon-screen-users"></i>
+                        </div>
+                        <span class="sidebar__menu-label">Customers</span>
+                        </a>
+                    </li>
+                    <li class="slide">
+                        <a th:href="@{/email-templates}" class="sidebar__menu-item">
+                        <div class="side-menu__icon"><i class="icon-envelopes"></i></div>
+                        <span class="sidebar__menu-label">eMail Template</span>
+                        </a>
+                    </li>
+                    <li class="slide">
                         <a th:href="@{/federal_tax}" class="sidebar__menu-item">
                             <div class="side-menu__icon"><i class="icon-office"></i></div>
                             <span class="sidebar__menu-label">Federal Tax</span>
@@ -44,6 +72,55 @@
                         <a th:href="@{/admin_dashboard}" class="sidebar__menu-item">
                             <div class="side-menu__icon"><i class="icon-pencil"></i></div>
                             <span class="sidebar__menu-label">Blogs</span>
+                        </a>
+                    </li>
+                    <li class="slide">
+                        <a th:href="@{/help}" class="sidebar__menu-item">
+                        <div class="side-menu__icon"><i class="icon-headset"></i></div>
+                        <span class="sidebar__menu-label">Help</span>
+                        </a>
+                    </li>
+                    <li class="slide">
+                        <a th:href="@{/faq}" class="sidebar__menu-item">
+                        <div class="side-menu__icon"><i class="icon-headset"></i></div>
+                        <span class="sidebar__menu-label">FAQ</span>
+                        </a>
+                    </li>
+                    <li class="slide">
+                        <a href="javascript:void(0);" class="sidebar__menu-item">
+                        <div class="side-menu__icon"><i class="icon-chart-line"></i></div>
+                        <span class="sidebar__menu-label">Reports</span>
+                        </a>
+                    </li>
+                    <li class="slide has-sub">
+                        <a href="javascript:void(0);" class="sidebar__menu-item">
+                        <i class="fa-regular fa-angle-down side-menu__angle"></i>
+                        <div class="side-menu__icon">
+                            <i class="icon-folder-gear"></i>
+                        </div>
+                        <span class="sidebar__menu-label">Settings</span>
+                        </a>
+                        <ul class="sidebar-menu child1">
+                        <li class="slide">
+                            <a class="sidebar__menu-item" th:href="@{/membership}"
+                            >Membership Plan and Fees</a
+                            >
+                        </li>
+                        <li class="slide">
+                        
+                            <a class="sidebar__menu-item" th:href="@{/payment_gateway}">Payment Gateway</a>
+
+
+                        </li>
+
+                        </ul>
+                    </li>
+
+
+                    <li class="slide">
+                        <a th:href="@{/menu-controller}" class="sidebar__menu-item">
+                        <div class="side-menu__icon"><i class="icon-menu2"></i></div>
+                        <span class="sidebar__menu-label">Menu Controller</span>
                         </a>
                     </li>
 

@@ -1,0 +1,51 @@
+<div th:fragment="modalContent">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form th:action="@{/users/add}" method="post" id="addUserForm">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="firstNameAdd" class="form-label">First Name</label>
+                            <input type="text" class="form-control" id="firstNameAdd" name="firstname" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="lastNameAdd" class="form-label">Last Name</label>
+                            <input type="text" class="form-control" id="lastNameAdd" name="lastname" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="emailAdd" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="emailAdd" name="emailAddress" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="companyAdd" class="form-label">Company</label>
+                            <input type="text" class="form-control" id="companyAdd" name="companyName">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="phoneAdd" class="form-label">Phone</label>
+                            <input type="text" class="form-control" id="phoneAdd" name="phone">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="statusAdd" class="form-label">Status</label>
+                            <select class="form-select" id="statusAdd" name="active">
+                                <option value="true">Active</option>
+                                <option value="false">Inactive</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="passwordAdd" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="passwordAdd" name="password" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add User</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

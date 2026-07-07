@@ -1,0 +1,127 @@
+<div th:fragment="addModal" class="modal fade" id="addNewCustomer" tabindex="-1" aria-labelledby="addNewCustomerLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addNewCustomerLabel">Add New Customer</h5>
+                <button type="button" class="bd-btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="fa-solid fa-xmark-large"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form th:action="@{/customers}" th:object="${customer}" method="post">
+                    <div class="card__wrapper mb-20">
+                        <div class="row g-20 gy-20 align-items-center justify-content-center">
+                            <div class="col-lg-6">
+                                <div class="from__input-box">
+                                    <div class="form__input-title">
+                                        <label for="firstName">First Name <span>*</span></label>
+                                    </div>
+                                    <div class="form__input">
+                                        <input class="form-control" id="firstName" type="text" th:field="*{firstName}" required>
+                                        <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="from__input-box">
+                                    <div class="form__input-title">
+                                        <label for="lastName">Last Name <span>*</span></label>
+                                    </div>
+                                    <div class="form__input">
+                                        <input class="form-control" id="lastName" type="text" th:field="*{lastName}" required>
+                                        <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="from__input-box">
+                                    <div class="form__input-title">
+                                        <label for="email">Email <span>*</span></label>
+                                    </div>
+                                    <div class="form__input">
+                                        <input class="form-control" id="email" type="email" th:field="*{email}" required>
+                                        <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="from__input-box">
+                                    <div class="form__input-title">
+                                        <label for="phone">Phone <span>*</span></label>
+                                    </div>
+                                    <div class="form__input">
+                                        <input class="form-control" id="phone" type="tel" th:field="*{phone}" required>
+                                        <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="from__input-box">
+                                    <div class="form__input-title">
+                                        <label for="address">Address <span>*</span></label>
+                                    </div>
+                                    <div class="form__input">
+                                        <input class="form-control" id="address" type="text" th:field="*{address}" required>
+                                        <span th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="from__input-box">
+                                    <div class="form__input-title">
+                                        <label for="membership">Membership <span>*</span></label>
+                                    </div>
+                                    <div class="form__input">
+                                        <select class="form-select" id="membership" th:field="*{membership}" required>
+                                            <option value="STANDARD">Standard</option>
+                                            <option value="STANDARD_PLUS">Standard Plus</option>
+                                            <option value="SILVER">Silver</option>
+                                            <option value="SILVER_PLUS">Silver Plus</option>
+                                            <option value="GOLD">Gold</option>
+                                            <option value="GOLD_PLUS">Gold Plus</option>
+                                        </select>
+                                        <span th:if="${#fields.hasErrors('membership')}" th:errors="*{membership}" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="from__input-box">
+                                    <div class="form__input-title">
+                                        <label for="businessType">Business Type <span>*</span></label>
+                                    </div>
+                                    <div class="form__input">
+                                        <select class="form-select" id="businessType" th:field="*{businessType}" required>
+                                            <option value="CONTRACTOR">Contractor</option>
+                                            <option value="E_SALES">E-Sales</option>
+                                            <option value="NONPROFIT">Nonprofit</option>
+                                            <option value="RETAIL">Retail</option>
+                                            <option value="SERVICE">Service</option>
+                                            <option value="WHOLESALE">Wholesale</option>
+                                        </select>
+                                        <span th:if="${#fields.hasErrors('businessType')}" th:errors="*{businessType}" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="from__input-box">
+                                    <div class="form__input-title">
+                                        <label for="active">Status</label>
+                                    </div>
+                                    <div class="form__input">
+                                        <select class="form-select" id="active" th:field="*{active}">
+                                            <option value="true">Active</option>
+                                            <option value="false">Inactive</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit__btn text-center">
+                        <button class="btn btn-primary" type="submit">Save Customer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

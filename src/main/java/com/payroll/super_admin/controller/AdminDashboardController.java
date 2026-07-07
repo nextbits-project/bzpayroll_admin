@@ -93,4 +93,8 @@ public class AdminDashboardController {
         String username = (String) session.getAttribute("CID");
         return "th/State_tax";
     }
+    @GetMapping("/admin_products")
+    public String product() {
+        return "th/products";
+    }
 }
