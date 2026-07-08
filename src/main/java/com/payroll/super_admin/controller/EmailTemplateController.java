@@ -3,6 +3,7 @@ package com.payroll.super_admin.controller;
 import com.payroll.super_admin.dto.CategoryDTO;
 import com.payroll.super_admin.dto.TemplateDTO;
 import com.payroll.super_admin.service.EmailTemplateService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,12 +18,9 @@ import java.util.List;
 
 @RequestMapping("/email-templates")
 public class EmailTemplateController {
+    @Autowired
+    EmailTemplateService templateService;
 
-    private final EmailTemplateService templateService;
-
-    public EmailTemplateController(EmailTemplateService templateService) {
-        this.templateService = templateService;
-    }
 
     @GetMapping
     public String page(Model model) {

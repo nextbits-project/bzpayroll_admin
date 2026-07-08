@@ -17,14 +17,11 @@ import java.time.format.DateTimeFormatter;
 @RequestMapping("/customers")
 public class CustomerController {
 
-    private final CustomerService customerService;
-    private final CustomerRepository customerRepository;
-
     @Autowired
-    public CustomerController(CustomerService customerService, CustomerRepository customerRepository) {
-        this.customerService = customerService;
-        this.customerRepository = customerRepository;
-    }
+    CustomerService customerService;
+    @Autowired
+    CustomerRepository customerRepository;
+
 
     @GetMapping
     public String listCustomers(Model model) {

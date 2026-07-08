@@ -25,9 +25,6 @@ public class UserController {
     @Autowired
     private BcaUserRepository userRepository;
 
-//    @Autowired
-//    private BCryptPasswordEncoder passwordEncoder;
-
     @GetMapping
     public String listUsers(
             Model model,
