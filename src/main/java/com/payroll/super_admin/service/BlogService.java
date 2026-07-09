@@ -32,52 +32,56 @@ public class BlogService {
     private String baseURL;
 
     public void createBlog(BlogDto blogDto, MultipartFile image) throws IOException {
-        BcaBlogs bcaBlogs = new BcaBlogs();
+        try{
+            BcaBlogs bcaBlogs = new BcaBlogs();
 
-        if (image != null && !image.isEmpty()) {
-            File folder = new File(uploadDir);
-            if (!folder.exists()) {
-                folder.mkdirs();
+            if (image != null && !image.isEmpty()) {
+                File folder = new File(uploadDir);
+                if (!folder.exists()) {
+                    folder.mkdirs();
+                }
+                String fileName = UUID.randomUUID() + "_" + image.getOriginalFilename();
+                Path path = Paths.get(uploadDir, fileName);
+                Files.copy(image.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+                bcaBlogs.setFeaturedImage(fileName);
             }
-            String fileName = UUID.randomUUID() + "_" + image.getOriginalFilename();
-            Path path = Paths.get(uploadDir, fileName);
-            Files.copy(image.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-            bcaBlogs.setFeaturedImage(fileName);
-        }
 
-        if (blogDto.getTitle() != null){
-            bcaBlogs.setTitle(blogDto.getTitle());
-        }
-        if (blogDto.getSlug() != null){
-            bcaBlogs.setSlug(blogDto.getSlug());
-        }
-        if (blogDto.getShortDescription() != null){
-            bcaBlogs.setShortDescription(blogDto.getShortDescription());
-        }
-        if (blogDto.getDescription() != null){
-            bcaBlogs.setDescription(blogDto.getDescription());
-        }
-        if (blogDto.getMetaTitle() != null){
-            bcaBlogs.setMetaTitle(blogDto.getMetaTitle());
-        }
-        if (blogDto.getMetaDescription() != null){
-            bcaBlogs.setMetaDescription(blogDto.getMetaDescription());
-        }
-        if (blogDto.getMetaKeywords() != null){
-            bcaBlogs.setMetaKeywords(blogDto.getMetaKeywords());
-        }
-        if (blogDto.getStatus() != null){
-            bcaBlogs.setStatus(blogDto.getStatus());
-        }
-        if (blogDto.getPublishDate() != null){
-            bcaBlogs.setPublishedAt(blogDto.getPublishDate());
-        }
+            if (blogDto.getTitle() != null){
+                bcaBlogs.setTitle(blogDto.getTitle());
+            }
+            if (blogDto.getSlug() != null){
+                bcaBlogs.setSlug(blogDto.getSlug());
+            }
+            if (blogDto.getShortDescription() != null){
+                bcaBlogs.setShortDescription(blogDto.getShortDescription());
+            }
+            if (blogDto.getDescription() != null){
+                bcaBlogs.setDescription(blogDto.getDescription());
+            }
+            if (blogDto.getMetaTitle() != null){
+                bcaBlogs.setMetaTitle(blogDto.getMetaTitle());
+            }
+            if (blogDto.getMetaDescription() != null){
+                bcaBlogs.setMetaDescription(blogDto.getMetaDescription());
+            }
+            if (blogDto.getMetaKeywords() != null){
+                bcaBlogs.setMetaKeywords(blogDto.getMetaKeywords());
+            }
+            if (blogDto.getStatus() != null){
+                bcaBlogs.setStatus(blogDto.getStatus());
+            }
+            if (blogDto.getPublishDate() != null){
+                bcaBlogs.setPublishedAt(blogDto.getPublishDate());
+            }
 
-        BcaBlogCategories blogCategories = blogCategoryRepository.findById(Long.parseLong(blogDto.getCategoryId())).orElse(null);
-        if (blogCategories != null){
-            bcaBlogs.setCategory(blogCategories);
+            BcaBlogCategories blogCategories = blogCategoryRepository.findById(Long.parseLong(blogDto.getCategoryId())).orElse(null);
+            if (blogCategories != null){
+                bcaBlogs.setCategory(blogCategories);
+            }
+            blogRepository.save(bcaBlogs);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-        blogRepository.save(bcaBlogs);
     }
 
     public List<BcaBlogs> getAllBlog() {

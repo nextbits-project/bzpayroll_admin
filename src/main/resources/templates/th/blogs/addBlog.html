@@ -114,13 +114,13 @@
                                             <div class="mb-3">
                                                 <label class="form-label">Blog Title <span
                                                         class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" name="title"
-                                                    placeholder="Enter Blog Title">
+                                                <input type="text" class="form-control" name="title" id="title"
+                                                    placeholder="Enter Blog Title"/>
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Slug</label>
-                                                <input type="text" class="form-control" name="slug"
-                                                    placeholder="blog-slug">
+                                                <input type="text" class="form-control" name="slug" id="slug"
+                                                    placeholder="blog-slug" readonly/>
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Short Description</label>
@@ -224,6 +224,22 @@
         </div>
     </div>
 
+    <script>
+        // Update slug based on title
+        const titleInput = document.getElementById("title");
+        const slugInput = document.getElementById("slug");
+
+        titleInput.addEventListener("input", function () {
+            const slug = this.value
+                .toLowerCase()                 // Convert to lowercase
+                .trim()                        // Remove extra spaces
+                .replace(/\s+/g, "-")          // Replace spaces with -
+                .replace(/[^\w-]+/g, "")       // Remove special characters
+                .replace(/--+/g, "-");         // Replace multiple - with single -
+
+            slugInput.value = slug;
+        });
+    </script>
     <!-- JS Lib. -->
     <script src="https://cdn.jsdelivr.net/npm/tinymce@7/tinymce.min.js"></script>
     <script th:src="@{/assets/js/vendor/calendar-activision.js}"></script>
