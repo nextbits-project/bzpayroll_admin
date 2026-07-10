@@ -23,8 +23,6 @@ public class AdminDashboardController {
 
     @Autowired
     private AdminUserService adminUserService;
-    @Autowired
-    private MembershipPlanService membershipPlanService;
 
     @GetMapping("/")
     public String admin(Model model) {
@@ -102,15 +100,5 @@ public class AdminDashboardController {
     @GetMapping("/admin_products")
     public String product() {
         return "th/products";
-    }
-
-    /**
-     * Membership Plan and Fees page
-     */
-    @GetMapping("/membership")
-    public String membership(Model model) {
-        List<BcaMembershipPlan> bcaMembershipPlanList = membershipPlanService.getAllMembershipPlanList();
-        model.addAttribute("membershipPlanList", bcaMembershipPlanList);
-        return "th/membership/membership";
     }
 }
