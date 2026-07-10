@@ -1,6 +1,8 @@
 package com.payroll.super_admin.controller;
 
+import com.payroll.super_admin.entity.BcaMembershipPlan;
 import com.payroll.super_admin.service.AdminUserService;
+import com.payroll.super_admin.service.MembershipPlanService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.*;
+
 @Controller
 public class AdminDashboardController {
 
@@ -19,6 +23,8 @@ public class AdminDashboardController {
 
     @Autowired
     private AdminUserService adminUserService;
+    @Autowired
+    private MembershipPlanService membershipPlanService;
 
     @GetMapping("/")
     public String admin(Model model) {
@@ -96,5 +102,15 @@ public class AdminDashboardController {
     @GetMapping("/admin_products")
     public String product() {
         return "th/products";
+    }
+
+    /**
+     * Membership Plan and Fees page
+     */
+    @GetMapping("/membership")
+    public String membership(Model model) {
+        List<BcaMembershipPlan> bcaMembershipPlanList = membershipPlanService.getAllMembershipPlanList();
+        model.addAttribute("membershipPlanList", bcaMembershipPlanList);
+        return "th/membership/membership";
     }
 }

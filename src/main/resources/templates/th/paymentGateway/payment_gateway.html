@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8">
+    <title>Payment Method</title>
+    <link th:href="@{/assets/css/bootstrap.min.css}" rel="stylesheet">
+    <style>
+    body {
+      background-color: #f8f9fc;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .page-title {
+      font-size: 26px;
+      font-weight: 600;
+      margin-bottom: 25px;
+      color: #333;
+    }
+
+    .payment-section {
+      display: flex;
+      gap: 25px;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    .payment-card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      flex: 1 1 45%;
+      padding: 25px 30px;
+      min-width: 420px;
+    }
+
+    .payment-card h4 {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+    }
+
+    .payment-card h4 img {
+      height: 26px;
+      margin-right: 10px;
+    }
+
+    .form-group label {
+      font-weight: 600;
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 6px;
+    }
+
+    .form-control {
+      border-radius: 8px;
+      font-size: 14px;
+      padding: 10px 14px;
+    }
+
+    .btn-save {
+      background-color: #4e73df;
+      border: none;
+      color: white;
+      font-weight: 600;
+      padding: 10px 20px;
+      border-radius: 8px;
+      width: 100%;
+      margin-top: 15px;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-save:hover {
+      background-color: #375ac2;
+    }
+
+    .status-group {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .status-group label {
+      font-weight: 500;
+      margin-left: 6px;
+    }
+
+    .stripe-title {
+      color: #6b2cff;
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    @media (max-width: 992px) {
+      .payment-section {
+        flex-direction: column;
+      }
+
+      .payment-card {
+        width: 100%;
+      }
+    }
+    </style>
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/assets/images/favicon.png}">
+
+    <!-- CSS -->
+    <link rel="stylesheet" th:href="@{/assets/css/vendor/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/vendor/animate.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/apexcharts.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/jquery-jvectormap-2.0.5.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/swiper-bundle.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/vendor/magnific-popup.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/vendor/icomoon.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/vendor/fontawesome-pro.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/vendor/rating.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/vendor/dropzone.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/dropify.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/vendor/spacing.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/datatables.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/buttons.bootstrap5.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/jquery.dataTables.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/select2.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/jquery.timepicker.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/tagify.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/flatpickr.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/jquery-ui.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/fullcalendar.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/ion.rangeSlider.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/simplebar.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/waves.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/nano.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/main.css}">
+
+
+  </head>
+  <body>
+    <div class="container mt-5">
+      <div th:replace="fragments/common_fragments/sidebar :: sidebar"></div>
+
+      <div class="page__body-wrapper">
+        <div th:replace="fragments/common_fragments/header :: header"></div>
+
+        <div class="body__overlay"></div>
+
+        <div class="app__slide-wrapper">
+          <div class="breadcrumb__area">
+            <div class="breadcrumb__wrapper mb-25">
+              <nav>
+                <ol class="breadcrumb mb-0">
+                  <li class="breadcrumb-item"><a href="Admin_dashboard.html">Home</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">Manage Payments</li>
+                </ol>
+              </nav>
+            </div>
+          </div>
+
+
+
+
+          <div class="page-title">💳 Payment Method</div>
+
+          <div th:if="${message}" class="alert alert-success alert-dismissible fade show" role="alert">
+    <span th:text="${message}"></span>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+
+          <div class="payment-section">
+
+
+
+            <div class="payment-card" style="padding: 10px;">
+              <form th:action="@{/payment_gateway/saveStripe}" method="post" th:object="${config}">
+
+                <h4 style="display: flex; align-items: center; justify-content: center; font-size: 50px;" class="stripe-title">
+                  Stripe
+                </h4>
+
+                <div style="margin-bottom: 5px;">
+                  <label>Stripe Status</label>
+                </div>
+                <div class="status-group">
+                  <div>
+                    <input type="radio" th:field="*{stripeStatus}" value="active" />
+                    <label>Active</label>
+                  </div>
+                  <div>
+                    <input type="radio" th:field="*{stripeStatus}" value="inactive" />
+                    <label>Inactive</label>
+                  </div>
+                </div>
+
+                <div class="form-group mb-3">
+                  <label>Published Key</label>
+                  <input type="text" th:field="*{publishedKey}" class="form-control" placeholder="Enter Published Key" />
+                </div>
+
+                <div class="form-group mb-3">
+                  <label>API Key</label>
+                  <input type="text" th:field="*{apiKey}"  class="form-control" placeholder="Enter API Key" />
+                </div>
+
+                <button type="submit" class="btn-save">Save</button>
+              </form>
+            </div>
+
+            <!-- PayPal Card -->
+            <div class="payment-card" style="padding: 10px;">
+              <form th:action="@{/payment_gateway/savePaypal}" method="post" th:object="${config}">
+
+                <div style="display: flex; justify-content: center; align-items: center;">
+                  <img th:src="@{/assets/images/logo/paypal.png}" alt="PayPal Logo" style="width: 315px;" />
+                </div>
+
+                <div style="margin-bottom: 5px;">
+                  <label>PayPal Status</label>
+                </div>
+                <div class="status-group">
+                  <div>
+                    <input type="radio" th:field="*{paypalStatus}" value="active" />
+                    <label>Active</label>
+                  </div>
+                  <div>
+                    <input type="radio" th:field="*{paypalStatus}" value="inactive" />
+                    <label>Inactive</label>
+                  </div>
+                </div>
+
+                <div class="form-group mb-3">
+                  <label>PayPal Client ID</label>
+                  <input type="text" th:field="*{paypalClientId}" class="form-control" placeholder="Enter PayPal Client ID" />
+                </div>
+
+                <div class="form-group mb-3">
+                  <label>PayPal Secret</label>
+                  <input type="text" th:field="*{paypalSecret}" class="form-control" placeholder="Enter PayPal Secret" />
+                </div>
+
+                <button type="submit" class="btn-save">Save</button>
+              </form>
+            </div>
+
+          </div>
+
+
+
+          <script th:src="@{/assets/js/vendor/calendar-activision.js}"></script>
+          <script th:src="@{/assets/js/vendor/jquery-3.7.0.js}"></script>
+          <script th:src="@{/assets/js/vendor/isotope.pkgd.js}"></script>
+          <script th:src="@{/assets/js/vendor/bootstrap.bundle.min.js}"></script>
+          <script th:src="@{/assets/js/vendor/magnific-popup.min.js}"></script>
+          <script th:src="@{/assets/js/vendor/ajax-form.js}"></script>
+          <script th:src="@{/assets/js/vendor/jquery.repeater.js}"></script>
+          <script th:src="@{/assets/js/plugins/waypoints.min.js}"></script>
+          <script th:src="@{/assets/js/plugins/dayjs.min.js}"></script>
+          <script th:src="@{/assets/js/plugins/loader.js}"></script>
+          <script th:src="@{/assets/js/plugins/jsvectormap.min.js}"></script>
+          <script th:src="@{/assets/js/plugins/world-merc.js}"></script>
+          <script th:src="@{/assets/js/plugins/swiper-bundle.min.js}"></script>
+          <script th:src="@{/assets/js/plugins/popper.min.js}"></script>
+          <script th:src="@{/assets/js/plugins/simplebar.min.js}"></script>
+          <script th:src="@{/assets/js/plugins/simplebar-active.js}"></script>
+          <script th:src="@{/assets/js/plugins/backtotop.js}"></script>
+          <script th:src="@{/assets/js/plugins/smooth-scrollbar.js}"></script>
+          <script th:src="@{/assets/js/plugins/cleave.min.js}"></script>
+          <script th:src="@{/assets/js/plugins/datatables.min.js}"></script>
+          <script th:src="@{/assets/js/plugins/jquery.dataTables.min.js}"></script>
+          <script th:src="@{/assets/js/plugins/dataTables.bootstrap5.min.js}"></script>
+          <script th:src="@{/assets/js/plugins/dataTables.buttons.min.js}"></script>
+          <script th:src="@{/assets/js/plugins/jszip.min.js}"></script>
+          <script th:src="@{/assets/js/plugins/pdfmake.min.js}"></script>
+          <script th:src="@{/assets/js/plugins/vfs_fonts.js}"></script>
+          <script th:src="@{/assets/js/plugins/buttons.html5.min.js}"></script>
+          <script th:src="@{/assets/js/plugins/buttons.print.min.js}"></script>
+          <script th:src="@{/assets/js/plugins/buttons.colVis.min.js}"></script>
+          <script th:src="@{/assets/js/plugins/steps-form.js}"></script>
+          <script th:src="@{/assets/js/plugins/dropify.min.js}"></script>
+          <script th:src="@{/assets/js/plugins/dropzone.js}"></script>
+          <script th:src="@{/assets/js/plugins/tinymce.min.js}"></script>
+          <script th:src="@{/assets/js/plugins/custom.js}"></script>
+          <script th:src="@{/assets/js/plugins/typeahead.bundle.min.js}"></script>
+          <script th:src="@{/assets/js/plugins/bloodhound.js}"></script>
+          <script th:src="@{/assets/js/plugins/select2.full.min.js}"></script>
+          <script th:src="@{/assets/js/plugins/jquery.timepicker.min.js}"></script>
+          <script th:src="@{/assets/js/plugins/flatpickr.js}"></script>
+          <script th:src="@{/assets/js/plugins/tagify.js}"></script>
+          <script th:src="@{/assets/js/plugins/jquery-ui.min.js}"></script>
+          <script th:src="@{/assets/js/plugins/sweetalert2.all.min.js}"></script>
+          <script th:src="@{/assets/js/plugins/apexcharts.min.js}"></script>
+          <script th:src="@{/assets/js/plugins/fullcalendar.min.js}"></script>
+          <script th:src="@{/assets/js/plugins/ion.rangeSlider.min.js}"></script>
+          <script th:src="@{/assets/js/vendor/custom-tagify.js}"></script>
+          <script th:src="@{/assets/js/vendor/height-equal.js}"></script>
+          <script th:src="@{/assets/js/vendor/custom-chart.js}"></script>
+          <script th:src="@{/assets/js/vendor/rangeslider-script.js}"></script>
+          <script th:src="@{/assets/js/vendor/jquery.barrating.js}"></script>
+          <script th:src="@{/assets/js/vendor/rating-script.js}"></script>
+          <script th:src="@{/assets/js/main.js}"></script>
+          <script th:src="@{/assets/js/vendor/sidebar.js}"></script>
+
+
+
+
+        </div>
+  </body>
+</html>
+

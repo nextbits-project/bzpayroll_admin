@@ -2,7 +2,6 @@ package com.payroll.super_admin.controller;
 
 import com.payroll.super_admin.entity.BcaBlogCategories;
 import com.payroll.super_admin.entity.BcaBlogs;
-import com.payroll.super_admin.entity.Customer;
 import com.payroll.super_admin.service.BlogService;
 import com.payroll.super_admin.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,6 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
