@@ -1,0 +1,97 @@
+<div th:fragment="modalContent">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">View User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label"><strong>First Name:</strong></label>
+                        <p th:text="${selectedUser.firstname}">John</p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label"><strong>Last Name:</strong></label>
+                        <p th:text="${selectedUser.lastname}">Doe</p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label"><strong>Membership Level:</strong></label>
+                        <p th:text="${selectedUser.membershipLevel != null} ? ${selectedUser.membershipLevel} : 'N/A'">
+                            N/A</p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label"><strong>Job Position</strong></label>
+                        <p th:text="${selectedUser.jobPosition != null} ? ${selectedUser.jobPosition} : 'N/A'">
+                            N/A</p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label"><strong>Email</strong></label>
+                        <p th:text="${selectedUser.emailAddress}">[email protected]</p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label"><strong>Company Name</strong></label>
+                        <p th:text="${selectedUser.companyName != null} ? ${selectedUser.companyName} : 'N/A'">
+                            N/A</p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label"><strong>Legal Name:</strong></label>
+                        <p th:text="${selectedUser.legalName}">Company</p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label"><strong>Phone:</strong></label>
+                        <p th:text="${selectedUser.phone}">123-456-7890</p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label"><strong>Address1</strong></label>
+                        <p th:text="${selectedUser.address1 != null} ? ${selectedUser.address1} : 'N/A'">
+                            N/A</p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label"><strong>Address2:</strong></label>
+                        <p th:text="${selectedUser.address2 != null} ? ${selectedUser.address2} : 'N/A'">
+                            N/A</p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label"><strong>Country</strong></label>
+                        <p th:text="${selectedUser.country != null} ? ${selectedUser.countryName} : 'N/A'">
+                            N/A</p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label"><strong>State</strong></label>
+                        <p th:text="${selectedUser.state != null} ? ${selectedUser.stateName} : 'N/A'">
+                            N/A</p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label"><strong>City</strong></label>
+                        <p th:text="${selectedUser.city != null} ? ${selectedUser.cityName} : 'N/A'">
+                            N/A</p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label"><strong>Zip</strong></label>
+                        <p th:text="${selectedUser.zip != null} ? ${selectedUser.zip} : 'N/A'">
+                            N/A</p>
+                    </div>
+
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label"><strong>Status:</strong></label>
+                        <p>
+                            <span class="bd-badge"
+                                  th:classappend="${selectedUser.active} ? 'bg-success' : 'bg-danger'"
+                                  th:text="${selectedUser.active} ? 'Active' : 'Inactive'">Status</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!--<script th:src="@{/assets/js/vendor/bootstrap.bundle.min.js}"></script>-->

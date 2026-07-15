@@ -1,6 +1,8 @@
 package com.payroll.super_admin.controller;
 
+import com.payroll.super_admin.entity.BcaMembershipPlan;
 import com.payroll.super_admin.service.AdminUserService;
+import com.payroll.super_admin.service.MembershipPlanService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
@@ -11,6 +13,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.*;
 
 @Controller
 public class AdminDashboardController {
@@ -92,5 +96,9 @@ public class AdminDashboardController {
     public String stateTax(Model model, HttpSession session) {
         String username = (String) session.getAttribute("CID");
         return "th/State_tax";
+    }
+    @GetMapping("/admin_products")
+    public String product() {
+        return "th/products";
     }
 }

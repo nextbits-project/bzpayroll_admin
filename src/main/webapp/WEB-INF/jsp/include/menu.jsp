@@ -493,7 +493,7 @@
 							ABOUT
 						</a>
 						<div class="dropdown-menu" aria-labelledby="payrollDropdown">
-							<a class="dropdown-item" href="/">Help Contents</a>
+							<a class="dropdown-item" href="/About?content=overview">Help Contents</a>
 							<a class="dropdown-item" href="/">Feedback</a>
 							<a class="dropdown-item" href="/">BZpayroll Products</a>
 							<a class="dropdown-item" href="/">About</a>

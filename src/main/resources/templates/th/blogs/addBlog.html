@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html class="no-js" lang="zxx" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Add Blog - BZPayroll Admin Dashboard</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-style-mode" content="1">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/assets/images/favicon.png}">
+
+    <!-- CSS -->
+    <link rel="stylesheet" th:href="@{/assets/css/vendor/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/vendor/animate.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/apexcharts.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/jquery-jvectormap-2.0.5.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/swiper-bundle.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/vendor/magnific-popup.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/vendor/icomoon.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/vendor/fontawesome-pro.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/vendor/rating.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/vendor/dropzone.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/dropify.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/vendor/spacing.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/datatables.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/buttons.bootstrap5.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/jquery.dataTables.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/select2.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/jquery.timepicker.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/tagify.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/flatpickr.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/jquery-ui.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/fullcalendar.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/ion.rangeSlider.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/simplebar.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/waves.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/nano.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/main.css}">
+
+    <style>
+        .btn-update {
+            background-color: #ffc107 !important;
+            color: #000 !important;
+        }
+
+        .btn-update:hover {
+            background-color: #f4c947 !important;
+            color: #000 !important;
+        }
+
+        .btn-delete {
+            background-color: #dc3545 !important;
+            padding: 10px 10px !important;
+        }
+
+        .btn-delete:hover {
+            background-color: #bb2d3b !important;
+        }
+    </style>
+
+</head>
+
+<body class="body-area">
+    <!-- Preloader -->
+    <div class="preloader" id="preloader">
+        <div class="loading">
+            <span></span><span></span><span></span><span></span><span></span>
+        </div>
+    </div>
+
+    <!-- Dashboard area -->
+    <div class="page__full-wrapper">
+        <div th:replace="fragments/common_fragments/sidebar :: sidebar"></div>
+
+        <div class="page__body-wrapper">
+            <div th:replace="fragments/common_fragments/header :: header"></div>
+
+            <!-- Header -->
+            <div class="body__overlay"></div>
+
+            <!-- Main content -->
+            <div class="app__slide-wrapper">
+                <div class="breadcrumb__area">
+                    <div class="breadcrumb__wrapper mb-25">
+                        <nav>
+                            <ol class="breadcrumb mb-0">
+                                <li class="breadcrumb-item"><a th:href="@{/admin_dashboard}">Home</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Blogs</li>
+                                <li class="breadcrumb-item active" aria-current="page">Add Blog</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center my-3 mx-1">
+                    <div>
+                        <h3 class="mb-0">Add Blog</h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xxl-12">
+                        <form th:action="@{/blogs}" th:object="${blog}" method="post" enctype="multipart/form-data">
+                            <div class="row">
+
+                                <!-- Left Side -->
+                                <div class="col-lg-8">
+
+                                    <div class="card mb-4">
+                                        <div class="card-header">
+                                            <h5 class="mb-0">Blog Details</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="mb-3">
+                                                <label class="form-label">Blog Title <span
+                                                        class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" name="title" id="title"
+                                                    placeholder="Enter Blog Title"/>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Slug</label>
+                                                <input type="text" class="form-control" name="slug" id="slug"
+                                                    placeholder="blog-slug" readonly/>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Short Description</label>
+                                                <textarea class="form-control" rows="4" name="shortDescription"
+                                                    placeholder="Short description..."></textarea>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Blog Content</label>
+                                                <textarea id="blogContent" name="description"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- SEO -->
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5 class="mb-0">SEO Information</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="mb-3">
+                                                <label>Meta Title</label>
+                                                <input type="text" class="form-control" name="metaTitle">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label>Meta Keywords</label>
+                                                <input type="text" class="form-control" name="metaKeywords">
+                                            </div>
+                                            <div class="mb-0">
+                                                <label>Meta Description</label>
+                                                <textarea class="form-control" rows="3"
+                                                    name="metaDescription"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Right Side -->
+                                <div class="col-lg-4">
+                                    <!-- Publish -->
+                                    <div class="card mb-4">
+                                        <div class="card-header">
+                                            <h5 class="mb-0">Publish</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="mb-3">
+                                                <label>Status</label>
+                                                <select class="form-select" name="status">
+                                                    <option value="DRAFT">Draft</option>
+                                                    <option value="PUBLISHED">Published</option>
+                                                </select>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label>Publish Date</label>
+                                                <input type="date" class="form-control" name="publishDate">
+                                            </div>
+                                            <button class="btn btn-primary w-100">
+                                                <i class="fa-solid fa-floppy-disk me-2"></i>
+                                                Save Blog
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <!-- Category -->
+                                    <div class="card mb-4">
+                                        <div class="card-header">
+                                            <h5 class="mb-0">Category</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <select class="form-select" name="categoryId">
+                                                <option th:each="category : ${categoryList}" th:value="${category.id}"
+                                                    th:text="${category.categoryName}">
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!-- Featured Image -->
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5 class="mb-0">Featured Image</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <input type="file" class="dropify" name="image">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Footer -->
+            <footer class="footer">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="card__footer d-flex justify-content-center">
+                            <p>Copyright © <span th:text="${#dates.format(#dates.createNow(), 'yyyy')}"></span> <span
+                                    class="text-black">BZcomposer.</span> All rights reserved</p>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        // Update slug based on title
+        const titleInput = document.getElementById("title");
+        const slugInput = document.getElementById("slug");
+
+        titleInput.addEventListener("input", function () {
+            const slug = this.value
+                .toLowerCase()                 // Convert to lowercase
+                .trim()                        // Remove extra spaces
+                .replace(/\s+/g, "-")          // Replace spaces with -
+                .replace(/[^\w-]+/g, "")       // Remove special characters
+                .replace(/--+/g, "-");         // Replace multiple - with single -
+
+            slugInput.value = slug;
+        });
+    </script>
+    <!-- JS Lib. -->
+    <script src="https://cdn.jsdelivr.net/npm/tinymce@7/tinymce.min.js"></script>
+    <script th:src="@{/assets/js/vendor/calendar-activision.js}"></script>
+    <script th:src="@{/assets/js/vendor/jquery-3.7.0.js}"></script>
+    <script th:src="@{/assets/js/vendor/isotope.pkgd.js}"></script>
+    <script th:src="@{/assets/js/vendor/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/assets/js/vendor/magnific-popup.min.js}"></script>
+    <script th:src="@{/assets/js/vendor/ajax-form.js}"></script>
+    <script th:src="@{/assets/js/vendor/jquery.repeater.js}"></script>
+    <script th:src="@{/assets/js/plugins/waypoints.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/dayjs.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/loader.js}"></script>
+    <script th:src="@{/assets/js/plugins/jsvectormap.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/world-merc.js}"></script>
+    <script th:src="@{/assets/js/plugins/swiper-bundle.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/popper.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/simplebar.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/simplebar-active.js}"></script>
+    <script th:src="@{/assets/js/plugins/backtotop.js}"></script>
+    <script th:src="@{/assets/js/plugins/smooth-scrollbar.js}"></script>
+    <script th:src="@{/assets/js/plugins/cleave.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/datatables.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/dataTables.bootstrap5.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/dataTables.buttons.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/jszip.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/pdfmake.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/vfs_fonts.js}"></script>
+    <script th:src="@{/assets/js/plugins/buttons.html5.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/buttons.print.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/buttons.colVis.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/steps-form.js}"></script>
+    <script th:src="@{/assets/js/plugins/dropify.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/dropzone.js}"></script>
+    <script th:src="@{/assets/js/plugins/tinymce.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/custom.js}"></script>
+    <script th:src="@{/assets/js/plugins/typeahead.bundle.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/bloodhound.js}"></script>
+    <script th:src="@{/assets/js/plugins/select2.full.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/jquery.timepicker.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/flatpickr.js}"></script>
+    <script th:src="@{/assets/js/plugins/tagify.js}"></script>
+    <script th:src="@{/assets/js/plugins/jquery-ui.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/sweetalert2.all.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/apexcharts.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/fullcalendar.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/ion.rangeSlider.min.js}"></script>
+    <script th:src="@{/assets/js/vendor/custom-tagify.js}"></script>
+    <script th:src="@{/assets/js/vendor/height-equal.js}"></script>
+    <script th:src="@{/assets/js/vendor/custom-chart.js}"></script>
+    <script th:src="@{/assets/js/vendor/rangeslider-script.js}"></script>
+    <script th:src="@{/assets/js/vendor/jquery.barrating.js}"></script>
+    <script th:src="@{/assets/js/vendor/rating-script.js}"></script>
+    <script th:src="@{/assets/js/main.js}"></script>
+    <script th:src="@{/assets/js/vendor/sidebar.js}"></script>
+
+    <script>
+        tinymce.init({
+            selector: '#blogContent',
+            height: 500,
+            menubar: true,
+            plugins: [
+                'lists',
+                'link',
+                'image',
+                'table',
+                'code',
+                'preview',
+                'fullscreen'
+            ],
+            toolbar:
+                'undo redo | styles | bold italic underline | alignleft aligncenter alignright | bullist numlist | link image table | code preview fullscreen'
+        });
+    </script>
+</body>
+
+</html>

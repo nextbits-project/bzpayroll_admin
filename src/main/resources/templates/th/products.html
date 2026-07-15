@@ -1,0 +1,568 @@
+<!doctype html>
+<html class="no-js" lang="zxx">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Admin Products Page</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-style-mode" content="1">
+    <!-- Place favicon.ico in the root directory -->
+    <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png">
+
+    <!-- CSS here -->
+    <link rel="stylesheet" href="assets/css/vendor/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/vendor/animate.css">
+    <link rel="stylesheet" href="assets/css/plugins/apexcharts.css">
+    <link rel="stylesheet" href="assets/css/plugins/jquery-jvectormap-2.0.5.css">
+    <link rel="stylesheet" href="assets/css/plugins/swiper-bundle.min.css">
+    <link rel="stylesheet" href="assets/css/vendor/magnific-popup.css">
+    <link rel="stylesheet" href="assets/css/vendor/icomoon.css">
+    <link rel="stylesheet" href="assets/css/vendor/fontawesome-pro.css">
+    <link rel="stylesheet" href="assets/css/vendor/rating.css">
+    <link rel="stylesheet" href="assets/css/vendor/dropzone.css">
+    <link rel="stylesheet" href="assets/css/plugins/dropify.min.css">
+    <link rel="stylesheet" href="assets/css/vendor/spacing.css">
+    <link rel="stylesheet" href="assets/css/plugins/datatables.min.css">
+    <link rel="stylesheet" href="assets/css/plugins/buttons.bootstrap5.css">
+    <link rel="stylesheet" href="assets/css/plugins/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="assets/css/plugins/select2.min.css">
+    <link rel="stylesheet" href="assets/css/plugins/jquery.timepicker.css">
+    <link rel="stylesheet" href="assets/css/plugins/tagify.css">
+    <link rel="stylesheet" href="assets/css/plugins/flatpickr.min.css">
+    <link rel="stylesheet" href="assets/css/plugins/jquery-ui.css">
+    <link rel="stylesheet" href="assets/css/plugins/fullcalendar.min.css">
+    <link rel="stylesheet" href="assets/css/plugins/ion.rangeSlider.min.css">
+    <link rel="stylesheet" href="assets/css/plugins/simplebar.css">
+    <link rel="stylesheet" href="assets/css/plugins/waves.min.css">
+    <link rel="stylesheet" href="assets/css/plugins/nano.min.css">
+    <link rel="stylesheet" href="assets/css/main.css">
+</head>
+
+<body class="body-area">
+
+<!-- Preloader start -->
+<div class="preloader" id="preloader">
+    <div class="loading">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</div>
+<!-- Preloader start -->
+<div class="page__full-wrapper">
+    <div th:replace="fragments/common_fragments/sidebar :: sidebar"></div>
+
+    <div class="page__body-wrapper">
+        <div th:replace="fragments/common_fragments/header :: header"></div>
+
+
+        <div class="body__overlay"></div>
+
+        <div class="app__slide-wrapper">
+            <div class="breadcrumb__area">
+                <div class="breadcrumb__wrapper mb-25">
+                    <nav>
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item"><a href="Admin_dashboard.html">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Products</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-xxl-12">
+                    <div class="row">
+                        <div class="col-xxl-3 col-xl-4 col-lg-6 col-md-6">
+                            <div class="card__wrapper">
+                                <div class="client__wrapper text-center">
+
+                                    <div class="client__content">
+                                        <div class="client__meta">
+                                            <h4 class="mb-8"><a href="#">Retailer</a></h4>
+                                            <span>Provide service to the retail Customer </span>
+                                            <p>Selling the products ,functions of warehousing and storing,buying and
+                                                assembling of goods , delivering quality products<br>
+                                                <br>
+                                                <br>
+                                            </p>
+                                        </div>
+
+                                        <div class="client__btn">
+                                            <div class="d-flex align-items-center justify-content-center gap-15">
+                                                <button type="button" class="btn btn-primary">Explore More</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xxl-3 col-xl-4 col-lg-6 col-md-6">
+                            <div class="card__wrapper">
+                                <div class="client__wrapper text-center">
+
+                                    <div class="client__content">
+                                        <div class="client__meta">
+                                            <h4 class="mb-8"><a href="#">Service & Professional</a></h4>
+                                            <span>Provide professional service to the customer</span>
+                                            <p>Help them manage or improve a specific area of their
+                                                businesses,professional services may have expertise . digital marketing,
+                                                and provide services to a business to improve their digital marketing
+                                                efforts.</p>
+                                        </div>
+
+                                        <div class="client__btn">
+                                            <div class="d-flex align-items-center justify-content-center gap-15">
+                                                <button type="button" class="btn btn-primary">Explore More</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xxl-3 col-xl-4 col-lg-6 col-md-6">
+                            <div class="card__wrapper">
+                                <div class="client__wrapper text-center">
+
+                                    <div class="client__content">
+                                        <div class="client__meta">
+                                            <h4 class="mb-8"><a href="#">CRM</a></h4>
+                                            <span>Manage and analyze customer interactions</span>
+                                            <p>Managing all of your company’s interactions with current and potential
+                                                customers, helps companies stay connected to customers, streamline
+                                                processes, and improve profitability</p>
+                                        </div>
+                                        <div class="client__btn">
+                                            <div class="d-flex align-items-center justify-content-center gap-15">
+                                                <button type="button" class="btn btn-primary">Explore More</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div class="col-xxl-12">
+                    <div class="row">
+                        <div class="col-xxl-3 col-xl-4 col-lg-6 col-md-6">
+                            <div class="card__wrapper">
+                                <div class="client__wrapper text-center">
+
+                                    <div class="client__content">
+                                        <div class="client__meta">
+                                            <h4 class="mb-8"><a href="#">Wholesaler/Manufacturer</a></h4>
+                                            <span>Provide service to the Wholesaler and Manufacturer</span>
+                                            <p>Help in the Marketing Function The wholesalers take care of the
+                                                distribution of goods to a number of retailers<br>
+                                                <br>
+                                                <br>
+                                            </p>
+                                        </div>
+
+                                        <div class="client__btn">
+                                            <div class="d-flex align-items-center justify-content-center gap-15">
+                                                <button type="button" class="btn btn-primary">Explore More</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xxl-3 col-xl-4 col-lg-6 col-md-6">
+                            <div class="card__wrapper">
+                                <div class="client__wrapper text-center">
+
+                                    <div class="client__content">
+                                        <div class="client__meta">
+                                            <h4 class="mb-8"><a href="#">Emp Management & Payroll</a></h4>
+                                            <span>Helps the businesses manage employee wages and payroll</span>
+                                            <p>Manage employee payments, including salaries, bonuses, benefits, , tax
+                                                deductions. track hours worked, issue payments, and keep records.</p>
+                                        </div>
+
+                                        <div class="client__btn">
+                                            <div class="d-flex align-items-center justify-content-center gap-15">
+                                                <button type="button" class="btn btn-primary">Explore More</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xxl-3 col-xl-4 col-lg-6 col-md-6">
+                            <div class="card__wrapper">
+                                <div class="client__wrapper text-center">
+
+                                    <div class="client__content">
+                                        <div class="client__meta">
+                                            <h4 class="mb-8"><a href="#">eCommerce</a></h4>
+                                            <span>Helps the businesses to sell products online</span>
+                                            <p>Supply chain e-commerce management,Inventory management,Data collection
+                                                and security,Electronic funds transfer,Shipping services<br>
+                                                <br>
+                                            </p>
+                                        </div>
+                                        <div class="client__btn">
+                                            <div class="d-flex align-items-center justify-content-center gap-15">
+                                                <button type="button" class="btn btn-primary">Explore More</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div class="col-xxl-12">
+                    <div class="row">
+                        <div class="col-xxl-3 col-xl-4 col-lg-6 col-md-6">
+                            <div class="card__wrapper">
+                                <div class="client__wrapper text-center">
+
+                                    <div class="client__content">
+                                        <div class="client__meta">
+                                            <h4 class="mb-8"><a href="#">Non-Profit Organization</a></h4>
+                                            <span>Providing Service to the Non-Profit Organization(NPO)</span>
+                                            <p>Donations made to a Non Profit organization(NOP) are typically
+                                                tax-deductible and the nonprofit itself pays no tax on donations<br>
+                                                <br>
+                                                <br>
+                                            </p>
+                                        </div>
+
+                                        <div class="client__btn">
+                                            <div class="d-flex align-items-center justify-content-center gap-15">
+                                                <button type="button" class="btn btn-primary">Explore More</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xxl-3 col-xl-4 col-lg-6 col-md-6">
+                            <div class="card__wrapper">
+                                <div class="client__wrapper text-center">
+
+                                    <div class="client__content">
+                                        <div class="client__meta">
+                                            <h4 class="mb-8"><a href="#">Accountant</a></h4>
+                                            <span>Provides Accounting Solutions</span>
+                                            <p>Bill paying services,Payroll and sales taxes,Monthly, quarterly, and
+                                                annual financial reporting statements,Income tax planning and consulting<br>
+                                                <br><br><br>
+                                            </p>
+                                        </div>
+                                        <div class="client__btn">
+                                            <div class="d-flex align-items-center justify-content-center gap-15">
+                                                <button type="button" class="btn btn-primary">Explore More</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="row mb-20 justify-content-center">
+                <div class="col-xl-2">
+                    <div class="text-center">
+                        <button type="button" class="btn btn-primary">Load More</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- App side area end -->
+
+        <!-- footer area start -->
+        <footer class="footer">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="card__footer d-flex justify-content-center">
+                        <p>Copyright © <span id="year">2024</span> <span class="text-black">BZcomposer.</span> All
+                            rights reserved
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- footer area end -->
+
+    </div>
+</div>
+<!-- Dashboard area end -->
+
+<!-- add new client profile modal -->
+<div class="modal fade" id="addNewClient" tabindex="-1" aria-labelledby="addNewClientLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addNewClientLabel">Add New Client</h5>
+                <button type="button" class="bd-btn-close" data-bs-dismiss="modal" aria-label="Close"><i
+                        class="fa-solid fa-xmark-large"></i></button>
+            </div>
+            <div class="modal-body">
+                <form action="#">
+                    <div class="card__wrapper mb-20">
+                        <div class="row g-20 gy-20 align-items-center justify-content-center">
+                            <div class="col-lg-6">
+                                <div class="from__input-box">
+                                    <div class="form__input-title">
+                                        <label for="firstname">First Name <span>*</span></label>
+                                    </div>
+                                    <div class="form__input">
+                                        <input class="form-control" name="firstname" id="firstname" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="from__input-box">
+                                    <div class="form__input-title">
+                                        <label for="lastname">Last Name</label>
+                                    </div>
+                                    <div class="form__input">
+                                        <input class="form-control" name="lastname" id="lastname" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="from__input-box">
+                                    <div class="form__input-title">
+                                        <label for="contactNumber">Contact Number <span>*</span></label>
+                                    </div>
+                                    <div class="form__input">
+                                        <input class="form-control" name="contactNumber" id="contactNumber" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="from__input-box">
+                                    <div class="form__input-title">
+                                        <label for="email">Email <span>*</span></label>
+                                    </div>
+                                    <div class="form__input">
+                                        <input class="form-control" name="email" id="email" type="email">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="from__input-box">
+                                    <div class="form__input-title">
+                                        <label for="userName">User Name <span>*</span></label>
+                                    </div>
+                                    <div class="form__input">
+                                        <input class="form-control" name="userName" id="userName" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="from__input-box">
+                                    <div class="form__input-title">
+                                        <label for="clientId2">Client ID <span>*</span></label>
+                                    </div>
+                                    <div class="form__input">
+                                        <input class="form-control" name="clientId2" id="clientId2" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 text-center">
+                                <div class="from__input-box">
+                                    <div class="form__input-title">
+                                        <label for="address">Address <span>*</span></label>
+                                    </div>
+                                    <div class="form__input">
+                                        <textarea class="form-control" name="address" id="address"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit__btn text-center">
+                        <button class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- add new client profile modal -->
+
+<!-- edit client profile modal -->
+<div class="modal fade" id="editClient" tabindex="-1" aria-labelledby="editClientLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editClientLabel">Add New Client</h5>
+                <button type="button" class="bd-btn-close" data-bs-dismiss="modal" aria-label="Close"><i
+                        class="fa-solid fa-xmark-large"></i></button>
+            </div>
+            <div class="modal-body">
+                <form action="#">
+                    <div class="card__wrapper mb-20">
+                        <div class="row g-20 gy-20 align-items-center justify-content-center">
+                            <div class="col-lg-6">
+                                <div class="from__input-box">
+                                    <div class="form__input-title">
+                                        <label for="firstName2">First Name <span>*</span></label>
+                                    </div>
+                                    <div class="form__input">
+                                        <input class="form-control" name="firstName2" id="firstName2" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="from__input-box">
+                                    <div class="form__input-title">
+                                        <label for="lastName2">Last Name</label>
+                                    </div>
+                                    <div class="form__input">
+                                        <input class="form-control" name="lastName2" id="lastName2" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="from__input-box">
+                                    <div class="form__input-title">
+                                        <label for="contactNumber2">Contact Number <span>*</span></label>
+                                    </div>
+                                    <div class="form__input">
+                                        <input class="form-control" name="contactNumber2" id="contactNumber2"
+                                               type="text">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="from__input-box">
+                                    <div class="form__input-title">
+                                        <label for="email2">Email <span>*</span></label>
+                                    </div>
+                                    <div class="form__input">
+                                        <input class="form-control" name="email2" id="email2" type="email">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="from__input-box">
+                                    <div class="form__input-title">
+                                        <label for="userName2">User Name <span>*</span></label>
+                                    </div>
+                                    <div class="form__input">
+                                        <input class="form-control" name="userName2" id="userName2" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="from__input-box">
+                                    <div class="form__input-title">
+                                        <label for="clientId3">Client ID <span>*</span></label>
+                                    </div>
+                                    <div class="form__input">
+                                        <input class="form-control" name="clientId3" id="clientId3" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 text-center">
+                                <div class="from__input-box">
+                                    <div class="form__input-title">
+                                        <label for="address2">Address <span>*</span></label>
+                                    </div>
+                                    <div class="form__input">
+                                        <textarea class="form-control" name="address2" id="address2"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit__btn text-center">
+                        <button class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- edit client profile modal -->
+
+<!-- Back to top start -->
+
+<!-- Back to top end -->
+
+<!-- JS here -->
+<!-- JS -->
+<script th:src="@{/assets/js/vendor/calendar-activision.js}"></script>
+<script th:src="@{/assets/js/vendor/jquery-3.7.0.js}"></script>
+<script th:src="@{/assets/js/vendor/isotope.pkgd.js}"></script>
+<script th:src="@{/assets/js/vendor/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/assets/js/vendor/magnific-popup.min.js}"></script>
+<script th:src="@{/assets/js/vendor/ajax-form.js}"></script>
+<script th:src="@{/assets/js/vendor/jquery.repeater.js}"></script>
+<script th:src="@{/assets/js/plugins/waypoints.min.js}"></script>
+<script th:src="@{/assets/js/plugins/dayjs.min.js}"></script>
+<script th:src="@{/assets/js/plugins/loader.js}"></script>
+<script th:src="@{/assets/js/plugins/jsvectormap.min.js}"></script>
+<script th:src="@{/assets/js/plugins/world-merc.js}"></script>
+<script th:src="@{/assets/js/plugins/swiper-bundle.min.js}"></script>
+<script th:src="@{/assets/js/plugins/popper.min.js}"></script>
+<script th:src="@{/assets/js/plugins/simplebar.min.js}"></script>
+<script th:src="@{/assets/js/plugins/simplebar-active.js}"></script>
+<script th:src="@{/assets/js/plugins/backtotop.js}"></script>
+<script th:src="@{/assets/js/plugins/smooth-scrollbar.js}"></script>
+<script th:src="@{/assets/js/plugins/cleave.min.js}"></script>
+<script th:src="@{/assets/js/plugins/datatables.min.js}"></script>
+<script th:src="@{/assets/js/plugins/jquery.dataTables.min.js}"></script>
+<script th:src="@{/assets/js/plugins/dataTables.bootstrap5.min.js}"></script>
+<script th:src="@{/assets/js/plugins/dataTables.buttons.min.js}"></script>
+<script th:src="@{/assets/js/plugins/jszip.min.js}"></script>
+<script th:src="@{/assets/js/plugins/pdfmake.min.js}"></script>
+<script th:src="@{/assets/js/plugins/vfs_fonts.js}"></script>
+<script th:src="@{/assets/js/plugins/buttons.html5.min.js}"></script>
+<script th:src="@{/assets/js/plugins/buttons.print.min.js}"></script>
+<script th:src="@{/assets/js/plugins/buttons.colVis.min.js}"></script>
+<script th:src="@{/assets/js/plugins/steps-form.js}"></script>
+<script th:src="@{/assets/js/plugins/dropify.min.js}"></script>
+<script th:src="@{/assets/js/plugins/dropzone.js}"></script>
+<script th:src="@{/assets/js/plugins/tinymce.min.js}"></script>
+<script th:src="@{/assets/js/plugins/custom.js}"></script>
+<script th:src="@{/assets/js/plugins/typeahead.bundle.min.js}"></script>
+<script th:src="@{/assets/js/plugins/bloodhound.js}"></script>
+<script th:src="@{/assets/js/plugins/select2.full.min.js}"></script>
+<script th:src="@{/assets/js/plugins/jquery.timepicker.min.js}"></script>
+<script th:src="@{/assets/js/plugins/flatpickr.js}"></script>
+<script th:src="@{/assets/js/plugins/tagify.js}"></script>
+<script th:src="@{/assets/js/plugins/jquery-ui.min.js}"></script>
+<script th:src="@{/assets/js/plugins/sweetalert2.all.min.js}"></script>
+<script th:src="@{/assets/js/plugins/apexcharts.min.js}"></script>
+<script th:src="@{/assets/js/plugins/fullcalendar.min.js}"></script>
+<script th:src="@{/assets/js/plugins/ion.rangeSlider.min.js}"></script>
+<script th:src="@{/assets/js/vendor/custom-tagify.js}"></script>
+<script th:src="@{/assets/js/vendor/height-equal.js}"></script>
+<script th:src="@{/assets/js/vendor/custom-chart.js}"></script>
+<script th:src="@{/assets/js/vendor/rangeslider-script.js}"></script>
+<script th:src="@{/assets/js/vendor/jquery.barrating.js}"></script>
+<script th:src="@{/assets/js/vendor/rating-script.js}"></script>
+<script th:src="@{/assets/js/main.js}"></script>
+<script th:src="@{/assets/js/vendor/sidebar.js}"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,235 @@
+<!doctype html>
+<html class="no-js" lang="zxx" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>BZcomposer Admin Dashboard</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-style-mode" content="1">
+    <!-- Place favicon.ico in the root directory -->
+    <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png">
+
+    <!-- CSS here -->
+    <link rel="stylesheet" href="assets/css/vendor/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/vendor/animate.css">
+    <link rel="stylesheet" href="assets/css/plugins/apexcharts.css">
+    <link rel="stylesheet" href="assets/css/plugins/jquery-jvectormap-2.0.5.css">
+    <link rel="stylesheet" href="assets/css/plugins/swiper-bundle.min.css">
+    <link rel="stylesheet" href="assets/css/vendor/magnific-popup.css">
+    <link rel="stylesheet" href="assets/css/vendor/icomoon.css">
+    <link rel="stylesheet" href="assets/css/vendor/fontawesome-pro.css">
+    <link rel="stylesheet" href="assets/css/vendor/rating.css">
+    <link rel="stylesheet" href="assets/css/vendor/dropzone.css">
+    <link rel="stylesheet" href="assets/css/plugins/dropify.min.css">
+    <link rel="stylesheet" href="assets/css/vendor/spacing.css">
+    <link rel="stylesheet" href="assets/css/plugins/datatables.min.css">
+    <link rel="stylesheet" href="assets/css/plugins/buttons.bootstrap5.css">
+    <link rel="stylesheet" href="assets/css/plugins/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="assets/css/plugins/select2.min.css">
+    <link rel="stylesheet" href="assets/css/plugins/jquery.timepicker.css">
+    <link rel="stylesheet" href="assets/css/plugins/tagify.css">
+    <link rel="stylesheet" href="assets/css/plugins/flatpickr.min.css">
+    <link rel="stylesheet" href="assets/css/plugins/jquery-ui.css">
+    <link rel="stylesheet" href="assets/css/plugins/fullcalendar.min.css">
+    <link rel="stylesheet" href="assets/css/plugins/ion.rangeSlider.min.css">
+    <link rel="stylesheet" href="assets/css/plugins/simplebar.css">
+    <link rel="stylesheet" href="assets/css/plugins/waves.min.css">
+    <link rel="stylesheet" href="assets/css/plugins/nano.min.css">
+    <link rel="stylesheet" href="assets/css/main.css">
+</head>
+
+<body class="body-area">
+
+<!-- Preloader start -->
+<div class="preloader" id="preloader">
+    <div class="loading">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</div>
+<!-- Preloader start -->
+
+<div class="page__full-wrapper">
+    <div th:replace="fragments/common_fragments/sidebar :: sidebar"></div>
+
+    <div class="page__body-wrapper">
+        <div th:replace="fragments/common_fragments/header :: header"></div>
+
+        <div class="body__overlay"></div>
+
+        <div class="app__slide-wrapper">
+            <div class="breadcrumb__area">
+                <div class="breadcrumb__wrapper mb-25">
+                    <nav>
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item"><a th:href="@{/admin_dashboard}">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Customer List</li>
+                        </ol>
+                    </nav>
+                    <div class="breadcrumb__btn">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#addNewCustomer" data-modal-url="/customers/modal/add">
+                            <i class="icon-circle-plus"></i>Add Customer
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xxl-12">
+                    <div class="card__wrapper">
+                        <div class="card__title-wrap mb-20">
+                            <h3 class="card__heading-title">Customers List</h3>
+                            <div class="d-flex gap-2 mb-3">
+                                <a th:href="@{/customers}" class="btn btn-primary">All</a>
+                                <a th:href="@{/customers/active}" class="btn btn-outline-success">Active</a>
+                                <a th:href="@{/customers/inactive}" class="btn btn-outline-danger">Inactive</a>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table id="customerTable" class="table table-striped" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                        <th>Address</th>
+                                        <th>Membership</th>
+                                        <th>Business Type</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="customer : ${customers}">
+                                        <td th:text="${customer.firstName} + ' ' + ${customer.lastName}">John Doe</td>
+                                        <td><a th:href="'mailto:' + ${customer.email}" th:text="${customer.email}">[email protected]</a></td>
+                                        <td th:text="${customer.phone}">1234567890</td>
+                                        <td th:text="${customer.address}">123 Main St</td>
+                                        <td th:text="${customer.membership}">STANDARD</td>
+                                        <td th:text="${customer.businessType}">RETAIL</td>
+                                        <td>
+                                            <span th:class="'bd-badge bg-' + (${customer.active} ? 'success' : 'danger')"
+                                                  th:text="${customer.active} ? 'Active' : 'Inactive'">Active</span>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center justify-content-start gap-10">
+                                                <a th:href="@{/customers/modal/view/{id}(id=${customer.id})}"
+                                                   class="table__icon download" data-bs-toggle="modal"
+                                                   data-bs-target="#viewCustomer"
+                                                   th:attr="data-modal-url=@{/customers/modal/view/{id}(id=${customer.id})}">
+                                                    <i class="fa-regular fa-eye"></i>
+                                                </a>
+                                                <a th:href="@{/customers/modal/edit/{id}(id=${customer.id})}"
+                                                   class="table__icon edit" data-bs-toggle="modal"
+                                                   data-bs-target="#editCustomer"
+                                                   th:attr="data-modal-url=@{/customers/modal/edit/{id}(id=${customer.id})}">
+                                                    <i class="fa-sharp fa-light fa-pen"></i>
+                                                </a>
+                                                <form th:action="@{/customers/delete/{id}(id=${customer.id})}" method="post"
+                                                      style="display:inline;">
+                                                    <button type="submit" class="removeBtn table__icon delete"
+                                                            onclick="return confirm('Are you sure you want to delete this customer?')">
+                                                        <i class="fa-regular fa-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Placeholder -->
+        <div id="modalPlaceholder"></div>
+
+        <!-- footer area start -->
+        <footer class="footer">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="card__footer d-flex justify-content-center">
+                        <p>Copyright © <span th:text="${currentYear}">2025</span> <span class="text-black">BZcomposer.</span> All rights reserved</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- footer area end -->
+    </div>
+</div>
+
+<!-- JS here -->
+<script src="assets/js/vendor/jquery-3.7.0.js"></script>
+<script src="assets/js/vendor/bootstrap.bundle.min.js"></script>
+<script src="assets/js/plugins/jquery.dataTables.min.js"></script>
+<script src="assets/js/plugins/dataTables.bootstrap5.min.js"></script>
+<script src="assets/js/plugins/select2.full.min.js"></script>
+<script src="assets/js/main.js"></script>
+
+<script>
+    $(document).ready(function () {
+        // Initialize DataTable
+        $('#customerTable').DataTable({
+            paging: true,
+            searching: true,
+            ordering: true,
+            info: true,
+            responsive: true
+        });
+
+        // Function to load modal content
+        function loadModal(url, modalId) {
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function (data) {
+                    $('#modalPlaceholder').html(data);
+                    $(modalId).modal('show');
+                    // Initialize Select2 for any select elements in the modal
+                    $(modalId + ' select').select2();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error loading modal:', error);
+                    alert('Failed to load modal content.');
+                }
+            });
+        }
+
+        // Handle Add Customer button click
+        $('[data-modal-url="/customers/modal/add"]').click(function (e) {
+            e.preventDefault();
+            loadModal('/customers/modal/add', '#addNewCustomer');
+        });
+
+        // Handle View Customer click
+        $('a[href*="/customers/modal/view"]').click(function (e) {
+            e.preventDefault();
+            var url = $(this).data('modal-url');
+            loadModal(url, '#viewCustomer');
+        });
+
+        // Handle Edit Customer click
+        $('a[href*="/customers/modal/edit"]').click(function (e) {
+            e.preventDefault();
+            var url = $(this).data('modal-url');
+            loadModal(url, '#editCustomer');
+        });
+
+        // Handle modal close to clear content
+        $('.modal').on('hidden.bs.modal', function () {
+            $('#modalPlaceholder').empty();
+        });
+    });
+</script>
+
+</body>
+</html>
