@@ -113,6 +113,7 @@
                     th:classappend="${iter.index == 0} ? 'active'"
                     th:href="'#tab-' + ${category.code}"
                     th:data-code="${category.code}"
+                    th:data-id="${category.id}"
                     data-bs-toggle="tab"
                     th:text="${category.name}"
                     onclick="onCategoryClick(this)"
@@ -138,6 +139,20 @@
               <div class="card h-100">
                 <div class="card-header">Mail Template Information</div>
                 <div class="card-body">
+                  <div class="mb-3">
+                    <label class="form-label">Template Name</label>
+                    <input
+                      type="email"
+                      class="form-control"
+                      id="templateName"
+                      placeholder="Template Name"
+                    />
+                    <input type="hidden" id="templateId">
+                    <input type="hidden" id="categoryId">
+                    <div class="mb-3" id="placeholdersContainer">
+                      <!-- Dynamic inputs for placeholders will be injected here -->
+                    </div>
+                  </div>
                   <div class="mb-3">
                     <label class="form-label">Send to </label>
                     <input
@@ -182,7 +197,9 @@
 
                   <div class="d-flex gap-2 justify-content-end">
                     <button class="btn btn-primary" id="btnNew">New</button>
-                    <button class="btn btn-primary" id="btnSave">Save</button>
+                    <button class="btn btn-primary" id="btnSave" style="display: none;">Save</button>
+                    <button class="btn btn-primary" id="btnUpdate">Update</button>
+                    <button class="btn btn-danger" id="btnDelete">Delete</button>
                   </div>
                 </div>
               </div>
@@ -199,7 +216,33 @@
   <!-- /page__body-wrapper -->
 </div>
 <!-- /page__full-wrapper -->
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
 
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteConfirmLabel">Delete Template</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                Are you sure you want to delete this template?
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    No
+                </button>
+
+                <button type="button" class="btn btn-danger" id="confirmDelete">
+                    Yes, Delete
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
     <!-- Bootstrap + JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- JS here -->
@@ -287,95 +330,218 @@
       /**
        * Fetch templates for a category and populate the sidebar
        */
-/*<![CDATA[*/
-function onCategoryClick(element) {
-    const categoryCode = element.dataset.code;
-    console.log("Clicked category code:", categoryCode);
+      /*<![CDATA[*/
+      function onCategoryClick(element) {
+          const categoryCode = element.dataset.code;
+          const categoryId = element.dataset.id;
+          document.getElementById("categoryId").value = categoryId;
+          console.log("Clicked category code:", categoryCode);
 
-    fetch(`/email-templates/category/${categoryCode}/templates`)
-        .then(res => res.json())
-        .then(data => {
-            populateSidebar(data);
-            selectFirstTemplate(data);  // ✅ auto-select first template
-        })
-        .catch(err => console.error("Fetch error:", err));
-}
+          fetch(`/email-templates/category/${categoryCode}/templates`)
+              .then(res => res.json())
+              .then(data => {
+                  populateSidebar(data);
+                  selectFirstTemplate(data);  // ✅ auto-select first template
+              })
+              .catch(err => console.error("Fetch error:", err));
+      }
 
       /**
        * Populate the sidebar with template titles
        */
       
 
-function populateSidebar(templates) {
-    const sidebar = document.getElementById("templateSidebar");
-    sidebar.innerHTML = ""; // Clear previous
+      function populateSidebar(templates) {
+          const sidebar = document.getElementById("templateSidebar");
+          sidebar.innerHTML = ""; // Clear previous
 
-    templates.forEach((template, index) => {
-        const a = document.createElement("a");
-        a.href = "#";
-        a.className = "list-group-item list-group-item-action template-item bg-light";
-        a.textContent = template.title;
+          templates.forEach((template, index) => {
+              const a = document.createElement("a");
+              a.href = "#";
+              a.className = "list-group-item list-group-item-action template-item bg-light";
+              a.textContent = template.title;
+              
+              a.dataset.id = template.id;
+              a.dataset.title = template.title;
+              a.dataset.subject = template.subject;
+              a.dataset.body = template.body;
 
-        a.dataset.subject = template.subject;
-        a.dataset.body = template.body;
+              // Highlight first one by default
+              if (index === 0) {
+                  a.classList.add("active");
+              }
 
-        // Highlight first one by default
-        if (index === 0) {
-            a.classList.add("active");
-        }
+              a.addEventListener("click", (e) => {
+                  e.preventDefault();
+                  document.getElementById("btnSave").style.display = "none";
+                  document.getElementById("btnUpdate").style.display = "block";
+                  // Remove active from all
+                  sidebar.querySelectorAll("a").forEach(link => link.classList.remove("active"));
+                  a.classList.add("active");
 
-        a.addEventListener("click", (e) => {
-            e.preventDefault();
+                  populateTemplatePanel(template);
+              });
 
-            // Remove active from all
-            sidebar.querySelectorAll("a").forEach(link => link.classList.remove("active"));
-            a.classList.add("active");
-
-            populateTemplatePanel(template);
-        });
-
-        sidebar.appendChild(a);
-    });
-}
+              sidebar.appendChild(a);
+          });
+      }
 
 
 
       /**
- * Auto-select the first template
- */
-function selectFirstTemplate(templates) {
-    if (templates && templates.length > 0) {
-        populateTemplatePanel(templates[0]);
-    }
-}
+      * Auto-select the first template
+      */
+      function selectFirstTemplate(templates) {
+          if (templates && templates.length > 0) {
+              populateTemplatePanel(templates[0]);
+          }
+      }
       /**
 
        * Optional: New, Save, Delete buttons
        */
       document.getElementById("btnNew").addEventListener("click", () => {
+        document.getElementById("templateId").value = "";
+        document.getElementById("templateName").value = "";
         document.getElementById("recipientName").value = "";
         document.getElementById("templateSubject").value = "";
         document.getElementById("templateBody").innerHTML = "";
+        document.getElementById("btnSave").style.display = "block";
+        document.getElementById("btnUpdate").style.display = "none";
+        document.getElementById("btnDelete").style.display = "none";
       });
 
       document.getElementById("btnSave").addEventListener("click", () => {
-        const name = document.getElementById("recipientName").value;
-        const subject = document.getElementById("templateSubject").value;
-        const body = document.getElementById("templateBody").innerHTML;
+        const data = {
+            categoryId: $("#categoryId").val(),
+            templateName: $("#templateName").val(),
+            recipientName: $("#recipientName").val(),
+            subject: $("#templateSubject").val(),
+            body: $("#templateBody").html()
+        };
+        $.ajax({
+            url: "/email-templates/category/template/add",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(data),
 
-        console.log("Saving template:", { name, subject, body });
-        // Make AJAX POST/PUT to save template here
+            success: function (response) {
+              Swal.fire({
+                  icon: "success",
+                  title: "Success",
+                  text: response.message,
+                  confirmButtonText: "OK"
+              }).then(() => {
+                  window.location.reload();
+              });
+            },
+
+            error: function (xhr, status, error) {
+              let message = "Failed to delete template.";
+              if (xhr.responseJSON && xhr.responseJSON.message) {
+                  message = xhr.responseJSON.message;
+              }
+              Swal.fire({
+                  icon: "error",
+                  title: "Error",
+                  text: message,
+                  confirmButtonText: "OK"
+              });
+            }
+        });
       });
 
+      document.getElementById("btnUpdate").addEventListener("click", () => {
+        const data = {
+            id: $("#templateId").val(),
+            templateName: $("#templateName").val(),
+            recipientName: $("#recipientName").val(),
+            subject: $("#templateSubject").val(),
+            body: $("#templateBody").html()
+        };
+        $.ajax({
+            url: "/email-templates/category/template/update",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(data),
+
+            success: function (response) {
+              Swal.fire({
+                  icon: "success",
+                  title: "Success",
+                  text: response.message,
+                  confirmButtonText: "OK"
+              }).then(() => {
+                  window.location.reload();
+              });
+            },
+
+            error: function (xhr, status, error) {
+              let message = "Failed to delete template.";
+              if (xhr.responseJSON && xhr.responseJSON.message) {
+                  message = xhr.responseJSON.message;
+              }
+              Swal.fire({
+                  icon: "error",
+                  title: "Error",
+                  text: message,
+                  confirmButtonText: "OK"
+              });
+            }
+        });
+      });
       document.getElementById("btnDelete").addEventListener("click", () => {
-        console.log("Delete clicked");
-        // Make AJAX DELETE request here
+          const deleteModal = new bootstrap.Modal(document.getElementById("deleteConfirmModal"));
+          deleteModal.show();
+      });
+      document.getElementById("confirmDelete").addEventListener("click", () => {
+          const data = {
+              id: $("#templateId").val()
+          };
+
+          $.ajax({
+              url: "/email-templates/category/template/delete",
+              type: "POST",
+              contentType: "application/json",
+              data: JSON.stringify(data),
+
+              success: function(response) {
+                // Close the delete confirmation modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById("deleteConfirmModal"));
+                if (modal) {
+                    modal.hide();
+                }
+                Swal.fire({
+                    icon: "success",
+                    title: "Success",
+                    text: response.message,
+                    confirmButtonText: "OK"
+                }).then(() => {
+                    window.location.reload();
+                });
+              },
+
+              error: function(xhr, status, error) {
+                let message = "Failed to delete template.";
+                if (xhr.responseJSON && xhr.responseJSON.message) {
+                    message = xhr.responseJSON.message;
+                }
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: message,
+                    confirmButtonText: "OK"
+                });
+              }
+          });
       });
     </script>
 
     <script th:inline="javascript">
       /*<![CDATA[*/
       function populateTemplatePanel(template) {
+        const id = document.getElementById("templateId");
+        const templateName = document.getElementById("templateName");
         const nameInput = document.getElementById("recipientName");
         const subjectInput = document.getElementById("templateSubject");
         const bodyDiv = document.getElementById("templateBody");
@@ -390,6 +556,8 @@ function selectFirstTemplate(templates) {
         nameInput.placeholder = "Enter Reciepient Mail";
         subjectInput.value = template.subject;
         bodyDiv.innerHTML = template.body;
+        templateName.value = template.title;
+        id.value = template.id;
         placeholdersContainer.innerHTML = "";
 
         // Use a string for regex to avoid Thymeleaf parsing issues

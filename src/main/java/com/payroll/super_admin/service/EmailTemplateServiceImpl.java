@@ -1,11 +1,13 @@
 package com.payroll.super_admin.service;
 
 import com.payroll.super_admin.dto.CategoryDTO;
+import com.payroll.super_admin.dto.EmailTemplateRequest;
 import com.payroll.super_admin.dto.TemplateDTO;
 import com.payroll.super_admin.entity.EmailCategory;
 import com.payroll.super_admin.entity.EmailTemplate;
 import com.payroll.super_admin.repo.EmailCategoryRepository;
 import com.payroll.super_admin.repo.EmailTemplateRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +19,8 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
 
     private final EmailCategoryRepository categoryRepository;
     private final EmailTemplateRepository templateRepository;
+    @Autowired
+    EmailCategoryRepository emailCategoryRepository;
 
     public EmailTemplateServiceImpl(EmailCategoryRepository categoryRepository,
                                     EmailTemplateRepository templateRepository) {
@@ -57,6 +61,34 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public void addTemplate(EmailTemplateRequest request) {
+        EmailTemplate emailTemplate = new EmailTemplate();
+        EmailCategory emailCategory = emailCategoryRepository.findById(Long.parseLong(request.getCategoryId())).orElse(null);
+        if (emailCategory != null)
+            emailTemplate.setCategory(emailCategory);
+        emailTemplate.setTitle(request.getTemplateName());
+        emailTemplate.setSubject(request.getSubject());
+        emailTemplate.setBody(request.getBody());
+        templateRepository.save(emailTemplate);
+    }
+
+    @Override
+    public void updateTemplate(EmailTemplateRequest request) {
+        EmailTemplate emailTemplate = templateRepository.findById(Long.parseLong(request.getId())).orElse(null);
+        if (emailTemplate != null){
+            emailTemplate.setTitle(request.getTemplateName());
+            emailTemplate.setSubject(request.getSubject());
+            emailTemplate.setBody(request.getBody());
+            templateRepository.save(emailTemplate);
+        }
+    }
+
+    @Override
+    public void deleteTemplate(EmailTemplateRequest request) {
+        templateRepository.deleteById(Long.parseLong(request.getId()));
+    }
+
 
     @Override
     @Transactional(readOnly = true)
@@ -68,6 +100,8 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
 
     private TemplateDTO mapToDTO(EmailTemplate template) {
         TemplateDTO dto = new TemplateDTO();
+        dto.setId(template.getId());
+        dto.setCategoryId(template.getCategory().getId());
         dto.setTitle(template.getTitle());  // or template.getTitle() depending on your entity
         dto.setSubject(template.getSubject());
         dto.setBody(template.getBody());
