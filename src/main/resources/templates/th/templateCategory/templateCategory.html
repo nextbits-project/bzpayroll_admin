@@ -1,0 +1,471 @@
+<!doctype html>
+<html class="no-js" lang="zxx" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Template Category - BZcomposer Admin Dashboard</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-style-mode" content="1">
+    <!-- Place favicon.ico in the root directory -->
+    <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png">
+
+    <!-- CSS here -->
+    <link rel="stylesheet" href="assets/css/vendor/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/vendor/animate.css">
+    <link rel="stylesheet" href="assets/css/plugins/apexcharts.css">
+    <link rel="stylesheet" href="assets/css/plugins/jquery-jvectormap-2.0.5.css">
+    <link rel="stylesheet" href="assets/css/plugins/swiper-bundle.min.css">
+    <link rel="stylesheet" href="assets/css/vendor/magnific-popup.css">
+    <link rel="stylesheet" href="assets/css/vendor/icomoon.css">
+    <link rel="stylesheet" href="assets/css/vendor/fontawesome-pro.css">
+    <link rel="stylesheet" href="assets/css/vendor/rating.css">
+    <link rel="stylesheet" href="assets/css/vendor/dropzone.css">
+    <link rel="stylesheet" href="assets/css/plugins/dropify.min.css">
+    <link rel="stylesheet" href="assets/css/vendor/spacing.css">
+    <link rel="stylesheet" href="assets/css/plugins/datatables.min.css">
+    <link rel="stylesheet" href="assets/css/plugins/buttons.bootstrap5.css">
+    <link rel="stylesheet" href="assets/css/plugins/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="assets/css/plugins/select2.min.css">
+    <link rel="stylesheet" href="assets/css/plugins/jquery.timepicker.css">
+    <link rel="stylesheet" href="assets/css/plugins/tagify.css">
+    <link rel="stylesheet" href="assets/css/plugins/flatpickr.min.css">
+    <link rel="stylesheet" href="assets/css/plugins/jquery-ui.css">
+    <link rel="stylesheet" href="assets/css/plugins/fullcalendar.min.css">
+    <link rel="stylesheet" href="assets/css/plugins/ion.rangeSlider.min.css">
+    <link rel="stylesheet" href="assets/css/plugins/simplebar.css">
+    <link rel="stylesheet" href="assets/css/plugins/waves.min.css">
+    <link rel="stylesheet" href="assets/css/plugins/nano.min.css">
+    <link rel="stylesheet" href="assets/css/main.css">
+    <style>
+        .table__icon.delete {
+            color: var(--clr-action-danger);
+            background: rgba(255, 58, 41, 0.15);
+        }
+    </style>
+</head>
+
+<body class="body-area">
+
+<!-- Preloader start -->
+<div class="preloader" id="preloader">
+    <div class="loading">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</div>
+<!-- Preloader start -->
+
+<div class="page__full-wrapper">
+    <div th:replace="fragments/common_fragments/sidebar :: sidebar"></div>
+
+    <div class="page__body-wrapper">
+        <div th:replace="fragments/common_fragments/header :: header"></div>
+
+        <div class="body__overlay"></div>
+
+        <div class="app__slide-wrapper">
+            <div class="breadcrumb__area">
+                <div class="breadcrumb__wrapper mb-25">
+                    <nav>
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item"><a th:href="@{/admin_dashboard}">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Template Category</li>
+                        </ol>
+                    </nav>
+                    <div class="breadcrumb__btn">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
+                            <i class="icon-circle-plus"></i>Add Category
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xxl-12">
+                    <div class="card__wrapper">
+                        <div class="card__title-wrap mb-20">
+                            <h3 class="card__heading-title">Template Categories </h3>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table id="customerTable" class="table table-striped" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Template Name</th>
+                                        <th>Template Code</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="category : ${categories}">
+                                        <td th:text="${category.id}"></td>
+                                        <td th:text="${category.name}"></td>
+                                        <td th:text="${category.code}"></td>
+                                        <td>
+                                            <div class="d-flex align-items-center justify-content-start gap-10">
+                                                <button type="button" class="table__icon edit editBtn"
+                                                    data-bs-toggle="modal" data-bs-target="#editCategoryModal"
+                                                    th:attr="data-id=${category.id},
+                                                            data-name=${category.name},
+                                                            data-code=${category.code}">
+                                                    <i class="fa-sharp fa-light fa-pen"></i>
+                                                </button>
+                                                <button type="button" class="removeBtn table__icon delete deleteBtn"
+                                                    data-bs-toggle="modal" data-bs-target="#deleteCategoryModal"
+                                                    th:attr="data-id=${category.id},
+                                                            data-name=${category.name}">
+                                                    <i class="fa-regular fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Placeholder -->
+        <div id="modalPlaceholder"></div>
+
+        <!-- footer area start -->
+        <footer class="footer">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="card__footer d-flex justify-content-center">
+                        <p>Copyright © <span th:text="${currentYear}">2025</span> <span class="text-black">BZcomposer.</span> All rights reserved</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- footer area end -->
+
+        <!-- Add category modal start-->
+        <div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addCategoryModalLabel">
+                            Add Template Category
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <div class="mb-3">
+                            <label for="categoryName" class="form-label">
+                                Category Name <span class="text-danger">*</span>
+                            </label>
+                            <input type="text"
+                                class="form-control"
+                                id="categoryName"
+                                placeholder="Enter category name">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="categoryCode" class="form-label">
+                                Category Code <span class="text-danger">*</span>
+                            </label>
+                            <input type="text"
+                                class="form-control"
+                                id="categoryCode"
+                                placeholder="Enter category code">
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button"
+                                class="btn btn-light"
+                                data-bs-dismiss="modal">
+                            Cancel
+                        </button>
+
+                        <button type="button"
+                                class="btn btn-primary"
+                                id="btnAdd">
+                            <i class="fa-solid fa-floppy-disk"></i> Save Category
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- Add category modal end-->
+
+        <!-- Edit category modal Start-->
+        <div class="modal fade" id="editCategoryModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5>Edit Category</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <input type="hidden" id="editCategoryId">
+
+                        <div class="mb-3">
+                            <label>Name</label>
+                            <input type="text" id="editCategoryName" class="form-control">
+                        </div>
+
+                        <div class="mb-3">
+                            <label>Code</label>
+                            <input type="text" id="editCategoryCode" class="form-control">
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button class="btn btn-primary" id="btnUpdateCategory">Update</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- Edit category modal End-->
+        
+        <!-- Delete category modal Start-->
+        <div class="modal fade" id="deleteCategoryModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5>Delete Category</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <input type="hidden" id="deleteCategoryId">
+
+                        <p>
+                            Are you sure you want to delete
+                            <strong id="deleteCategoryName"></strong>?
+                        </p>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                        <button class="btn btn-danger" id="btnDeleteCategory">Yes, Delete</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- Delete category modal End-->
+    </div>
+</div>
+
+<!-- JS here -->
+<script src="assets/js/vendor/jquery-3.7.0.js"></script>
+<script src="assets/js/vendor/bootstrap.bundle.min.js"></script>
+<script src="assets/js/plugins/jquery.dataTables.min.js"></script>
+<script src="assets/js/plugins/dataTables.bootstrap5.min.js"></script>
+<script src="assets/js/plugins/select2.full.min.js"></script>
+<script th:src="@{/assets/js/plugins/sweetalert2.all.min.js}"></script>
+<script src="assets/js/main.js"></script>
+
+<script>
+    $(document).ready(function () {
+        // Initialize DataTable
+        $('#customerTable').DataTable({
+            paging: true,
+            searching: true,
+            ordering: true,
+            info: true,
+            responsive: true
+        });
+
+        // Function to load modal content
+        function loadModal(url, modalId) {
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function (data) {
+                    $('#modalPlaceholder').html(data);
+                    $(modalId).modal('show');
+                    // Initialize Select2 for any select elements in the modal
+                    $(modalId + ' select').select2();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error loading modal:', error);
+                    alert('Failed to load modal content.');
+                }
+            });
+        }
+
+        // Handle Add Customer button click
+        $('[data-modal-url="/customers/modal/add"]').click(function (e) {
+            e.preventDefault();
+            loadModal('/customers/modal/add', '#addNewCustomer');
+        });
+    });
+
+    $(document).on("click", ".editBtn", function () {
+        $("#editCategoryId").val($(this).data("id"));
+        $("#editCategoryName").val($(this).data("name"));
+        $("#editCategoryCode").val($(this).data("code"));
+    });
+    // Edit button click
+    $("#btnUpdateCategory").click(function () {
+        debugger;
+        const id = $("#editCategoryId").val();
+        const name = $("#editCategoryName").val();
+        const code = $("#editCategoryCode").val();
+        
+        const data = {
+            id: id,
+            name: name,
+            code: code
+        };
+
+        $.ajax({
+            url: "/email-template-category/update",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(data),
+
+            success: function (response) {
+
+                // Close Add Modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById("editCategoryModal"));
+                if (modal) {
+                    modal.hide();
+                }
+
+                Swal.fire({
+                    icon: "success",
+                    title: "Success",
+                    text: response.message
+                }).then(() => {
+                    window.location.reload();
+                });
+            },
+
+            error: function (xhr) {
+
+                let message = "Failed to add category.";
+
+                if (xhr.responseJSON && xhr.responseJSON.message) {
+                    message = xhr.responseJSON.message;
+                }
+
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: message
+                });
+            }
+        });
+
+    });
+
+    $(document).on("click", ".deleteBtn", function () {
+        $("#deleteCategoryId").val($(this).data("id"));
+        $("#deleteCategoryName").text($(this).data("name"));
+    });
+    // Delete button click
+    $("#btnDeleteCategory").click(function () {
+        const id = $("#deleteCategoryId").val();
+        $.ajax({
+            url: "/email-template-category/delete/"+id,
+            type: "POST",
+            contentType: "application/json",
+            data: null,
+            success: function (response) {
+                const modal = bootstrap.Modal.getInstance(document.getElementById("deleteCategoryModal"));
+                modal.hide();
+                Swal.fire({
+                    icon: "success",
+                    title: "Success",
+                    text: response.message
+                }).then(() => {
+                    location.reload();
+                });
+            },
+            error: function (xhr) {
+                let message = "Failed to delete category.";
+                if (xhr.responseJSON && xhr.responseJSON.message) {
+                    message = xhr.responseJSON.message;
+                }
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: message
+                });
+            }
+        });
+    });
+
+    $("#btnAdd").click(function () {
+        const data = {
+            name: $("#categoryName").val().trim(),
+            code: $("#categoryCode").val().trim()
+        };
+
+        if (data.name === "" || data.code === "") {
+            Swal.fire({
+                icon: "warning",
+                title: "Validation",
+                text: "Please enter Category Name and Code."
+            });
+            return;
+        }
+
+        $.ajax({
+            url: "/email-template-category/add",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(data),
+
+            success: function (response) {
+
+                const modal = bootstrap.Modal.getInstance(document.getElementById("addCategoryModal"));
+                modal.hide();
+
+                Swal.fire({
+                    icon: "success",
+                    title: "Success",
+                    text: response.message
+                }).then(() => {
+                    location.reload();
+                });
+            },
+
+            error: function (xhr) {
+
+                let message = "Failed to add category.";
+
+                if (xhr.responseJSON && xhr.responseJSON.message) {
+                    message = xhr.responseJSON.message;
+                }
+
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: message
+                });
+            }
+        });
+
+    });
+</script>
+
+</body>
+</html>
