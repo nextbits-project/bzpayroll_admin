@@ -147,25 +147,29 @@
                       id="templateName"
                       placeholder="Template Name"
                     />
+                    
                     <input type="hidden" id="templateId">
                     <input type="hidden" id="categoryId">
-                    <div class="mb-3" id="placeholdersContainer">
-                      <!-- Dynamic inputs for placeholders will be injected here -->
-                    </div>
                   </div>
                   <div class="mb-3">
-                    <label class="form-label">Send to </label>
-                    <input
-                      type="email"
-                      class="form-control"
-                      id="recipientName"
-                      placeholder="[Reciepent Email]"
-                    />
-                    <div class="mb-3" id="placeholdersContainer">
-                      <!-- Dynamic inputs for placeholders will be injected here -->
-                    </div>
-                  </div>
+                    <label class="form-label">Merge Tags</label>
+                    <select class="form-select" id="mergeTags">
+                        <option value="">-- Select Merge Tag --</option>
 
+                        <option value="{{FirstName}}">First Name</option>
+                        <option value="{{LastName}}">Last Name</option>
+                        <option value="{{FullName}}">Full Name</option>
+                        <option value="{{CompanyName}}">Company Name</option>
+                        <option value="{{Email}}">Email</option>
+                        <option value="{{Phone}}">Phone</option>
+                        <option value="{{Address}}">Address</option>
+                        <option value="{{City}}">City</option>
+                        <option value="{{State}}">State</option>
+                        <option value="{{Country}}">Country</option>
+                        <option value="{{UserName}}">User Name</option>
+                        <option value="{{CurrentDate}}">Current Date</option>
+                    </select>
+                </div>
                   <div class="mb-3">
                     <label class="form-label">Subject</label>
                     <input
@@ -303,6 +307,62 @@
     <script th:src="@{/assets/js/vendor/sidebar.js}"></script>
 
     <script>
+      let activeField = null;
+
+      document.getElementById("templateSubject").addEventListener("focus", function () {
+          activeField = "subject";
+      });
+
+      document.getElementById("templateBody").addEventListener("focus", function () {
+          activeField = "body";
+      });
+
+      document.getElementById("mergeTags").addEventListener("change", function () {
+          const tag = this.value;
+          if (!tag) return;
+          if (activeField === "subject") {
+              insertIntoInput(document.getElementById("templateSubject"), tag);
+          }
+          else if (activeField === "body") {
+              insertIntoContentEditable(document.getElementById("templateBody"), tag);
+          }
+          else {
+              alert("Please click inside Subject or Content first.");
+          }
+          // Reset dropdown
+          this.selectedIndex = 0;
+      });
+
+      function insertIntoInput(input, text) {
+          input.focus();
+          const start = input.selectionStart;
+          const end = input.selectionEnd;
+          input.value =
+              input.value.substring(0, start) +
+              text +
+              input.value.substring(end);
+          input.selectionStart =
+          input.selectionEnd =
+              start + text.length;
+      }
+
+      function insertIntoContentEditable(editor, text) {
+          editor.focus();
+          const selection = window.getSelection();
+          if (!selection.rangeCount)
+              return;
+          const range = selection.getRangeAt(0);
+          range.deleteContents();
+          const node = document.createTextNode(text);
+          range.insertNode(node);
+          range.setStartAfter(node);
+          range.setEndAfter(node);
+          selection.removeAllRanges();
+          selection.addRange(range);
+      }
+      
+    </script>
+    <script>
       document.addEventListener("DOMContentLoaded", () => {
         document.querySelectorAll(".list-group").forEach((listGroup) => {
           listGroup.addEventListener("click", async (ev) => {
@@ -403,7 +463,6 @@
       document.getElementById("btnNew").addEventListener("click", () => {
         document.getElementById("templateId").value = "";
         document.getElementById("templateName").value = "";
-        document.getElementById("recipientName").value = "";
         document.getElementById("templateSubject").value = "";
         document.getElementById("templateBody").innerHTML = "";
         document.getElementById("btnSave").style.display = "block";
@@ -415,7 +474,6 @@
         const data = {
             categoryId: $("#categoryId").val(),
             templateName: $("#templateName").val(),
-            recipientName: $("#recipientName").val(),
             subject: $("#templateSubject").val(),
             body: $("#templateBody").html()
         };
@@ -455,7 +513,6 @@
         const data = {
             id: $("#templateId").val(),
             templateName: $("#templateName").val(),
-            recipientName: $("#recipientName").val(),
             subject: $("#templateSubject").val(),
             body: $("#templateBody").html()
         };
@@ -542,56 +599,14 @@
       function populateTemplatePanel(template) {
         const id = document.getElementById("templateId");
         const templateName = document.getElementById("templateName");
-        const nameInput = document.getElementById("recipientName");
         const subjectInput = document.getElementById("templateSubject");
         const bodyDiv = document.getElementById("templateBody");
-        const placeholdersContainer = document.getElementById(
-          "placeholdersContainer",
-        );
-        
-        console.log("[DEBUG] templates :: " , template );
-
+      
         // Reset
-        nameInput.value = "";
-        nameInput.placeholder = "Enter Reciepient Mail";
         subjectInput.value = template.subject;
         bodyDiv.innerHTML = template.body;
         templateName.value = template.title;
         id.value = template.id;
-        placeholdersContainer.innerHTML = "";
-
-        // Use a string for regex to avoid Thymeleaf parsing issues
-        const regex = new RegExp("\\[([^\\]]+)\\]", "g"); // double backslash!
-
-        // Use Array.from instead of spread to avoid issues
-        const matches = Array.from(template.body.matchAll(regex));
-
-        matches.forEach((match) => {
-          const placeholder = match[1];
-
-          const wrapper = document.createElement("div");
-          wrapper.className = "mb-2";
-
-          const label = document.createElement("label");
-          label.className = "form-label";
-          label.textContent = placeholder;
-
-          const input = document.createElement("input");
-          input.type = "text";
-          input.className = "form-control";
-          input.placeholder = placeholder;
-
-          input.addEventListener("input", () => {
-            bodyDiv.innerHTML = template.body.replace(
-              new RegExp(`\\[${placeholder}\\]`, "g"),
-              input.value || `[${placeholder}]`,
-            );
-          });
-
-          wrapper.appendChild(label);
-          wrapper.appendChild(input);
-          placeholdersContainer.appendChild(wrapper);
-        });
       }
       /*]]>*/
     </script>
